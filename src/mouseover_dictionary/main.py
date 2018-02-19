@@ -46,8 +46,7 @@ dictLookup = DictionaryLookup()
 
 
 def searchDefinitionFor(term):
-    print(term)
-    query = """note:'{}' {}:'{}'""".format(NOTETYPE, TERM_FIELD, term)
+    query = """note:"{}" {}:"{}" """.format(NOTETYPE, TERM_FIELD, term)
     print(query)
     res = mw.col.findNotes(query)
     if res:
