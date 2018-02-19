@@ -92,7 +92,7 @@ $(document).ready(function()
             viewport: $(window),  // constrain to window
             adjust: { 
                 mouse: false,  // don't follow mouse
-                method: 'flip',  // adjust to viewport by flipping tip if necessary
+                method: 'shift',  // adjust to viewport by flipping tip if necessary
                 scroll: false,  // buggy, disable
             }
         },

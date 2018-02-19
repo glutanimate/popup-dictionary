@@ -20,9 +20,8 @@ DEFINITION_FIELD = "Definition"
 USER_STYLES = r"""
 .qtip {
     font-family: "arial";
-    min-width: 50px !important;
-    max-width: 400px !important;
-    max-height: 400px !important;
+    max-width: 400px;
+    max-height: 400px;
     overflow-y: auto;
 }
 """

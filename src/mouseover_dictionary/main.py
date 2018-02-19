@@ -76,4 +76,4 @@ def setupAddon():
 
 addHook("profileLoaded", setupAddon)
 Reviewer._initWeb = wrap(Reviewer._initWeb, addJavascriptObjects, "after")
-Reviewer._revHtml += "<style>{}</style>".format(USER_STYLES) + html
+Reviewer._revHtml += html + "<style>{}</style>".format(USER_STYLES) 
