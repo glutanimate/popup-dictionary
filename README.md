@@ -1,6 +1,6 @@
 ## Mouseover Dictionary Add-on for Anki
 
-This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.ankiweb.net/)
+This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.ankiweb.net/). It provides a hover dictionary for user-defined terms that are saved to a special 'Dictionary' deck.
 
 ### Table of Contents
 
