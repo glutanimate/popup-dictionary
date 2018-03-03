@@ -47,20 +47,14 @@ $(document).ready(function()
             if(selection.trim().length < 3){ return; }
             
             // Set tooltip contents through pyqtSlot interface 'pyDictLookup'
-            // Show the tooltip
-            tooltip.set('content.text', "Loading...")
-            console.log("JS: Set tt to loading")
-            tooltip.show(event);
-            console.log("JS: Show tt")
-            window.setTimeout(function(){
-                var text = pyDictLookup.definitionFor(selection);
-                console.log("JS: got text");
-                if(text){
-                    console.log("JS: showed tooltip");
-                    window.setTimeout(function(){tooltip.set('content.text', text)}, 1);
-                    console.log("JS: set text");
-                }
-            }, 1);
+            var text = pyDictLookup.definitionFor(selection);
+            console.log("JS: got text");
+            if(text){
+                tooltip.set('content.text', text);
+                console.log("JS: set text");
+                tooltip.show(event);
+                console.log("JS: showed tooltip");
+            }
         });
     })
 

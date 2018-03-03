@@ -3,7 +3,7 @@
 """
 This file is part of the Mouseover Dictionary add-on for Anki.
 
-Configuration shim between Anki 2.0 and Anki 2.1
+Configuration module
 
 Copyright: (c) 2018 Glutanimate <https://glutanimate.com/>
 License: GNU AGPLv3 <https://www.gnu.org/licenses/agpl.html>
@@ -28,6 +28,7 @@ DEFINITION_FIELD = "Definition"
 
 # SNIPPET MODE
 EXCLUDED_FIELDS = ["Extra"]
+LIMIT_TO_CURRENT_DECK = True
 
 # TOOLTIP STYLING
 USER_STYLES = r"""
