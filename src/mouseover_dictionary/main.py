@@ -49,20 +49,17 @@ class DictionaryLookup(QObject):
     def __init__(self):
         QObject.__init__(self)
 
-    @pyqtSlot(str, result=str)
-    def definitionFor(self, term):
-        return self.generateDefinition(term)
-
-    def generateDefinition(self, term):
-        return getNoteSnippetsFor(term.strip())
+    @pyqtSlot(str, str, result=str)
+    def definitionFor(self, term, ignore_nid):
+        return getNoteSnippetsFor(term.strip(), ignore_nid)
 
 
 dictLookup = DictionaryLookup()
 
 
 html_reslist = """<div class="tt-reslist">{}</div>"""
-html_res = ("""<div class="tt-res">{{}}<div title="Browse..." class="tt-brws" """
-                """onclick='{}("dctBrws:{{}}")'>"""
+html_res = ("""<div class="tt-res" data-nid={{}}>{{}}<div title="Browse..." class="tt-brws" """
+                """onclick='{}("dctBrws:" + this.parentNode.dataset.nid)'>"""
                 """➥</div></div>""".format(pycmd))
 html_field = """<div class="tt-fld">{}</div>"""
 
@@ -70,13 +67,16 @@ cloze_re_str = r"\{\{c(\d+)::(.*?)(::(.*?))?\}\}"
 cloze_re = re.compile(cloze_re_str)
 
 
-def getNoteSnippetsFor(term):
+def getNoteSnippetsFor(term, ignore_nid):
     """Find relevant note snippets for search term"""
     
     print("getNoteSnippetsFor")
     # exclude current note
-    current_nid = mw.reviewer.card.note().id
+    current_nid =  mw.reviewer.card.note().id
     exclusion_string = "-nid:{} ".format(current_nid)
+
+    if ignore_nid:
+        exclusion_string += " -nid:{}".format(ignore_nid)
 
     # construct query string
     query = u'''deck:current "{}" {}'''.format(term, exclusion_string)
@@ -96,7 +96,7 @@ def getNoteSnippetsFor(term):
         joined_flds = "".join(valid_flds)
         # remove cloze markers
         filtered_flds = cloze_re.sub(r"\2", joined_flds)
-        content.append(html_res.format(filtered_flds, nid))
+        content.append(html_res.format(nid, filtered_flds))
 
     html = html_reslist.format("".join(content))
     print("Html compiled")
@@ -120,27 +120,6 @@ def addJavascriptObjects(self):
     self.web.page().mainFrame().addToJavaScriptWindowObject("pyDictLookup", dictLookup)
 
 
-def setupAddon():
-    """Setup hooks, prepare note type and deck"""
-    Reviewer._initWeb = wrap(Reviewer._initWeb, addJavascriptObjects, "after")
-    # JSBooster support:
-    if not JSBOOSTER:
-        Reviewer._revHtml += html + "<style>{}</style>".format(USER_STYLES)
-    else:
-        review_hack.review_html_scripts += html + \
-            "<style>{}</style>".format(USER_STYLES)
-
-    if MODE == "dictionary":
-        did = mw.col.decks.byName(DECK)
-        if not did:
-            mw.col.decks.id(DECK)
-        mid = mw.col.models.byName(NOTETYPE)
-        if not mid:
-            addModel(mw.col)
-        if not did or not mid:
-            mw.reset()
-
-
 def linkHandler(self, url, _old):
     """Extend link handler with browser links"""
     if not url.startswith("dctBrws"):
@@ -157,6 +136,28 @@ def browseToNid(nid):
     browser.form.searchEdit.lineEdit().setText("nid:'{}'".format(nid))
     browser.onSearch()
 
+
+def setupAddon():
+    """Setup hooks, prepare note type and deck"""
+    # JSBooster support:
+    if not JSBOOSTER:
+        Reviewer._initWeb = wrap(Reviewer._initWeb, addJavascriptObjects, "after")
+        Reviewer._revHtml += html + "<style>{}</style>".format(USER_STYLES)
+    else:
+        review_hack.review_html_scripts += html + \
+            "<style>{}</style>".format(USER_STYLES)
+        Reviewer._showQuestion = wrap(Reviewer._showQuestion, addJavascriptObjects)
+        Reviewer._showAnswer = wrap(Reviewer._showAnswer, addJavascriptObjects)
+
+    if MODE == "dictionary":
+        did = mw.col.decks.byName(DECK)
+        if not did:
+            mw.col.decks.id(DECK)
+        mid = mw.col.models.byName(NOTETYPE)
+        if not mid:
+            addModel(mw.col)
+        if not did or not mid:
+            mw.reset()
 
 # Hooks
 

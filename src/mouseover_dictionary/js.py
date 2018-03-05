@@ -93,13 +93,29 @@ $(document).ready(function()
 
                 // Get selection
                 var selection = (window.getSelection && window.getSelection() ||
-                    document.selection && document.selection.createRange()).toString();
-                
+                    document.selection && document.selection.createRange());
+                term = selection.toString().trim();
+
                 // Return if selection empty or too short
-                if(selection.trim().length < 3){ return; }
-                
+                if(term.length < 3){ return; }
+
+                // Exclude NID of clicked-on result entry
+                if (selector != "#qa"){
+                    var selElm = selection.getRangeAt(0).startContainer.parentNode;
+                    var resElm = $(selElm).closest(".tt-res")[0];
+                    try {
+                        var selNID = resElm.dataset.nid;
+                    } catch(err) {
+                        console.log(err)
+                    }
+                }
+                if (typeof selNID === "undefined") {
+                    selNID = "";
+                }
+                console.log("Ignore current NID: " + selNID)
+
                 // Set tooltip contents through pyqtSlot interface 'pyDictLookup'
-                var text = pyDictLookup.definitionFor(selection);
+                var text = pyDictLookup.definitionFor(term, selNID);
                 console.log("JS: got text");
                 
                 // Silent exit if no results returned
@@ -120,7 +136,7 @@ $(document).ready(function()
                 console.log("New tt domID: " + newdomID)
                 
                 // Highlight search term
-                $(domID).highlight(selection);
+                $(domID).highlight(term);
                 
                 // Nested tooltips
                 // create child tooltip for content on current tooltip
