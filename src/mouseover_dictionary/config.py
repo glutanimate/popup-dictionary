@@ -46,24 +46,24 @@ USER_STYLES = r"""
     border-width: 1px;
     color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-
 }
 .qtip-bootstrap .qtip-content {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 .qtip-content {
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 5px;
     max-width: 400px;
     max-height: 400px;
     overflow-y: auto;
 }
 .tt-res {
+    position:relative;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     padding-top: 0.5em;
@@ -81,6 +81,24 @@ USER_STYLES = r"""
 .tt-reslist {
     text-align: center;
 }
+.tt-brws {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    line-height 5px;
+    vertical-align: bottom;
+    color: #A0A0A0;
+    cursor: pointer;
+}
+.highlight {
+    background-color: yellow;
+}
+.night_mode > .qtip .highlight {
+    color: black
+}
 """
 
 ##############  USER CONFIGURATION END  ##############
+
+# TODO: Rework into .json based config
+

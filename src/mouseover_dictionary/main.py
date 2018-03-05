@@ -13,6 +13,7 @@ from __future__ import unicode_literals
 
 import re
 
+import aqt
 from aqt.qt import *
 from aqt import mw
 from aqt.reviewer import Reviewer
@@ -25,7 +26,6 @@ from .config import (MODE, DECK, NOTETYPE, TERM_FIELD,
                      EXCLUDED_FIELDS, ALWAYS_SHOW)
 from .template import addModel
 
-
 # support for JS Booster add-on
 try:
     from jsbooster import review_hack
@@ -33,12 +33,17 @@ try:
 except ImportError:
     JSBOOSTER = False
 
+pycmd = "pycmd" if anki21 else "py.link"
+
+
 class DictionaryLookup(QObject):
     """
     A single instance of the class is created and stored in the module's dictLookup
     variable. This instance is then added as a javascript object to the reviewer's
     main frame. We then get callbacks from qtip's set functions requesting
     the html to display
+
+    Based on deck hover tooltip by Steve AW
     """
 
     def __init__(self):
@@ -56,46 +61,48 @@ dictLookup = DictionaryLookup()
 
 
 html_reslist = """<div class="tt-reslist">{}</div>"""
-html_snippet = """<div class="tt-res">{}</div>"""
+html_res = ("""<div class="tt-res">{{}}<div title="Browse..." class="tt-brws" """
+                """onclick='{}("dctBrws:{{}}")'>"""
+                """➥</div></div>""".format(pycmd))
 html_field = """<div class="tt-fld">{}</div>"""
 
 cloze_re_str = r"\{\{c(\d+)::(.*?)(::(.*?))?\}\}"
 cloze_re = re.compile(cloze_re_str)
 
+
 def getNoteSnippetsFor(term):
     """Find relevant note snippets for search term"""
+    
     print("getNoteSnippetsFor")
     # exclude current note
     current_nid = mw.reviewer.card.note().id
     exclusion_string = "-nid:{} ".format(current_nid)
-    # exclude matches in predefined fields
-    # exclusion_string += " ".join(['''-"{}:*{}*"'''.format(fld, term)
-    #                             for fld in EXCLUDED_FIELDS])
+
     # construct query string
     query = u'''deck:current "{}" {}'''.format(term, exclusion_string)
 
     # NOTE: performing the SQL query directly might be faster
-    res = sorted(mw.col.findNotes(query))  
-    if not res:
-        if ALWAYS_SHOW:
-            return "No results found."
-        else:
-            return ""
+    res = sorted(mw.col.findNotes(query))
     
+    if not res:
+        return "No results found." if ALWAYS_SHOW else ""
     print("Query finished.")
 
     content = []
     for nid in res:
         note = mw.col.getNote(nid)
-        valid_flds = [html_field.format(i[1]) for i in note.items() if i[0] not in EXCLUDED_FIELDS]
+        valid_flds = [html_field.format(
+            i[1]) for i in note.items() if i[0] not in EXCLUDED_FIELDS]
         joined_flds = "".join(valid_flds)
+        # remove cloze markers
         filtered_flds = cloze_re.sub(r"\2", joined_flds)
-        content.append(html_snippet.format(filtered_flds))
-    
-    html = html_reslist.format("".join(content))
+        content.append(html_res.format(filtered_flds, nid))
 
+    html = html_reslist.format("".join(content))
     print("Html compiled")
+    
     return html
+
 
 def searchDefinitionFor(term):
     """Look up search term in dictionary deck"""
@@ -118,9 +125,10 @@ def setupAddon():
     Reviewer._initWeb = wrap(Reviewer._initWeb, addJavascriptObjects, "after")
     # JSBooster support:
     if not JSBOOSTER:
-        Reviewer._revHtml += html + "<style>{}</style>".format(USER_STYLES) 
+        Reviewer._revHtml += html + "<style>{}</style>".format(USER_STYLES)
     else:
-        review_hack.review_html_scripts += html + "<style>{}</style>".format(USER_STYLES)
+        review_hack.review_html_scripts += html + \
+            "<style>{}</style>".format(USER_STYLES)
 
     if MODE == "dictionary":
         did = mw.col.decks.byName(DECK)
@@ -133,7 +141,24 @@ def setupAddon():
             mw.reset()
 
 
+def linkHandler(self, url, _old):
+    """Extend link handler with browser links"""
+    if not url.startswith("dctBrws"):
+        return _old(self, url)
+    (cmd, arg) = url.split(":", 1)
+    if not arg:
+        return
+    browseToNid(arg)
+    
+
+def browseToNid(nid):
+    """Open browser and find cards by nid"""
+    browser = aqt.dialogs.open("Browser", mw)
+    browser.form.searchEdit.lineEdit().setText("nid:'{}'".format(nid))
+    browser.onSearch()
+
+
 # Hooks
 
+Reviewer._linkHandler = wrap(Reviewer._linkHandler, linkHandler, "around")
 addHook("profileLoaded", setupAddon)
-
