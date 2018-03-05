@@ -20,10 +20,10 @@ from aqt.reviewer import Reviewer
 from aqt.utils import askUser
 from anki.hooks import wrap, addHook
 
-from .js import html
+from .web import html
 from .consts import *
 from .config import (ENABLE_DICTIONARY_DECK, NOTETYPE, TERM_FIELD,
-                     DEFINITION_FIELD, USER_STYLES,
+                     DEFINITION_FIELD,
                      EXCLUDED_FIELDS, ALWAYS_SHOW, WARN_LIMIT,
                      HOTKEY, LIMIT_TO_CURRENT_DECK)
 from .template import addModel
@@ -212,10 +212,9 @@ def setupAddon():
     if not JSBOOSTER:
         Reviewer._initWeb = wrap(
             Reviewer._initWeb, addJavascriptObjects, "after")
-        Reviewer._revHtml += html + "<style>{}</style>".format(USER_STYLES)
+        Reviewer._revHtml += html
     else:
-        review_hack.review_html_scripts += html + \
-            "<style>{}</style>".format(USER_STYLES)
+        review_hack.review_html_scripts += html
         Reviewer._showQuestion = wrap(
             Reviewer._showQuestion, addJavascriptObjects)
         Reviewer._showAnswer = wrap(Reviewer._showAnswer, addJavascriptObjects)
@@ -224,7 +223,6 @@ def setupAddon():
         mid = mw.col.models.byName(NOTETYPE)
         if not mid:
             addModel(mw.col)
-        if not did or not mid:
             mw.reset()
 
 
