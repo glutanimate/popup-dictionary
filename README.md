@@ -52,4 +52,9 @@ For further information on the use of this add-on please check out [the original
 
 *Mouseover Dictionary* is *Copyright © 2018 [Aristotelis P.](https://glutanimate.com/)*
 
+Ships with the following javascript libraries:
+
+- jQuery (v1.12.4), (c) jQuery Foundation, licensed under the MIT license
+- qTip2 (v2.1.1), (c) 2011-2018 Craig Michael Thompson, licensed under the MIT license
+
 Licensed under the [GNU AGPLv3](https://www.gnu.org/licenses/agpl.html).

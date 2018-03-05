@@ -25,6 +25,11 @@ Please **do not report issues or bugs in the review section below**. I can't rep
 
 *Copyright (c) 2018 [Glutanimate](https://glutanimate.com/)*
 
+Ships with the following javascript libraries:
+
+- jQuery (v1.12.4), (c) jQuery Foundation, licensed under the MIT license
+- qTip2 (v2.1.1), (c) 2011-2018 Craig Michael Thompson, licensed under the MIT license
+
 Licensed under the [GNU AGPLv3](https://www.gnu.org/licenses/agpl.html). The code for this add-on is available on [![GitHub icon](https://glutanimate.com/logos/github.svg) GitHub](https://github.com/glutanimate/mouseover-dictionary).
 
 **MORE RESOURCES**
