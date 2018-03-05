@@ -49,10 +49,10 @@ $(document).ready(function()
             // draw on mouse position, but don't update position on mousemove
             position: {
                 target: 'mouse',
-                viewport: $(window),  // constrain to window
+                viewport: $(document),  // constrain to window
                 adjust: { 
                     mouse: false,  // don't follow mouse
-                    method: 'shift',  // adjust to viewport by flipping tip if necessary
+                    method: 'flip',  // adjust to viewport by flipping tip if necessary
                     scroll: false,  // buggy, disable
                 }
             },
