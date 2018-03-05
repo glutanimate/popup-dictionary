@@ -38,17 +38,19 @@ USER_STYLES = r"""
     font-family: "arial", sans-serif;
     color: #141414;
     background-color: white;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 .night_mode > .qtip{
     background-color: #141414;
-    color: white;  
+    color: white;
+    box-shadow: 0 0 20px rgba(77, 102, 238, 0.4);
+
 }
 .qtip-bootstrap .qtip-content {
     padding-left: 0.5em;
     padding-right: 0.5em;
-    padding-top: 0.2em;
-    padding-bottom: 0.2em;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .qtip-content {
