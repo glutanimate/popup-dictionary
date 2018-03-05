@@ -133,21 +133,6 @@ $(document).ready(function()
         return tooltip;
     }
 
-    function isQtipDescendant(node) {
-        // check if node is part of qtip
-        try {
-            while (node != null && typeof node !== 'undefined') {
-                if (node.className.match("^qtip")) {
-                    return true;
-                }
-                node = node.parentNode;
-            }
-            return false;
-        } catch (e) {
-            return false;
-        }
-    }
-
     function closeAllTips() {
         // hide parent tooltip
         $("#qtip-0").qtip('hide');
@@ -157,8 +142,8 @@ $(document).ready(function()
 
     // set up bindings to close qtip, unless mouseup is registered on qtip itself
     $(document).on('mouseup', function(event) {
-        if (isQtipDescendant(event.target)) {
-           return;
+        if ($(event.target).closest(".qtip").length > 0) {
+            return
         }
         closeAllTips();
     });
