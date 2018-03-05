@@ -42,8 +42,10 @@ USER_STYLES = r"""
 }
 .night_mode > .qtip{
     background-color: #141414;
+    border-color: #515151;
+    border-width: 1px;
     color: white;
-    box-shadow: 0 0 20px rgba(77, 102, 238, 0.4);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 
 }
 .qtip-bootstrap .qtip-content {
@@ -52,7 +54,6 @@ USER_STYLES = r"""
     padding-top: 0;
     padding-bottom: 0;
 }
-
 .qtip-content {
     margin-top: 10px;
     margin-left: 10px;
@@ -62,7 +63,6 @@ USER_STYLES = r"""
     max-height: 400px;
     overflow-y: auto;
 }
-
 .tt-res {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
