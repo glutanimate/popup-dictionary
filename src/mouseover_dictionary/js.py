@@ -39,14 +39,13 @@ tooltip_script = r"""
 // Create the tooltips only when document ready
 $(document).ready(function()
 {
-    function createTooltip(selector) {
-        // Creates tooltip on specified selector[string], sets up mouse click events
+    function createTooltip(element) {
+        // Creates tooltip on specified DOM element, sets up mouse click events
         // and child tooltips, returns tooltip API object
 
-        console.log("Creating tooltip on selector " + selector)
 
         // create qtip on Anki qa div and assign its api object to 'tooltip'
-        var tooltip = $(selector).qtip({
+        var tooltip = $(element).qtip({
             content: {
                 text: "Loading..."
             },
@@ -85,7 +84,7 @@ $(document).ready(function()
         
         var clicks = 0, delay = 500;
         
-        $(selector).on('mousedown', function(event) {
+        $(element).on('mousedown', function(event) {
             clicks++;
 
             setTimeout(function() {
@@ -95,7 +94,7 @@ $(document).ready(function()
             if (clicks === 2) {
                 event.stopImmediatePropagation();
                 $(document).one("mouseup", function(event){
-                    showTooltip(event, tooltip, selector);
+                    showTooltip(event, tooltip, element);
                     clicks = 0;
                     return;
                 });
@@ -107,25 +106,48 @@ $(document).ready(function()
         return tooltip;
     }
 
+    getSelected = function() {
+        return (window.getSelection && window.getSelection() ||
+            document.selection && document.selection.createRange());
+    }
 
-    showTooltip = function showTooltip(event, tooltip, selector) {
+    invokeTooltipAtSelectedElm = function() {
+        var selection = getSelected();
+        var selElm = selection.getRangeAt(0).startContainer.parentNode;
+        var ttBoundElm = $(selElm).closest(".qtip-content");
+        if (typeof ttBoundElm[0] === "undefined") {
+            ttBoundElm = document.getElementById("qa");
+            var tooltip = qaTooltip;
+        } else {
+            var tooltip = ttBoundElm.qtip("api");
+        }
+        showTooltip(event, tooltip, ttBoundElm);
+    }
+
+    // Look up selected text and show result in provided tooltip
+    showTooltip = function(event, tooltip, element) {
+        /* event: event that triggered function call
+           tooltip: qtip api object of tooltip to use for showing results
+           element: element that tooltip is bound to */
+        
         // Prevent immediately hiding invoked tooltip
-        event.stopPropagation();
+        if (typeof event !== "undefined") {
+            event.stopPropagation();
+        }
         // Hide existing tooltip at current nesting level,
         //  this propagates to all child tooltips through the qtip
         //  hide event
         tooltip.hide();
 
         // Get selection
-        var selection = (window.getSelection && window.getSelection() ||
-            document.selection && document.selection.createRange());
+        var selection = getSelected();
         term = selection.toString().trim();
 
         // Return if selection empty or too short
         if(term.length < 3){ return; }
 
         // Exclude NID of clicked-on result entry
-        if (selector != "#qa"){
+        if (element.id != "#qa"){
             var selElm = selection.getRangeAt(0).startContainer.parentNode;
             var resElm = $(selElm).closest(".tt-res")[0];
             try {
@@ -149,7 +171,7 @@ $(document).ready(function()
         // Set tooltip content and show it
         tooltip.set('content.text', text);
         console.log("JS: set text");
-        tooltip.show(event);
+        tooltip.show();
         console.log("JS: showed tooltip");
 
         // Determine current qtip ID and ID of potential child tooltip

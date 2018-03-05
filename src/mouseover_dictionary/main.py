@@ -132,11 +132,7 @@ def searchDefinitionFor(term):
 def onReviewerHotkey():
     if mw.state != "review":
         return
-    mw.reviewer.web.eval("""
-        var doubleClickEvent = document.createEvent('MouseEvents');
-        doubleClickEvent.initEvent('dblclick', true, true);
-        showTooltip(doubleClickEvent, qaTooltip, "#qa");
-    """)
+    mw.reviewer.web.eval("invokeTooltipAtSelectedElm();")
 
 
 def addJavascriptObjects(self):
