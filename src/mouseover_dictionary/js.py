@@ -184,6 +184,7 @@ $(document).ready(function()
         
         // Highlight search term
         $(domID).highlight(term);
+        $(".tt-dict").removeHighlight();  // don't highlight term in dictionary elm
         
         // Nested tooltips
         // create child tooltip for content on current tooltip

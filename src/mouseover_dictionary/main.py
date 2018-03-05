@@ -22,10 +22,10 @@ from anki.hooks import wrap, addHook
 
 from .js import html
 from .consts import *
-from .config import (MODE, DECK, NOTETYPE, TERM_FIELD,
+from .config import (ENABLE_DICTIONARY_DECK, NOTETYPE, TERM_FIELD,
                      DEFINITION_FIELD, USER_STYLES,
                      EXCLUDED_FIELDS, ALWAYS_SHOW, WARN_LIMIT,
-                     HOTKEY)
+                     HOTKEY, LIMIT_TO_CURRENT_DECK)
 from .template import addModel
 
 # support for JS Booster add-on
@@ -35,13 +35,39 @@ try:
 except ImportError:
     JSBOOSTER = False
 
-pycmd = "pycmd" if anki21 else "py.link"
 
+# UI messages
 
 WRN_RESCOUNT = ("<b>{}</b> relevant notes found.<br>"
                 "The tooltip could take a lot of time to render and <br>"
                 "temporarily slow down Anki.<br><br>"
                 "<b>Are you sure you want to proceed?</b>")
+
+
+# HTML format strings for results
+
+pycmd = "pycmd" if anki21 else "py.link"
+
+html_reslist = """<div class="tt-reslist">{}</div>"""
+
+html_res_normal = """\
+<div class="tt-res" data-nid={{}}>{{}}<div title="Browse..." class="tt-brws"
+onclick='{}("dctBrws:" + this.parentNode.dataset.nid)'>&rarr;</div></div>\
+""".format(pycmd)
+
+html_res_dict = """\
+<div class="tt-res tt-dict" data-nid={{}}>
+    <div class="tt-dict-title">Definition:</div>
+    {{}}
+    <div title="Browse..." class="tt-brws" onclick='{}("dctBrws:" + this.parentNode.dataset.nid)'>&rarr;</div>
+</div>""".format(pycmd)
+
+html_field = """<div class="tt-fld">{}</div>"""
+
+# RegExes for cloze marker removal
+
+cloze_re_str = r"\{\{c(\d+)::(.*?)(::(.*?))?\}\}"
+cloze_re = re.compile(cloze_re_str)
 
 
 class DictionaryLookup(QObject):
@@ -59,50 +85,75 @@ class DictionaryLookup(QObject):
 
     @pyqtSlot(str, str, result=str)
     def definitionFor(self, term, ignore_nid):
-        return getNoteSnippetsFor(term.strip(), ignore_nid)
+        term = term.strip()
+        return getContentFor(term, ignore_nid)
 
 
+# DictionaryLookup instance that gets added as a JS object
 dictLookup = DictionaryLookup()
 
 
-html_reslist = """<div class="tt-reslist">{}</div>"""
-html_res = ("""<div class="tt-res" data-nid={{}}>{{}}<div title="Browse..." class="tt-brws" """
-            """onclick='{}("dctBrws:" + this.parentNode.dataset.nid)'>"""
-            """&rarr;</div></div>""".format(pycmd))
-html_field = """<div class="tt-fld">{}</div>"""
+def addJavascriptObjects(self):
+    """Add python object to JS"""
+    self.web.page().mainFrame().addToJavaScriptWindowObject("pyDictLookup", dictLookup)
 
-cloze_re_str = r"\{\{c(\d+)::(.*?)(::(.*?))?\}\}"
-cloze_re = re.compile(cloze_re_str)
+
+def getContentFor(term, ignore_nid):
+    """Compose tooltip content for search term.
+    Returns HTML string."""
+
+    content = []
+
+    if ENABLE_DICTIONARY_DECK:
+        dict_entry = searchDefinitionFor(term)
+        if dict_entry:
+            content.append(dict_entry)
+
+    note_content = getNoteSnippetsFor(term, ignore_nid)
+
+    if note_content:
+        content.extend(note_content)
+
+    if content:
+        return html_reslist.format("".join(content))
+    elif note_content is False:
+        return ""
+    elif note_content is None:
+        return "No other results found." if ALWAYS_SHOW else ""
 
 
 def getNoteSnippetsFor(term, ignore_nid):
-    """Find relevant note snippets for search term"""
+    """Find relevant note snippets for search term.
+    Returns list of HTML strings."""
 
     print("getNoteSnippetsFor")
     # exclude current note
     current_nid = mw.reviewer.card.note().id
-    exclusion_string = "-nid:{} ".format(current_nid)
+    exclusion_tokens = ["-nid:{}".format(current_nid)]
 
     if ignore_nid:
-        exclusion_string += " -nid:{}".format(ignore_nid)
+        exclusion_tokens.append("-nid:{}".format(ignore_nid))
+
+    if LIMIT_TO_CURRENT_DECK:
+        exclusion_tokens.append("deck:current")
 
     # construct query string
-    query = u'''deck:current "{}" {}'''.format(term, exclusion_string)
+    query = u'''"{}" {}'''.format(term, " ".join(exclusion_tokens))
 
     # NOTE: performing the SQL query directly might be faster
     res = sorted(mw.col.findNotes(query))
+    print("Query finished.")
 
     if not res:
-        return "No other results found." if ALWAYS_SHOW else ""
-    print("Query finished.")
+        return None
 
     # Prevent slowdowns when search term is too common
     res_len = len(res)
     if WARN_LIMIT > 0 and res_len > WARN_LIMIT:
         if not askUser(WRN_RESCOUNT.format(res_len), title="Mouseover Dictionary"):
-            return ""
+            return False
 
-    content = []
+    note_content = []
     for nid in res:
         note = mw.col.getNote(nid)
         valid_flds = [html_field.format(
@@ -110,34 +161,32 @@ def getNoteSnippetsFor(term, ignore_nid):
         joined_flds = "".join(valid_flds)
         # remove cloze markers
         filtered_flds = cloze_re.sub(r"\2", joined_flds)
-        content.append(html_res.format(nid, filtered_flds))
+        note_content.append(html_res_normal.format(nid, filtered_flds))
 
-    html = html_reslist.format("".join(content))
-    print("Html compiled")
-
-    return html
+    return note_content
 
 
 def searchDefinitionFor(term):
-    """Look up search term in dictionary deck"""
+    """Look up search term in dictionary deck.
+    Returns HTML string."""
     query = u"""note:"{}" {}:"{}" """.format(NOTETYPE, TERM_FIELD, term)
     res = mw.col.findNotes(query)
     if res:
         nid = res[0]
         note = mw.col.getNote(nid)
-        return note[DEFINITION_FIELD]
-    return "No dictionary entry found."
+        try:
+            result = note[DEFINITION_FIELD]
+        except KeyError:
+            return None
+        return html_res_dict.format(nid, result)
+
+    return None
 
 
 def onReviewerHotkey():
     if mw.state != "review":
         return
     mw.reviewer.web.eval("invokeTooltipAtSelectedElm();")
-
-
-def addJavascriptObjects(self):
-    """Add python object to JS"""
-    self.web.page().mainFrame().addToJavaScriptWindowObject("pyDictLookup", dictLookup)
 
 
 def linkHandler(self, url, _old):
@@ -159,7 +208,7 @@ def browseToNid(nid):
 
 def setupAddon():
     """Setup hooks, prepare note type and deck"""
-    # JSBooster support:
+    # JS Booster support:
     if not JSBOOSTER:
         Reviewer._initWeb = wrap(
             Reviewer._initWeb, addJavascriptObjects, "after")
@@ -171,10 +220,7 @@ def setupAddon():
             Reviewer._showQuestion, addJavascriptObjects)
         Reviewer._showAnswer = wrap(Reviewer._showAnswer, addJavascriptObjects)
 
-    if MODE == "dictionary":
-        did = mw.col.decks.byName(DECK)
-        if not did:
-            mw.col.decks.id(DECK)
+    if ENABLE_DICTIONARY_DECK:
         mid = mw.col.models.byName(NOTETYPE)
         if not mid:
             addModel(mw.col)

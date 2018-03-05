@@ -15,8 +15,8 @@ from __future__ import unicode_literals
 
 # GENERAL
 
-# Mode selection
-MODE = "snippets"  # dictionary/snippets
+# Enable custom dictionary deck with prioritized results
+ENABLE_DICTIONARY_DECK = True
 # Show tooltip even if no results found?
 ALWAYS_SHOW = True
 # Warn above n results. Set to 0 to disable
@@ -25,7 +25,7 @@ WARN_LIMIT = 1000
 HOTKEY = "Ctrl+Shift+D"
 
 # DICTIONARY MODE
-DECK = "Dictionary"
+
 NOTETYPE = "Dictionary Entry"
 TERM_FIELD = "Term"
 DEFINITION_FIELD = "Definition"
@@ -44,12 +44,15 @@ USER_STYLES = r"""
     background-color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
-.night_mode > .qtip{
+.night_mode > .qtip {
     background-color: #141414;
     border-color: #515151;
     border-width: 1px;
     color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+.night_mode > .qtip img {
+    background: white;
 }
 .qtip-bootstrap .qtip-content {
     padding-left: 10px;
@@ -79,6 +82,16 @@ USER_STYLES = r"""
     border-color: #7E7680;
     border-radius: 0.1em;
 }
+.tt-dict {
+    background-color: #F2F2F2;
+}
+.night_mode > .qtip .tt-dict {
+    background-color: #0D0D0D;
+}
+.tt-dict-title {
+    font-weight: bold;
+    text-align: center;
+}
 .tt-fld {
     margin-top: 0.5em;
 }
@@ -105,4 +118,3 @@ USER_STYLES = r"""
 ##############  USER CONFIGURATION END  ##############
 
 # TODO: Rework into .json based config
-
