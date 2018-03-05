@@ -18,7 +18,7 @@ from __future__ import unicode_literals
 # Mode selection
 MODE = "snippets"  # dictionary/snippets
 # Show tooltip even if no results found?
-ALWAYS_SHOW = False
+ALWAYS_SHOW = True
 # Warn above n results. Set to 0 to disable
 WARN_LIMIT = 1000
 # Hotkey to manually invoke search on selected text

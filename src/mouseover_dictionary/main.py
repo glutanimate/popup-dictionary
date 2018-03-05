@@ -93,7 +93,7 @@ def getNoteSnippetsFor(term, ignore_nid):
     res = sorted(mw.col.findNotes(query))
 
     if not res:
-        return "No results found." if ALWAYS_SHOW else ""
+        return "No other results found." if ALWAYS_SHOW else ""
     print("Query finished.")
 
     # Prevent slowdowns when search term is too common
