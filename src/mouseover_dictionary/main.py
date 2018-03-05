@@ -60,7 +60,7 @@ dictLookup = DictionaryLookup()
 html_reslist = """<div class="tt-reslist">{}</div>"""
 html_res = ("""<div class="tt-res" data-nid={{}}>{{}}<div title="Browse..." class="tt-brws" """
                 """onclick='{}("dctBrws:" + this.parentNode.dataset.nid)'>"""
-                """➥</div></div>""".format(pycmd))
+                """&rarr;</div></div>""".format(pycmd))
 html_field = """<div class="tt-fld">{}</div>"""
 
 cloze_re_str = r"\{\{c(\d+)::(.*?)(::(.*?))?\}\}"

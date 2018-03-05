@@ -27,7 +27,7 @@ TERM_FIELD = "Term"
 DEFINITION_FIELD = "Definition"
 
 # SNIPPET MODE
-EXCLUDED_FIELDS = ["Extra", "Quellen", "Bidirektional"]
+EXCLUDED_FIELDS = ["Extra", "Note ID", "Quellen", "Bidirektional"]
 LIMIT_TO_CURRENT_DECK = True
 
 # TOOLTIP STYLING

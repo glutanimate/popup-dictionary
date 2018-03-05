@@ -35,6 +35,7 @@ research
 # Docs and tools
 docs/specs.md
 docs/todo.md
+docs/*.todo
 docs/description.html
 tools/test.py
 .obsolete/
