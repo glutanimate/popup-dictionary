@@ -33,10 +33,9 @@ LIMIT_TO_CURRENT_DECK = True
 # TOOLTIP STYLING
 USER_STYLES = r"""
 .qtip {
+    max-width: 440px;
+    max-height: 440px;
     font-family: "arial", sans-serif;
-    max-width: 400px;
-    max-height: 400px;
-    overflow-y: auto;
     color: #141414;
     background-color: white;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
@@ -50,6 +49,16 @@ USER_STYLES = r"""
     padding-right: 0.5em;
     padding-top: 0.2em;
     padding-bottom: 0.2em;
+}
+
+.qtip-content {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    max-width: 400px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .tt-res {
