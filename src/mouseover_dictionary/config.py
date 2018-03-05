@@ -95,7 +95,7 @@ USER_STYLES = r"""
     cursor: pointer;
 }
 .highlight {
-    background-color: yellow;
+    background-color: #FFFFA5;
 }
 .night_mode > .qtip .highlight {
     color: black
