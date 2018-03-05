@@ -38,7 +38,8 @@ USER_STYLES = r"""
     max-height: 400px;
     overflow-y: auto;
     color: #141414;
-    background-color: white;  
+    background-color: white;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
 }
 .night_mode > .qtip{
     background-color: #141414;

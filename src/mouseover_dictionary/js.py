@@ -35,28 +35,103 @@ tooltip_script = r"""
 // Create the tooltips only when document ready
 $(document).ready(function()
 {
-    $('#qa').bind('mousedown', function(event) {
-        event.stopPropagation();  // prevent tooltip hide from firing
-        $('#qa').one('mouseup', function(event) {
-            event.stopPropagation();
-            tooltip.hide();
-            // Get selection
-            var selection = (window.getSelection && window.getSelection() ||
-                document.selection && document.selection.createRange()).toString();
-            // Ignore empty short selections
-            if(selection.trim().length < 3){ return; }
-            
-            // Set tooltip contents through pyqtSlot interface 'pyDictLookup'
-            var text = pyDictLookup.definitionFor(selection);
-            console.log("JS: got text");
-            if(text){
+    function createTooltip(selector) {
+        // Creates tooltip on specified selector[string], sets up mouse click events
+        // and child tooltips, returns tooltip API object
+
+        console.log("Creating tooltip on selector " + selector)
+
+        // create qtip on Anki qa div and assign its api object to 'tooltip'
+        var tooltip = $(selector).qtip({
+            content: {
+                text: "Loading..."
+            },
+            prerender: true,  // need to prerender for child tooltips to work properly
+            // draw on mouse position, but don't update position on mousemove
+            position: {
+                target: 'mouse',
+                viewport: $(window),  // constrain to window
+                adjust: { 
+                    mouse: false,  // don't follow mouse
+                    method: 'shift',  // adjust to viewport by flipping tip if necessary
+                    scroll: false,  // buggy, disable
+                }
+            },
+            // apply predefined style
+            style: { 
+                classes: 'qtip-bootstrap',
+            },
+            // don't set up any hide event triggers, do it manually instead
+            hide: false,
+            // wait until called upon
+            show: false,
+            events: {
+                hide: function(event, api) {
+                    // hide next nested tooltip on hide
+                    var ttID = api.get('id');
+                    var ttIDnext = "#qtip-" + (ttID+1);
+                    $(ttIDnext).qtip('hide');
+                }
+            }
+        }).qtip('api');
+
+        // Bind to parent selector click
+        $(selector).bind('mousedown', function(event) {
+            event.stopPropagation();  // prevent tooltip hide from firing
+            $(selector).one('mouseup', function(event) {
+                event.stopPropagation();
+                
+                if (selector == "#qa"){
+                    closeAllTips();  // close all tips when Anki qa elm clicked
+                } else {
+                    tooltip.hide();  // otherwise only close this tip
+                }
+
+                // Get selection
+                var selection = (window.getSelection && window.getSelection() ||
+                    document.selection && document.selection.createRange()).toString();
+                
+                // Return if selection empty or too short
+                if(selection.trim().length < 3){ return; }
+                
+                // Set tooltip contents through pyqtSlot interface 'pyDictLookup'
+                var text = pyDictLookup.definitionFor(selection);
+                console.log("JS: got text");
+                
+                // Silent exit if no results returned
+                if(!text){ return; }
+                
+                // Set tooltip content and show it
                 tooltip.set('content.text', text);
                 console.log("JS: set text");
                 tooltip.show(event);
                 console.log("JS: showed tooltip");
-            }
-        });
-    })
+                
+                // ↓ "Tooltip-ception"
+                // create child tooltip on content of current tooltip
+
+                // determine current qtip ID and ID of potential child tooltip
+                var ttID = tooltip.get('id');
+                var domID = "#qtip-" + ttID;
+                var newttID = ttID + 1;
+                var newdomID = "#qtip-" + newttID;
+                console.log("Current tt domID: " + domID)
+                console.log("New tt domID: " + newdomID)
+                
+                if ($(newdomID).length == 0) {
+                    // Create new tooltip for text content
+                    console.log("JS: create new tooltip on ID: " + domID + ". Tooltip will have ID: " + newdomID)
+                    createTooltip(domID + "-content");
+                } else {
+                    // Reuse existing tooltip for text content
+                    console.log("JS: found existing tooltip with ID: " + newdomID)
+                }
+                
+            });
+        })
+
+        return tooltip;
+    }
 
     function isQtipDescendant(node) {
         // check if node is part of qtip
@@ -71,7 +146,13 @@ $(document).ready(function()
         } catch (e) {
             return false;
         }
+    }
 
+    function closeAllTips() {
+        // hide parent tooltip
+        $("#qtip-0").qtip('hide');
+        // destroy all other tooltips
+        $(".qtip:not(#qtip-0)").qtip('hide');
     }
 
     // set up bindings to close qtip, unless mouseup is registered on qtip itself
@@ -79,34 +160,11 @@ $(document).ready(function()
         if (isQtipDescendant(event.target)) {
            return;
         }
-        tooltip.hide();
+        closeAllTips();
     });
 
-    // create qtip on Anki qa div and assign its api object to 'tooltip'
-    var tooltip = $('#qa').qtip({
-        // placeholder text while loading:
-        content: {
-            text: "Loading..."
-        },
-        // draw on mouse position, but don't update position on mousemove
-        position: {
-            target: 'mouse',
-            viewport: $(window),  // constrain to window
-            adjust: { 
-                mouse: false,  // don't follow mouse
-                method: 'shift',  // adjust to viewport by flipping tip if necessary
-                scroll: false,  // buggy, disable
-            }
-        },
-        // apply predefined style
-        style: { 
-            classes: 'qtip-bootstrap',
-        },
-        // don't set up any hide event triggers, do it manually instead
-        hide: false,
-        // wait until called upon
-        show: false
-    }).qtip('api');
+    createTooltip("#qa");
+
 });
 """
 
