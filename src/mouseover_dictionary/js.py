@@ -79,13 +79,29 @@ $(document).ready(function()
             }
         }).qtip('api');
 
-        // Bind to parent selector click
-        $(selector).on('dblclick', function(event) {
-            showTooltip(event, tooltip, selector);
-        });
+        // Custom double click event handler that works across
+        // element boundaries → support for dblclick-holding and
+        // then releasing over different DOM element (e.g. boldened text)
+        
+        var clicks = 0, delay = 500;
+        
+        $(selector).on('mousedown', function(event) {
+            clicks++;
 
-        $(selector).on('click', function(event) {
-            tooltip.hide();
+            setTimeout(function() {
+                clicks = 0;
+            }, delay);
+
+            if (clicks === 2) {
+                event.stopImmediatePropagation();
+                $(document).one("mouseup", function(event){
+                    showTooltip(event, tooltip, selector);
+                    clicks = 0;
+                    return;
+                });
+            } else {
+                tooltip.hide();
+            }
         });
 
         return tooltip;
@@ -160,12 +176,11 @@ $(document).ready(function()
     }
 
     // set up bindings to close qtip, unless mouseup is registered on qtip itself
-    $(document).on('click', ":not('.qtip')", function(event) {
-        if ($(event.target).closest(".qtip").length > 0) {
+    $(document).on('mouseup', function(event) {
+        if ($(event.target).closest("#qa, .qtip").length > 0) {
             return;
         }
         event.stopImmediatePropagation();
-        console.log("hide triggered");
         qaTooltip.hide();
     });
 
