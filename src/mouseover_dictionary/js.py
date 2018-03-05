@@ -80,91 +80,96 @@ $(document).ready(function()
         }).qtip('api');
 
         // Bind to parent selector click
-        $(selector).bind('mousedown', function(event) {
-            event.stopPropagation();  // prevent tooltip hide from firing
-            $(selector).one('mouseup', function(event) {
-                event.stopPropagation();
-                tooltip.hide();
+        $(selector).on('dblclick', function(event) {
+            showTooltip(event, tooltip, selector);
+        });
 
-                // Get selection
-                var selection = (window.getSelection && window.getSelection() ||
-                    document.selection && document.selection.createRange());
-                term = selection.toString().trim();
-
-                // Return if selection empty or too short
-                if(term.length < 3){ return; }
-
-                // Exclude NID of clicked-on result entry
-                if (selector != "#qa"){
-                    var selElm = selection.getRangeAt(0).startContainer.parentNode;
-                    var resElm = $(selElm).closest(".tt-res")[0];
-                    try {
-                        var selNID = resElm.dataset.nid;
-                    } catch(err) {
-                        console.log(err)
-                    }
-                }
-                if (typeof selNID === "undefined") {
-                    selNID = "";
-                }
-                console.log("Ignore current NID: " + selNID)
-
-                // Set tooltip contents through pyqtSlot interface 'pyDictLookup'
-                var text = pyDictLookup.definitionFor(term, selNID);
-                console.log("JS: got text");
-                
-                // Silent exit if no results returned
-                if(!text){ return; }
-                
-                // Set tooltip content and show it
-                tooltip.set('content.text', text);
-                console.log("JS: set text");
-                tooltip.show(event);
-                console.log("JS: showed tooltip");
-
-                // Determine current qtip ID and ID of potential child tooltip
-                var ttID = tooltip.get('id');
-                var domID = "#qtip-" + ttID;
-                var newttID = ttID + 1;
-                var newdomID = "#qtip-" + newttID;
-                console.log("Current tt domID: " + domID)
-                console.log("New tt domID: " + newdomID)
-                
-                // Highlight search term
-                $(domID).highlight(term);
-                
-                // Nested tooltips
-                // create child tooltip for content on current tooltip
-
-                if ($(newdomID).length == 0) {
-                    // Create new tooltip for text content
-                    console.log("JS: create new tooltip on ID: " + domID + ". Tooltip will have ID: " + newdomID)
-                    createTooltip(domID + "-content");
-                } else {
-                    // Reuse existing tooltip for text content
-                    console.log("JS: found existing tooltip with ID: " + newdomID)
-                }
-                
-            });
-        })
+        $(selector).on('click', function(event) {
+            tooltip.hide();
+        });
 
         return tooltip;
     }
 
-    function closeAllTips() {
-        $(".qtip").qtip('hide');
+
+    showTooltip = function showTooltip(event, tooltip, selector) {
+        // Prevent immediately hiding invoked tooltip
+        event.stopPropagation();
+        // Hide existing tooltip at current nesting level,
+        //  this propagates to all child tooltips through the qtip
+        //  hide event
+        tooltip.hide();
+
+        // Get selection
+        var selection = (window.getSelection && window.getSelection() ||
+            document.selection && document.selection.createRange());
+        term = selection.toString().trim();
+
+        // Return if selection empty or too short
+        if(term.length < 3){ return; }
+
+        // Exclude NID of clicked-on result entry
+        if (selector != "#qa"){
+            var selElm = selection.getRangeAt(0).startContainer.parentNode;
+            var resElm = $(selElm).closest(".tt-res")[0];
+            try {
+                var selNID = resElm.dataset.nid;
+            } catch(err) {
+                console.log(err)
+            }
+        }
+        if (typeof selNID === "undefined") {
+            selNID = "";
+        }
+        console.log("Ignore current NID: " + selNID)
+
+        // Set tooltip contents through pyqtSlot interface 'pyDictLookup'
+        var text = pyDictLookup.definitionFor(term, selNID);
+        console.log("JS: got text");
+        
+        // Silent exit if no results returned and ALWAYS_SHOW in Python False
+        if(!text){ return; }
+        
+        // Set tooltip content and show it
+        tooltip.set('content.text', text);
+        console.log("JS: set text");
+        tooltip.show(event);
+        console.log("JS: showed tooltip");
+
+        // Determine current qtip ID and ID of potential child tooltip
+        var ttID = tooltip.get('id');
+        var domID = "#qtip-" + ttID;
+        var newttID = ttID + 1;
+        var newdomID = "#qtip-" + newttID;
+        console.log("Current tt domID: " + domID)
+        console.log("New tt domID: " + newdomID)
+        
+        // Highlight search term
+        $(domID).highlight(term);
+        
+        // Nested tooltips
+        // create child tooltip for content on current tooltip
+        if ($(newdomID).length == 0) {
+            // Bind new qtip instance to content of current tooltip
+            console.log("JS: create new tooltip on ID: " + domID + ". Tooltip will have ID: " + newdomID)
+            createTooltip(domID + "-content");
+        } else {
+            // Reuse existing qtip instance
+            console.log("JS: found existing tooltip with ID: " + newdomID)
+        }
     }
 
     // set up bindings to close qtip, unless mouseup is registered on qtip itself
-    $(document).on('mouseup', function(event) {
+    $(document).on('click', ":not('.qtip')", function(event) {
         if ($(event.target).closest(".qtip").length > 0) {
-            return
+            return;
         }
-        closeAllTips();
+        event.stopImmediatePropagation();
+        console.log("hide triggered");
+        qaTooltip.hide();
     });
 
-    createTooltip("#qa");
-
+    qaTooltip = createTooltip("#qa");
 });
 """
 

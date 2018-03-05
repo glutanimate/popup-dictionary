@@ -19,6 +19,10 @@ from __future__ import unicode_literals
 MODE = "snippets"  # dictionary/snippets
 # Show tooltip even if no results found?
 ALWAYS_SHOW = False
+# Warn above n results. Set to 0 to disable
+WARN_LIMIT = 1000
+# Hotkey to manually invoke search on selected text
+HOTKEY = "Ctrl+Shift+D"
 
 # DICTIONARY MODE
 DECK = "Dictionary"
