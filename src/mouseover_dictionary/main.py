@@ -22,10 +22,7 @@ from anki.hooks import wrap, addHook
 
 from .web import html
 from .consts import *
-from .config import (ENABLE_DICTIONARY_DECK, NOTETYPE, TERM_FIELD,
-                     DEFINITION_FIELD,
-                     EXCLUDED_FIELDS, ALWAYS_SHOW, WARN_LIMIT,
-                     HOTKEY, LIMIT_TO_CURRENT_DECK)
+from .config import CONFIG
 from .template import addModel
 
 # support for JS Booster add-on
@@ -36,12 +33,14 @@ except ImportError:
     JSBOOSTER = False
 
 
+
 # UI messages
 
 WRN_RESCOUNT = ("<b>{}</b> relevant notes found.<br>"
                 "The tooltip could take a lot of time to render and <br>"
                 "temporarily slow down Anki.<br><br>"
                 "<b>Are you sure you want to proceed?</b>")
+
 
 
 # HTML format strings for results
@@ -102,24 +101,27 @@ def getContentFor(term, ignore_nid):
     """Compose tooltip content for search term.
     Returns HTML string."""
 
+    dict_entry = None
+    note_content = None
     content = []
 
-    if ENABLE_DICTIONARY_DECK:
+    if CONFIG["dictionaryEnabled"]:
         dict_entry = searchDefinitionFor(term)
         if dict_entry:
             content.append(dict_entry)
 
-    note_content = getNoteSnippetsFor(term, ignore_nid)
+    if CONFIG["snippetsEnabled"]:
+        note_content = getNoteSnippetsFor(term, ignore_nid)
 
-    if note_content:
-        content.extend(note_content)
+        if note_content:
+            content.extend(note_content)
 
     if content:
         return html_reslist.format("".join(content))
     elif note_content is False:
         return ""
     elif note_content is None:
-        return "No other results found." if ALWAYS_SHOW else ""
+        return "No other results found." if CONFIG["generalConfirmEmpty"] else ""
 
 
 def getNoteSnippetsFor(term, ignore_nid):
@@ -134,7 +136,7 @@ def getNoteSnippetsFor(term, ignore_nid):
     if ignore_nid:
         exclusion_tokens.append("-nid:{}".format(ignore_nid))
 
-    if LIMIT_TO_CURRENT_DECK:
+    if CONFIG["snippetsLimitToCurrentDeck"]:
         exclusion_tokens.append("deck:current")
 
     # construct query string
@@ -149,15 +151,17 @@ def getNoteSnippetsFor(term, ignore_nid):
 
     # Prevent slowdowns when search term is too common
     res_len = len(res)
-    if WARN_LIMIT > 0 and res_len > WARN_LIMIT:
+    warn_limit = CONFIG["snippetsResultsWarnLimit"]
+    if warn_limit > 0 and res_len > warn_limit:
         if not askUser(WRN_RESCOUNT.format(res_len), title="Mouseover Dictionary"):
             return False
 
     note_content = []
+    excluded_flds = CONFIG["snippetsExcludedFields"]
     for nid in res:
         note = mw.col.getNote(nid)
         valid_flds = [html_field.format(
-            i[1]) for i in note.items() if i[0] not in EXCLUDED_FIELDS]
+            i[1]) for i in note.items() if i[0] not in excluded_flds]
         joined_flds = "".join(valid_flds)
         # remove cloze markers
         filtered_flds = cloze_re.sub(r"\2", joined_flds)
@@ -169,13 +173,15 @@ def getNoteSnippetsFor(term, ignore_nid):
 def searchDefinitionFor(term):
     """Look up search term in dictionary deck.
     Returns HTML string."""
-    query = u"""note:"{}" {}:"{}" """.format(NOTETYPE, TERM_FIELD, term)
+    query = u"""note:"{}" {}:"{}" """.format(CONFIG["dictionaryNoteTypeName"], 
+                                             CONFIG["dictionaryTermFieldName"],
+                                             term)
     res = mw.col.findNotes(query)
     if res:
         nid = res[0]
         note = mw.col.getNote(nid)
         try:
-            result = note[DEFINITION_FIELD]
+            result = note[CONFIG["dictionaryDefitionFieldName"]]
         except KeyError:
             return None
         return html_res_dict.format(nid, result)
@@ -219,15 +225,15 @@ def setupAddon():
             Reviewer._showQuestion, addJavascriptObjects)
         Reviewer._showAnswer = wrap(Reviewer._showAnswer, addJavascriptObjects)
 
-    if ENABLE_DICTIONARY_DECK:
-        mid = mw.col.models.byName(NOTETYPE)
+    if CONFIG["dictionaryEnabled"]:
+        mid = mw.col.models.byName(CONFIG["dictionaryNoteTypeName"])
         if not mid:
             addModel(mw.col)
             mw.reset()
 
 
 # Menus and hotkeys
-QShortcut(QKeySequence(HOTKEY), mw, activated=onReviewerHotkey)
+QShortcut(QKeySequence(CONFIG["generalHotkey"]), mw, activated=onReviewerHotkey)
 
 # Hooks
 Reviewer._linkHandler = wrap(Reviewer._linkHandler, linkHandler, "around")

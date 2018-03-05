@@ -11,17 +11,17 @@ License: GNU AGPLv3 <https://www.gnu.org/licenses/agpl.html>
 
 from __future__ import unicode_literals
 
-from .config import NOTETYPE, TERM_FIELD, DEFINITION_FIELD
+from .config import CONFIG
 
 fields = (
-    TERM_FIELD,
-    DEFINITION_FIELD
+    CONFIG["dictionaryTermFieldName"],
+    CONFIG["dictionaryDefinitionFieldName"]
 )
 
 # Default card template
 card_front = """\
 <b>Define</b>: {{%s}}
-""" % TERM_FIELD
+""" % CONFIG["dictionaryTermFieldName"],
 
 card_back = """\
 {{FrontSide}}
@@ -29,7 +29,7 @@ card_back = """\
 <hr id=answer>
 
 {{%s}}
-""" % DEFINITION_FIELD
+""" % CONFIG["dictionaryDefinitionFieldName"]
 
 css = """\
 .card {
@@ -44,13 +44,13 @@ css = """\
 
 def addModel(col):
   models = col.models
-  def_model = models.new(NOTETYPE)
+  def_model = models.new(CONFIG["dictionaryNoteTypeName"])
   # Add fields:
   for fname in fields:
     fld = models.newField(fname)
     models.addField(def_model, fld)
   # Add template
-  template = models.newTemplate("Definition")
+  template = models.newTemplate(CONFIG["dictionaryDefinitionFieldName"])
   template['qfmt'] = card_front
   template['afmt'] = card_back
   def_model['css'] = css
