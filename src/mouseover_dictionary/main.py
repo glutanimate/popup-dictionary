@@ -33,14 +33,12 @@ except ImportError:
     JSBOOSTER = False
 
 
-
 # UI messages
 
 WRN_RESCOUNT = ("<b>{}</b> relevant notes found.<br>"
                 "The tooltip could take a lot of time to render and <br>"
                 "temporarily slow down Anki.<br><br>"
                 "<b>Are you sure you want to proceed?</b>")
-
 
 
 # HTML format strings for results
@@ -173,7 +171,7 @@ def getNoteSnippetsFor(term, ignore_nid):
 def searchDefinitionFor(term):
     """Look up search term in dictionary deck.
     Returns HTML string."""
-    query = u"""note:"{}" {}:"{}" """.format(CONFIG["dictionaryNoteTypeName"], 
+    query = u"""note:"{}" {}:"{}" """.format(CONFIG["dictionaryNoteTypeName"],
                                              CONFIG["dictionaryTermFieldName"],
                                              term)
     res = mw.col.findNotes(query)
@@ -233,7 +231,8 @@ def setupAddon():
 
 
 # Menus and hotkeys
-QShortcut(QKeySequence(CONFIG["generalHotkey"]), mw, activated=onReviewerHotkey)
+QShortcut(QKeySequence(CONFIG["generalHotkey"]),
+          mw, activated=onReviewerHotkey)
 
 # Hooks
 Reviewer._linkHandler = wrap(Reviewer._linkHandler, linkHandler, "around")

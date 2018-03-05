@@ -20,7 +20,7 @@ fields = (
 
 # Default card template
 card_front = """\
-<b>Define</b>: {{%s}}
+<b>Define</b>: {{%s}}\
 """ % CONFIG["dictionaryTermFieldName"],
 
 card_back = """\
@@ -28,32 +28,32 @@ card_back = """\
 
 <hr id=answer>
 
-{{%s}}
+{{%s}}\
 """ % CONFIG["dictionaryDefinitionFieldName"]
 
 css = """\
 .card {
- font-family: arial;
- font-size: 20px;
- text-align: center;
- color: black;
- background-color: white;
-}
+font-family: arial;
+font-size: 20px;
+text-align: center;
+color: black;
+background-color: white;
+}\
 """
 
 
 def addModel(col):
-  models = col.models
-  def_model = models.new(CONFIG["dictionaryNoteTypeName"])
-  # Add fields:
-  for fname in fields:
-    fld = models.newField(fname)
-    models.addField(def_model, fld)
-  # Add template
-  template = models.newTemplate(CONFIG["dictionaryDefinitionFieldName"])
-  template['qfmt'] = card_front
-  template['afmt'] = card_back
-  def_model['css'] = css
-  models.addTemplate(def_model, template)
-  models.add(def_model)
-  return def_model
+    models = col.models
+    def_model = models.new(CONFIG["dictionaryNoteTypeName"])
+    # Add fields:
+    for fname in fields:
+      fld = models.newField(fname)
+      models.addField(def_model, fld)
+    # Add template
+    template = models.newTemplate(CONFIG["dictionaryDefinitionFieldName"])
+    template['qfmt'] = card_front
+    template['afmt'] = card_back
+    def_model['css'] = css
+    models.addTemplate(def_model, template)
+    models.add(def_model)
+    return def_model
