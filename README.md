@@ -1,6 +1,6 @@
 ## Mouseover Dictionary Add-on for Anki
 
-This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.ankiweb.net/). It provides a hover dictionary for user-defined terms that are saved to a special 'Dictionary' deck.
+This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.ankiweb.net/). It provides the ability to quickly draw up related facts on words or phrases, just by double-clicking on them.
 
 ### Table of Contents
 
@@ -15,7 +15,7 @@ This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.an
 
 ### Screenshots
 
-![](screenshots/screenshot.png)
+![](screenshots/screencast.gif)
 
 ### Installation
 
@@ -51,6 +51,8 @@ For further information on the use of this add-on please check out [the original
 ### License and Credits
 
 *Mouseover Dictionary* is *Copyright © 2018 [Aristotelis P.](https://glutanimate.com/)*
+
+Development of this add-on was made possible, in part, through the kind support of two fellow Anki users. I would like to thank both of them for their help.
 
 Ships with the following javascript libraries:
 
