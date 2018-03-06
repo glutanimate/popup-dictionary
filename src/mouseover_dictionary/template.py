@@ -13,32 +13,33 @@ from __future__ import unicode_literals
 
 from .config import CONFIG
 
+
 fields = (
     CONFIG["dictionaryTermFieldName"],
     CONFIG["dictionaryDefinitionFieldName"]
 )
 
 # Default card template
-card_front = """\
-<b>Define</b>: {{%s}}\
-""" % CONFIG["dictionaryTermFieldName"],
+card_front = """
+<b>Define</b>: {{%s}}
+""" % CONFIG["dictionaryTermFieldName"]
 
-card_back = """\
+card_back = """
 {{FrontSide}}
 
 <hr id=answer>
 
-{{%s}}\
+{{%s}}
 """ % CONFIG["dictionaryDefinitionFieldName"]
 
-css = """\
+css = """
 .card {
 font-family: arial;
 font-size: 20px;
 text-align: center;
 color: black;
 background-color: white;
-}\
+}
 """
 
 
@@ -47,10 +48,10 @@ def addModel(col):
     def_model = models.new(CONFIG["dictionaryNoteTypeName"])
     # Add fields:
     for fname in fields:
-      fld = models.newField(fname)
-      models.addField(def_model, fld)
+        fld = models.newField(fname)
+        models.addField(def_model, fld)
     # Add template
-    template = models.newTemplate(CONFIG["dictionaryDefinitionFieldName"])
+    template = models.newTemplate("Definition")
     template['qfmt'] = card_front
     template['afmt'] = card_back
     def_model['css'] = css
