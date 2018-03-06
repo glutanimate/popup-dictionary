@@ -1,5 +1,3 @@
-### Mouseover Dictionary: Configuration
-
 **Important**: These settings do not sync and require a restart to apply.
 
 - `dictionaryEnabled` (true/false): Whether or not to enable results drawn from the dictionary note type. Default: `true`.

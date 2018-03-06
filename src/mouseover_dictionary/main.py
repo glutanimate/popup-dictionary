@@ -19,6 +19,7 @@ from aqt import mw
 from aqt.reviewer import Reviewer
 from aqt.utils import askUser
 from anki.hooks import wrap, addHook
+from anki.utils import json
 
 from .web import html
 from .consts import *
@@ -67,6 +68,8 @@ cloze_re_str = r"\{\{c(\d+)::(.*?)(::(.*?))?\}\}"
 cloze_re = re.compile(cloze_re_str)
 
 
+# Anki 2.0: Python <-> JS bridge object
+
 class DictionaryLookup(QObject):
     """
     A single instance of the class is created and stored in the module's dictLookup
@@ -86,14 +89,17 @@ class DictionaryLookup(QObject):
         return getContentFor(term, ignore_nid)
 
 
-# DictionaryLookup instance that gets added as a JS object
-dictLookup = DictionaryLookup()
+if not anki21:
+    # DictionaryLookup instance that gets added as a JS object
+    dictLookup = DictionaryLookup()
 
 
 def addJavascriptObjects(self):
     """Add python object to JS"""
     self.web.page().mainFrame().addToJavaScriptWindowObject("pyDictLookup", dictLookup)
 
+
+# Functions that compose tooltip content
 
 def getContentFor(term, ignore_nid):
     """Compose tooltip content for search term.
@@ -179,7 +185,7 @@ def searchDefinitionFor(term):
         nid = res[0]
         note = mw.col.getNote(nid)
         try:
-            result = note[CONFIG["dictionaryDefitionFieldName"]]
+            result = note[CONFIG["dictionaryDefinitionFieldName"]]
         except KeyError:
             return None
         return html_res_dict.format(nid, result)
@@ -194,29 +200,46 @@ def onReviewerHotkey():
 
 
 def linkHandler(self, url, _old):
-    """Extend link handler with browser links"""
-    if not url.startswith("dctBrws"):
+    """Anki 2.0: Extend link handler with browser links
+       Anki 2.1: Also acts as the JS <-> Py bridge"""
+    if url.startswith("dctBrws"):
+        (cmd, arg) = url.split(":", 1)
+        if not arg:
+            return
+        browseToNid(arg)
+    elif anki21 and url.startswith("dctLookup"):
+        (cmd, payload) = url.split(":", 1)
+        term, ignore_nid = json.loads(payload)
+        term = term.strip()
+        return getContentFor(term, ignore_nid)
+    else:
         return _old(self, url)
-    (cmd, arg) = url.split(":", 1)
-    if not arg:
-        return
-    browseToNid(arg)
 
 
 def browseToNid(nid):
     """Open browser and find cards by nid"""
     browser = aqt.dialogs.open("Browser", mw)
     browser.form.searchEdit.lineEdit().setText("nid:'{}'".format(nid))
-    browser.onSearch()
+    if anki21:
+        browser.onSearchActivated()
+    else:
+        browser.onSearch()
+
+
+def onRevHtml21(self, _old):
+    return _old(self) + html
 
 
 def setupAddon():
     """Setup hooks, prepare note type and deck"""
     # JS Booster support:
     if not JSBOOSTER:
-        Reviewer._initWeb = wrap(
-            Reviewer._initWeb, addJavascriptObjects, "after")
-        Reviewer._revHtml += html
+        if anki21:
+            Reviewer.revHtml = wrap(Reviewer.revHtml, onRevHtml21, "around")
+        else:
+            Reviewer._revHtml += html
+            Reviewer._initWeb = wrap(
+                Reviewer._initWeb, addJavascriptObjects, "after")
     else:
         review_hack.review_html_scripts += html
         Reviewer._showQuestion = wrap(
