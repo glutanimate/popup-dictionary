@@ -132,7 +132,7 @@ def getNoteSnippetsFor(term, ignore_nid):
     """Find relevant note snippets for search term.
     Returns list of HTML strings."""
 
-    print("getNoteSnippetsFor")
+    print("getNoteSnippetsFor called")
     # exclude current note
     current_nid = mw.reviewer.card.note().id
     exclusion_tokens = ["-nid:{}".format(current_nid)]
@@ -148,7 +148,7 @@ def getNoteSnippetsFor(term, ignore_nid):
 
     # NOTE: performing the SQL query directly might be faster
     res = sorted(mw.col.findNotes(query))
-    print("Query finished.")
+    print("getNoteSnippetsFor query finished.")
 
     if not res:
         return None

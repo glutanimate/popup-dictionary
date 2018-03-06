@@ -155,16 +155,13 @@ $(document).ready(function()
         if (element.id != "#qa"){
             var selElm = selection.getRangeAt(0).startContainer.parentNode;
             var resElm = $(selElm).closest(".tt-res")[0];
-            try {
+            if (resElm && "nid" in resElm.dataset) {
                 var selNID = resElm.dataset.nid;
-            } catch(err) {
-                console.log(err)
+                console.log("Ignore current NID: " + selNID)
+            } else {
+                var selNID = "";
             }
         }
-        if (typeof selNID === "undefined") {
-            selNID = "";
-        }
-        console.log("Ignore current NID: " + selNID)
 
         // Set tooltip contents...
         if (anki21) {
@@ -176,7 +173,7 @@ $(document).ready(function()
         } else {
             // ...through custom pyqtSlot interface that we added
             var text = pyDictLookup.definitionFor(term, selNID);
-            console.log("JS: got text");
+            console.log("Got text");
             return onCallback(text);
         }
         
@@ -194,9 +191,9 @@ $(document).ready(function()
 
             // Set tooltip content and show it
             tooltip.set('content.text', text);
-            console.log("JS: set text");
+            console.log("Set text");
             tooltip.show();
-            console.log("JS: showed tooltip");
+            console.log("Showed tooltip");
             // Need to scroll to top if tooltip has been drawn before
             $(domID + "-content").scrollTop(0);
 
@@ -208,11 +205,11 @@ $(document).ready(function()
             // create child tooltip for content on current tooltip
             if ($(newdomID).length == 0) {
                 // Bind new qtip instance to content of current tooltip
-                console.log("JS: create new tooltip on ID: " + domID + ". Tooltip will have ID: " + newdomID)
+                console.log("Create new tooltip on ID: " + domID + ". Tooltip will have ID: " + newdomID)
                 createTooltip(domID + "-content");
             } else {
                 // Reuse existing qtip instance
-                console.log("JS: found existing tooltip with ID: " + newdomID)
+                console.log("Found existing tooltip with ID: " + newdomID)
             }
         }
 
