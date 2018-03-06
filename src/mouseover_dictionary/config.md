@@ -7,6 +7,6 @@
 - `generalConfirmEmpty` (true/false): Whether or not to show tooltip when no results have been found. Default: `true`.
 - `generalHotkey` (string): Hotkey to invoke tooltip manually. Default: `"Ctrl+Shift+D"`.
 - `snippetsEnabled` (true/false): Whether or not to enable results drawn from any type of note in your collection. Default: `true`.
-- `snippetsExcludedFields` (list): List of fields to exclude from being shown in the note snippet section of the tooltip. Default: `["Extra", "Note ID"]`.
+- `snippetsExcludedFields` (list): List of fields to exclude from being shown in the note snippet section of the tooltip. Default: `["Note ID", "ID (hidden)"]`.
 - `snippetsLimitToCurrentDeck` (true/false): Whether or not to limit note snippet results to current deck. Default: `true`.
 - `snippetsResultsWarnLimit` (integer): Number of results above which to show a warning on the potential slowdowns they could cause. Set to `0` to disable warning. Default: `1000`.

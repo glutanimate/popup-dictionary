@@ -6,7 +6,7 @@
     "dictionaryTermFieldName": "Term",
     "dictionaryDefinitionFieldName": "Definition",
     "snippetsEnabled": true,
-    "snippetsExcludedFields": ["Extra", "Note ID"],
+    "snippetsExcludedFields": ["Note ID", "ID (hidden)"],
     "snippetsLimitToCurrentDeck": true,
     "snippetsResultsWarnLimit": 1000
 }
