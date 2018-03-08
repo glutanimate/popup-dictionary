@@ -167,7 +167,7 @@ $(document).ready(function()
         if (anki21) {
             // ...through pyrun bridge. Need to use a callback
             // due to async execution of JS and Python in Anki 2.1
-            pyrun("dctLookup:" + JSON.stringify([term, selNID]), function(text){
+            pycmd("dctLookup:" + JSON.stringify([term, selNID]), function(text){
                 return onCallback(text);
             });
         } else {
