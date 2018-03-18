@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-This file is part of the Mouseover Dictionary add-on for Anki.
+This file is part of the Popup Dictionary add-on for Anki.
 
 Main Module, hooks add-on methods into Anki.
 
@@ -157,7 +157,7 @@ def getNoteSnippetsFor(term, ignore_nid):
     res_len = len(res)
     warn_limit = CONFIG["snippetsResultsWarnLimit"]
     if warn_limit > 0 and res_len > warn_limit:
-        if not askUser(WRN_RESCOUNT.format(res_len), title="Mouseover Dictionary"):
+        if not askUser(WRN_RESCOUNT.format(res_len), title="Popup Dictionary"):
             return False
 
     note_content = []

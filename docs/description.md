@@ -1,7 +1,7 @@
 
 **SCREENSHOT**
 
-![](https://raw.githubusercontent.com/glutanimate/mouseover-dictionary/master/screenshots/screenshot.png)
+![](https://raw.githubusercontent.com/glutanimate/popup-dictionary/master/screenshots/screenshot.png)
 
 **COMPATIBILITY**
 
@@ -9,7 +9,7 @@ This add-on only works with Anki 2.0 (≥ 2.0.30). The 2.1 beta releases are cur
 
 OR
 
-Initial tests have shown this add-on to both work on Anki 2.0 and Anki 2.1. However, as the Anki 2.1 release line is still in beta, I cannot provide any kind of official support for this platform. **Please do not report issues with Anki 2.1 in the review section below**. Instead, please report all issues you encounter on [GitHub](https://github.com/glutanimate/mouseover-dictionary/issues).
+Initial tests have shown this add-on to both work on Anki 2.0 and Anki 2.1. However, as the Anki 2.1 release line is still in beta, I cannot provide any kind of official support for this platform. **Please do not report issues with Anki 2.1 in the review section below**. Instead, please report all issues you encounter on [GitHub](https://github.com/glutanimate/popup-dictionary/issues).
 
 **USAGE**
 
@@ -19,7 +19,7 @@ Initial tests have shown this add-on to both work on Anki 2.0 and Anki 2.1. Howe
 
 **SUPPORT**
 
-Please **do not report issues or bugs in the review section below**. I can't reply to your reviews, so there is no way for me to help you. Instead, please report all issues you encounter either by creating a bug report on [GitHub](https://github.com/glutanimate/mouseover-dictionary/issues), or by posting a new thread on the [Anki add-on support forums](https://anki.tenderapp.com/discussions/add-ons). Please make sure to include the name of the affected add-on in your report title when you do so.
+Please **do not report issues or bugs in the review section below**. I can't reply to your reviews, so there is no way for me to help you. Instead, please report all issues you encounter either by creating a bug report on [GitHub](https://github.com/glutanimate/popup-dictionary/issues), or by posting a new thread on the [Anki add-on support forums](https://anki.tenderapp.com/discussions/add-ons). Please make sure to include the name of the affected add-on in your report title when you do so.
 
 **CREDITS AND LICENSE**
 
@@ -31,7 +31,7 @@ Ships with the following javascript libraries:
 - qTip2 (v2.1.1), (c) 2011-2018 Craig Michael Thompson, licensed under the MIT license
 - jQuery.highlight, (c) 2007-2014 Johann Burkard, licensed under the MIT license
 
-Licensed under the [GNU AGPLv3](https://www.gnu.org/licenses/agpl.html). The code for this add-on is available on [![GitHub icon](https://glutanimate.com/logos/github.svg) GitHub](https://github.com/glutanimate/mouseover-dictionary).
+Licensed under the [GNU AGPLv3](https://www.gnu.org/licenses/agpl.html). The code for this add-on is available on [![GitHub icon](https://glutanimate.com/logos/github.svg) GitHub](https://github.com/glutanimate/popup-dictionary).
 
 **MORE RESOURCES**
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Anki Add-on: Mouseover Dictionary
+Anki Add-on: Popup Dictionary
 
 Entry point for the add-on into Anki 2.0.x
 
@@ -11,4 +11,4 @@ Copyright: (c) 2018 Glutanimate <https://glutanimate.com/>
 License: GNU AGPLv3 <https://www.gnu.org/licenses/agpl.html>
 """
 
-import mouseover_dictionary.main
+import popup_dictionary.main

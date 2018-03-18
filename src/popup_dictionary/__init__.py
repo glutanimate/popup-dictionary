@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Anki Add-on: Mouseover Dictionary
+Anki Add-on: Popup Dictionary
 
 Module-level entry point for the add-on into Anki 2.0.x/2.1.x
 

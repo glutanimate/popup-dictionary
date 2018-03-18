@@ -6,8 +6,8 @@
 # License: GNU AGPLv3 <https://www.gnu.org/licenses/agpl.html>
 
 VERSION = `git describe HEAD --tags --abbrev=0`
-ADDON = mouseover-dictionary
-ADDONDIR = mouseover_dictionary
+ADDON = popup-dictionary
+ADDONDIR = popup_dictionary
 
 
 ###

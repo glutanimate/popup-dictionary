@@ -39,4 +39,4 @@ docs/*.todo
 docs/description.html
 tools/test.py
 .obsolete/
-src/mouseover_dictionary/.wip/
+src/popup_dictionary/.wip/

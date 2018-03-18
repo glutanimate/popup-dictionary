@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-This file is part of the Mouseover Dictionary add-on for Anki.
+This file is part of the Popup Dictionary add-on for Anki.
 
 Global variables
 
