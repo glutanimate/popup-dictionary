@@ -1,8 +1,8 @@
-## Popup Dictionary Add-on for Anki
+## Popup Dictionary Add-on for Anki <!-- omit in toc -->
 
 This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.ankiweb.net/). It provides the ability to quickly draw up related facts on words or phrases, just by double-clicking on them.
 
-### Table of Contents
+### Table of Contents <!-- omit in toc -->
 
 <!-- MarkdownTOC -->
 
@@ -40,7 +40,7 @@ This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.an
 3. If you would like to keep your settings thus far: Find the `meta.json` file contained within and copy it to a safe location.
 4. Proceed to delete  the `popup_dictionary` folder
 3. Download and extract the latest Anki 2.1 add-on release from the [releases tab](https://github.com/Glutanimate/popup-dictionary/releases)
-4. Move the new `popup_dictionary` folder into the add-ons directory
+4. Rename the extracted folder (e.g. `v0.4.1`) to `popup_dictionary` and move it into the add-ons directory
 5. Optional: Place the `meta.json` file back in the directory if you created a copy beforehand.
 5. Restart Anki
 
