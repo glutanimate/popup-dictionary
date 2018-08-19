@@ -318,5 +318,5 @@ html = r"""
 <script>{}</script>
 <script>{}</script>
 <script>{}</script>
-""".format(qtip_css, tooltip_css, jquery_js,
+""".format(qtip_css, tooltip_css, jquery_js if not anki21 else "",
            qtip_js, highlight_js, tooltip_script_js)
