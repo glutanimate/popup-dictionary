@@ -21,7 +21,7 @@ This is an add-on for the spaced-repetition flashcard app [Anki](https://apps.an
 
 **AnkiWeb**
 
-[Link to the add-on on AnkiWeb](https://ankiweb.net/shared/info/not_available_yet)
+Pop-up dictionary is still in beta, so it's not available on AnkiWeb, yet.
 
 **Manual installation**
 
