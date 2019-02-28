@@ -1,4 +1,8 @@
-**Important**: These settings do not sync and require a restart to apply.
+### Popup Dictionary Configuration
+
+*If Popup Dictionary has been a valuable asset in your studies, please consider  supporting my efforts by [buying me a coffee](https://ko-fi.com/X8X0L4YV), or by [pledging your support on Patreon](https://www.patreon.com/glutanimate). Each and every contribution is greatly appreciated and will help me maintain and improve Popup Dictionary as time goes by!*
+
+Please note that the following settings do not sync and require a restart to apply:
 
 - `dictionaryEnabled` (true/false): Whether or not to enable results drawn from the dictionary note type. Default: `true`.
 - `dictionaryDefinitionFieldName` (string): Name of the dictionary definition field in the dictionary note type. Default: `"Definition"`.
