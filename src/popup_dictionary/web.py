@@ -35,7 +35,7 @@ JS libs
 
 from __future__ import unicode_literals
 
-from .consts import anki21
+from .consts import anki21, ADDON_VERSION
 
 # jQuery v1.12.4 | (c) jQuery Foundation | jquery.org/license 
 jquery_js = r"""
@@ -333,6 +333,16 @@ tooltip_css = r"""
 }
 """
 
+tooltip_footer_css = """
+.qtip::after {
+    content: "Popup Dictionary v%(version)s by Glutanimate";
+    float: right;
+    color: grey;
+    font-size: 0.8em;
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+}""" % dict(version=ADDON_VERSION)
+
 html = r"""
 <style>
 {}
@@ -342,5 +352,6 @@ html = r"""
 <script>{}</script>
 <script>{}</script>
 <script>{}</script>
-""".format(qtip_css, tooltip_css, jquery_js if not anki21 else "",
+""".format(qtip_css, tooltip_css + tooltip_footer_css,
+           jquery_js if not anki21 else "",
            qtip_js, highlight_js, tooltip_script_js)
