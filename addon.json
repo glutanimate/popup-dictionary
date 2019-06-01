@@ -8,7 +8,9 @@
     "homepage": "https://github.com/glutanimate/popup-dictionary",
     "copyright_start": 2018,
     "tags": "reviewer reviews dictionary",
-    "conflicts": ["1496166067"],
+    "conflicts": [
+        "1496166067"
+    ],
     "targets": [
         "anki20",
         "anki21"
