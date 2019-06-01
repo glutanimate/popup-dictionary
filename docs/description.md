@@ -1,42 +1,41 @@
+<!-- BANNER -->
 
-**SCREENSHOT**
+This is the **official beta** for the Pop-up Dictionary add-on.
 
-![](https://raw.githubusercontent.com/glutanimate/popup-dictionary/master/screenshots/screenshot.png)
+Pop-up Dictionary allows you to quickly draw up related facts from your card collection, just by double-clicking on words or phrases:
 
-**COMPATIBILITY**
+![](https://raw.githubusercontent.com/glutanimate/popup-dictionary/master/screenshots/screencast.gif)
 
-This add-on only works with Anki 2.0 (≥ 2.0.30). The 2.1 beta releases are currently **unsupported**.
+### IMPORTANT NOTES ABOUT THIS RELEASE
 
-OR
+**This is an early beta release**. I usually do not upload add-ons to AnkiWeb this early into development, but because other users were starting to upload broken old copies of the add-on (with no attribution no less), my hand was forced. Please do not report bugs or issues through the review section below. Instead, **please use the official bug tracker for your feedback**.
 
-Initial tests have shown this add-on to both work on Anki 2.0 and Anki 2.1. However, as the Anki 2.1 release line is still in beta, I cannot provide any kind of official support for this platform. **Please do not report issues with Anki 2.1 in the review section below**. Instead, please report all issues you encounter on [GitHub](https://github.com/glutanimate/popup-dictionary/issues).
+Before doing so, there are some known issues in the current beta release that you need to be aware of:
 
-**USAGE**
+- Incompatibilities with other add-ons: At the moment there appear to be some issues with other add-ons that also modify the Reviewer in some significant fashion or another. The most important to mention is an incompatibility with Night Mode on Anki 2.1. As a temporary workaround, you can **disable Night Mode's Reviewer** styling by heading to View → Night Mode → Choose what to Style, and unchecking Reviewer Cards.
+- Pop-up not always appearing: There appear to be some issues with the pop-up not always appearing when double clicking on a word or phrase. In those instances you might want to use the hotkey instead (Ctrl+Shift+D).
+- Hotkey not working: On some systems the hotkey might conflict with global key assignments. In those instances feel free to customize the hotkey by using Anki 2.1's add-on config screen.
 
-**CONFIGURATION**
+<!-- CHANGELOG -->
 
-**CHANGELOG**
+### USAGE
 
-**SUPPORT**
+Simply **double-click a word or phrase** on your card to draw up a pop-up of related information. Alternatively you can also highlight a phrase and then use the **Ctrl/Cmd+Shift+D hotkey** to invoke the pop-up. To look up multiple words, either use the hotkey, or double click on one word and then drag your mouse until the rest of the phrase is highlighted. You can look up terms within pop-ups as well, and go as deep as you want with that (pop-up-ception :) ).
 
-Please **do not report issues or bugs in the review section below**. I can't reply to your reviews, so there is no way for me to help you. Instead, please report all issues you encounter either by creating a bug report on [GitHub](https://github.com/glutanimate/popup-dictionary/issues), or by posting a new thread on the [Anki add-on support forums](https://anki.tenderapp.com/discussions/add-ons). Please make sure to include the name of the affected add-on in your report title when you do so.
+### CONFIGURATION
 
-**CREDITS AND LICENSE**
+There are a number of options you can customize in the add-on's config file. On Anki 2.1 you can simply head to Tools → Add-ons → Pop-up Dictionary → Config to update the config values. On Anki 2.0 you will have to manually edit the meta.json file instead. All config values are documented in the config. md file which will automatically be shown next to the config screen on Anki 2.1. I'm planning on adding a graphical options menu for the stable release.
 
-*Copyright (c) 2018 [Glutanimate](https://glutanimate.com/)*
+<!-- SUPPORT -->
 
-Ships with the following javascript libraries:
+### CREDITS AND LICENSE
 
-- jQuery (v1.12.4), (c) jQuery Foundation, licensed under the MIT license
-- qTip2 (v2.1.1), (c) 2011-2018 Craig Michael Thompson, licensed under the MIT license
-- jQuery.highlight, (c) 2007-2014 Johann Burkard, licensed under the MIT license
+*Copyright © 2018-2019 [Aristotelis P.](https://glutanimate.com/)  (Glutanimate)*
 
-Licensed under the [GNU AGPLv3](https://www.gnu.org/licenses/agpl.html). The code for this add-on is available on [![GitHub icon](https://glutanimate.com/logos/github.svg) GitHub](https://github.com/glutanimate/popup-dictionary).
+My initial work on this add-on was partially funded by two fellow Anki users. I would like to thank both of them for their help and support!
 
-**MORE RESOURCES**
+Licensed under the _GNU AGPLv3_, extended by a number of additional terms. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY. For more information on the license please see the [LICENSE file](https://github.com/glutanimate/popup-dictionary/blob/master/LICENSE) accompanying this add-on. The source code is available on [![GitHub icon](https://glutanimate.com/logos/github.svg) GitHub](https://github.com/glutanimate/popup-dictionary). Pull requests and other contributions are welcome!
 
-A lot of my add-ons were commissioned by other Anki users. If you enjoy my work and would like to hire my services to work on an add-on or new feature, please feel free to reach out to me at:  ![Email icon](https://glutanimate.com/logos/email.svg) <em>ankiglutanimate [αt] gmail . com</em>
+<!-- RESOURCES -->
 
-Want to stay up-to-date with my latest add-on releases and updates? Feel free to follow me on Twitter: [![Twitter bird](https://glutanimate.com/logos/twitter.svg)@Glutanimate](https://twitter.com/glutanimate)
-
-New to Anki? Make sure to check out my YouTube channel where I post weekly tutorials on Anki add-ons and related topics: [![YouTube playbutton](https://glutanimate.com/logos/youtube.svg) / Glutanimate](https://www.youtube.com/c/glutanimate)
+<!-- FUNDING -->

@@ -1,3 +1,16 @@
+This Program is licensed under the GNU Affero General Public License
+version 3 ("AGPL"), extended by a number of Additional Terms under
+Section 7 of the AGPL.
+
+If not otherwise noted, this License applies to all files included
+with this Program. Files subject to different licensing terms might
+also ship with this Program, but will be clearly marked as such in
+additional LICENSE files accompanying them.
+
+The AGPLv3 License and Additional Terms follow.
+
+==============================================================================
+
                     GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
@@ -618,7 +631,7 @@ copy of the Program in return for a fee.
 
                      END OF TERMS AND CONDITIONS
 
-===============================================================================
+==============================================================================
 
                 ADDITIONAL TERMS APPLICABLE TO THIS PROGRAM
                      UNDER GNU AGPL VERSION 3 SECTION 7
@@ -634,13 +647,7 @@ subject to the further restrictions below:
 
   Except as expressly provided herein, no trademark or publicity rights are
   granted. This license does NOT give you any right, title or interest in the
-  "Glutanimate" name or logo, nor in the name "Popup Dictionary".
-
-  However, Licensees are granted a limited, non-exclusive right to use the
-  names "Glutanimate", "Popup Dictionary", and the Glutanimate logo as part of
-  the preservation of the legal notices and author attributions within this
-  Program and within Appropriate Legal Notices displayed by works containing
-  it.
+  "Glutanimate" name or logo, nor in the name "Pop-up Dictionary".
 
 2. Origin of the Program.
 
@@ -659,10 +666,10 @@ subject to the further restrictions below:
   Additionally, all copies of any covered work conveyed by you must include
   in the Appropriate Legal Notices the following author attribution:
 
-  "Based on the Anki add-on Popup Dictionary by Glutanimate.
+  "Based on the Anki add-on Pop-up Dictionary by Glutanimate.
   Click here to support Glutanimate's work."
 
-  The words "Popup Dictionary" must be a clickable hyperlink that leads directly
+  The words "Pop-up Dictionary" must be a clickable hyperlink that leads directly
   to the Internet URL "https://github.com/glutanimate/popup-dictionary/". The
   words "Click here to support Glutanimate's work" must be a clickable
   hyperlink that leads directly to the Internet URL

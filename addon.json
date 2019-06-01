@@ -1,0 +1,16 @@
+{
+    "display_name": "Pop-up Dictionary",
+    "module_name": "popup_dictionary",
+    "repo_name": "popup-dictionary",
+    "ankiweb_id": "153625306",
+    "author": "Glutanimate",
+    "contact": "https://glutanimate.com",
+    "homepage": "https://github.com/glutanimate/popup-dictionary",
+    "copyright_start": 2018,
+    "tags": "reviewer reviews dictionary",
+    "conflicts": ["1496166067"],
+    "targets": [
+        "anki20",
+        "anki21"
+    ]
+}
