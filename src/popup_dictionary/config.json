@@ -5,6 +5,7 @@
     "dictionaryNoteTypeName": "Dictionary Entry",
     "dictionaryTermFieldName": "Term",
     "dictionaryDefinitionFieldName": "Definition",
+    "ignoreMinLength":"[]",
     "snippetsEnabled": true,
     "snippetsExcludedFields": ["Note ID", "ID (hidden)"],
     "snippetsLimitToCurrentDeck": true,
