@@ -36,6 +36,7 @@ JS libs
 from __future__ import unicode_literals
 
 from .consts import anki21, ADDON_VERSION
+from .config import CONFIG
 
 # jQuery v1.12.4 | (c) jQuery Foundation | jquery.org/license 
 jquery_js = r"""
@@ -173,7 +174,12 @@ $(document).ready(function()
         term = selection.toString().trim();
 
         // Return if selection empty or too short
-        if(term.length < 3){ return; }
+        var ignore =/%s/g
+        if(term.length < 3){
+             if(!(term.match(ignore))){
+                return;
+             }    
+        }
 
         // Exclude NID of clicked-on result entry
         if (element.id != "#qa"){
@@ -250,7 +256,7 @@ $(document).ready(function()
 
     qaTooltip = createTooltip("#qa");
 });
-""" % ("true" if anki21 else "false")
+""" % ("true" if anki21 else "false", CONFIG["ignoreMinLength"])
 
 # Custom tooltip CSS
 tooltip_css = r"""
