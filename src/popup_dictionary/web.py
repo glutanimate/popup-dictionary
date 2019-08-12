@@ -174,9 +174,9 @@ $(document).ready(function()
         term = selection.toString().trim();
 
         // Return if selection empty or too short
-        var ignore =/%s/g
+        var ignore =%s
         if(term.length < 3){
-             if(!(term.match(ignore))){
+             if(!ignore || !term.match(ignore)){
                 return;
              }    
         }
@@ -256,7 +256,7 @@ $(document).ready(function()
 
     qaTooltip = createTooltip("#qa");
 });
-""" % ("true" if anki21 else "false", CONFIG["ignoreMinLength"])
+""" % ("true" if anki21 else "false", "/%s/"%CONFIG["ignoreMinLength"] if CONFIG["ignoreMinLength"] else "")
 
 # Custom tooltip CSS
 tooltip_css = r"""

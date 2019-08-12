@@ -10,7 +10,7 @@ Please note that the following settings do not sync and require a restart to app
 - `dictionaryTermFieldName` (string): Name of the dictionary term field in the dictionary note type. Default: `"Term"`.
 - `generalConfirmEmpty` (true/false): Whether or not to show tooltip when no results have been found. Default: `true`.
 - `generalHotkey` (string): Hotkey to invoke tooltip manually. Default: `"Ctrl+Shift+D"`.
-- `ignoreMinLength` (regex): If the search term matches the regex, ignore default minimum length(3) the term must be. Default:`""`.
+- `ignoreMinLength` (regex): If the search term matches the regex, ignore default minimum length(3) the term must be. To ignore it for all characters: `.`. To ignore it for non-latin characters: `[^\\u0020-\\u024F]`. Default:`""`.
 - `snippetsEnabled` (true/false): Whether or not to enable results drawn from any type of note in your collection. Default: `true`.
 - `snippetsExcludedFields` (list): List of fields to exclude from being shown in the note snippet section of the tooltip. Default: `["Note ID", "ID (hidden)"]`.
 - `snippetsLimitToCurrentDeck` (true/false): Whether or not to limit note snippet results to current deck. Default: `true`.
