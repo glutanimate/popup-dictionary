@@ -89,35 +89,6 @@ html_field = """<div class="tt-fld">{}</div>"""
 cloze_re_str = r"\{\{c(\d+)::(.*?)(::(.*?))?\}\}"
 cloze_re = re.compile(cloze_re_str)
 
-
-# Anki 2.0: Python <-> JS bridge object
-
-class DictionaryLookup(QObject):
-    """
-    A single instance of the class is created and stored in the module's dictLookup
-    variable. This instance is then added as a javascript object to the reviewer's
-    main frame. We then get callbacks from qtip's set functions requesting
-    the html to display
-
-    Based on deck hover tooltip by Steve AW
-    """
-
-    def __init__(self):
-        QObject.__init__(self)
-
-    @pyqtSlot(str, str, result=str)
-    def definitionFor(self, term, ignore_nid):
-        term = term.strip()
-        return getContentFor(term, ignore_nid)
-
-
-
-
-def addJavascriptObjects(self):
-    """Add python object to JS"""
-    self.web.page().mainFrame().addToJavaScriptWindowObject("pyDictLookup", dictLookup)
-
-
 # Functions that compose tooltip content
 
 def getContentFor(term, ignore_nid):
