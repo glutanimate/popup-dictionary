@@ -33,8 +33,6 @@
 JS libs
 """
 
-from __future__ import unicode_literals
-
 from aqt import mw
 
 from .consts import ADDON_VERSION, MODULE_ADDON

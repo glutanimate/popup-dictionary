@@ -33,8 +33,6 @@
 Initializes add-on components.
 """
 
-from __future__ import unicode_literals
-
 import re
 
 import aqt

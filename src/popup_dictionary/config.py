@@ -33,8 +33,6 @@
 Handles add-on configuration
 """
 
-from __future__ import unicode_literals
-
 from aqt import mw
 
 def getConfig():

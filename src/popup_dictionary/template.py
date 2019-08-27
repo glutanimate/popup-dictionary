@@ -33,8 +33,6 @@
 Note type and card templates.
 """
 
-from __future__ import unicode_literals
-
 from .config import CONFIG
 
 
