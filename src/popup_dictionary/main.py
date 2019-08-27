@@ -48,13 +48,6 @@ from .consts import *
 from .config import CONFIG
 from .template import addModel
 
-# support for JS Booster add-on
-try:
-    from jsbooster import review_hack
-    JSBOOSTER = True
-except ImportError:
-    JSBOOSTER = False
-
 
 # UI messages
 
@@ -211,22 +204,17 @@ def browseToNid(nid):
     browser.form.searchEdit.lineEdit().setText("nid:'{}'".format(nid))
     browser.onSearchActivated()
 
-def onRevHtml21(self, _old):
+def onRevHtml(self, _old):
     return _old(self) + html
 
 
-def setupAddon():
-    """Setup hooks, prepare note type and deck"""
-    initializeWeb()
+def onProfileLoaded():
+    """Delayed setup on profile init: Reviewer mods and model creation"""
     
-    # JS Booster support:
-    if not JSBOOSTER:
-        Reviewer.revHtml = wrap(Reviewer.revHtml, onRevHtml21, "around")
-    else:
-        review_hack.review_html_scripts += html
-        Reviewer._showQuestion = wrap(
-            Reviewer._showQuestion, addJavascriptObjects)
-        Reviewer._showAnswer = wrap(Reviewer._showAnswer, addJavascriptObjects)
+    # Wrap here to try to counteract bad practices in other add-ons
+    # (overwriting revHtml in its entirety)
+    Reviewer.revHtml = wrap(Reviewer.revHtml, onRevHtml, "around")
+    Reviewer._linkHandler = wrap(Reviewer._linkHandler, linkHandler, "around")
 
     if CONFIG["dictionaryEnabled"]:
         mid = mw.col.models.byName(CONFIG["dictionaryNoteTypeName"])
@@ -236,10 +224,11 @@ def setupAddon():
 
 
 def initializeAddon():
+    initializeWeb()
+    
     # Menus and hotkeys
     QShortcut(QKeySequence(CONFIG["generalHotkey"]),
               mw, activated=onReviewerHotkey)
 
     # Hooks
-    Reviewer._linkHandler = wrap(Reviewer._linkHandler, linkHandler, "around")
-    addHook("profileLoaded", setupAddon)
+    addHook("profileLoaded", onProfileLoaded)
