@@ -33,17 +33,9 @@
 Addon-wide constants
 """
 
-import sys
 import os
-from anki import version
 from ._version import __version__
 
-anki21 = version.startswith("2.1.")
-sys_encoding = sys.getfilesystemencoding()
-
-if anki21:
-    addon_path = os.path.dirname(__file__)
-else:
-    addon_path = os.path.dirname(__file__).decode(sys_encoding)
+addon_path = os.path.dirname(__file__)
 
 ADDON_VERSION = __version__

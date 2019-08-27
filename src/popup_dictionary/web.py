@@ -35,7 +35,7 @@ JS libs
 
 from __future__ import unicode_literals
 
-from .consts import anki21, ADDON_VERSION
+from .consts import ADDON_VERSION
 
 # jQuery v1.12.4 | (c) jQuery Foundation | jquery.org/license 
 jquery_js = r"""
@@ -65,7 +65,6 @@ tooltip_script_js = r"""
 // Create the tooltips only when document ready
 $(document).ready(function()
 {
-    var anki21 = %s;
 
     function createTooltip(element) {
         // Creates tooltip on specified DOM element, sets up mouse click events
@@ -187,20 +186,12 @@ $(document).ready(function()
             }
         }
 
-        // Set tooltip contents...
-        if (anki21) {
-            // ...through pyrun bridge. Need to use a callback
-            // due to async execution of JS and Python in Anki 2.1
-            pycmd("dctLookup:" + JSON.stringify([term, selNID]), function(text){
-                return onCallback(text);
-            });
-        } else {
-            // ...through custom pyqtSlot interface that we added
-            var text = pyDictLookup.definitionFor(term, selNID);
-            console.log("Got text");
+        // Set tooltip contents through pyrun bridge. Need to use a callback
+        // due to async execution of JS and Python in Anki 2.1
+        pycmd("dctLookup:" + JSON.stringify([term, selNID]), function(text){
             return onCallback(text);
-        }
-        
+        });
+
         function onCallback(text) {
             // Silent exit if no results returned and ALWAYS_SHOW in Python False
             if(!text){ return; }
@@ -250,7 +241,7 @@ $(document).ready(function()
 
     qaTooltip = createTooltip("#qa");
 });
-""" % ("true" if anki21 else "false")
+"""
 
 # Custom tooltip CSS
 tooltip_css = r"""
@@ -351,7 +342,5 @@ html = r"""
 <script>{}</script>
 <script>{}</script>
 <script>{}</script>
-<script>{}</script>
 """.format(qtip_css, tooltip_css + tooltip_footer_css,
-           jquery_js if not anki21 else "",
            qtip_js, highlight_js, tooltip_script_js)

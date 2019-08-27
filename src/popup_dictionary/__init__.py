@@ -33,4 +33,8 @@
 Module-level entry point for the add-on into Anki 2.0/2.1
 """
 
-from . import main  # noqa: F401
+from ._version import __version__  # noqa
+
+from .main import initializeAddon
+
+initializeAddon()
