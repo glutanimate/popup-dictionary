@@ -36,18 +36,17 @@ Note type and card templates.
 from aqt import mw
 from anki.hooks import addHook
 
-from .config import CONFIG
-
+from .config import config
 
 fields = (
-    CONFIG["dictionaryTermFieldName"],
-    CONFIG["dictionaryDefinitionFieldName"]
+    config["local"]["dictionaryTermFieldName"],
+    config["local"]["dictionaryDefinitionFieldName"]
 )
 
 # Default card template
 card_front = """
 <b>Define</b>: {{%s}}
-""" % CONFIG["dictionaryTermFieldName"]
+""" % config["local"]["dictionaryTermFieldName"]
 
 card_back = """
 {{FrontSide}}
@@ -55,7 +54,7 @@ card_back = """
 <hr id=answer>
 
 {{%s}}
-""" % CONFIG["dictionaryDefinitionFieldName"]
+""" % config["local"]["dictionaryDefinitionFieldName"]
 
 css = """
 .card {
@@ -67,13 +66,14 @@ background-color: white;
 }
 """
 
+
 def addModel():
     col = mw.col
     if col is None:
         print("Collection not ready")
         return False
     models = col.models
-    def_model = models.new(CONFIG["dictionaryNoteTypeName"])
+    def_model = models.new(config["local"]["dictionaryNoteTypeName"])
     # Add fields:
     for fname in fields:
         fld = models.newField(fname)
@@ -87,13 +87,15 @@ def addModel():
     models.add(def_model)
     return def_model
 
+
 def maybeCreateTemplate():
-    if not CONFIG["dictionaryEnabled"]:
+    if not config["local"]["dictionaryEnabled"]:
         return
-    mid = mw.col.models.byName(CONFIG["dictionaryNoteTypeName"])
+    mid = mw.col.models.byName(config["local"]["dictionaryNoteTypeName"])
     if not mid:
         addModel(mw.col)
         mw.reset()
+
 
 def initializeTemplate():
     addHook("profileLoaded", maybeCreateTemplate)

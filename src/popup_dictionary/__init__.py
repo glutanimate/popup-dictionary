@@ -89,6 +89,15 @@ def initializeAddon():
     if not checkFor2114ImportError():
         return False
 
+    from .consts import ADDON
+    from .libaddon.consts import setAddonProperties
+
+    setAddonProperties(ADDON)
+
+    from .libaddon.debug import maybeStartDebugging
+
+    maybeStartDebugging()
+
     from .reviewer import initializeReviewer
     from .template import initializeTemplate
     from .web import initializeWeb

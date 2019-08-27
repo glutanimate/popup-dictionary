@@ -34,12 +34,6 @@ Handles add-on configuration
 """
 
 from aqt import mw
+from .libaddon.anki.configmanager import ConfigManager
 
-def getConfig():
-    return mw.addonManager.getConfig(__name__)
-
-def writeConfig(config):
-    mw.addonManager.writeConfig(__name__, config)
-
-# initialize configuration. only performed at module load time for now
-CONFIG = getConfig()
+config = ConfigManager(mw)

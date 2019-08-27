@@ -44,7 +44,7 @@ from anki.hooks import wrap, addHook
 
 from .results import getContentFor
 from .web import popup_integrator
-from .config import CONFIG
+from .config import config
 
 
 def linkHandler(self, url, _old):
@@ -59,6 +59,9 @@ def linkHandler(self, url, _old):
         term, ignore_nid = json.loads(payload)
         term = term.strip()
         return getContentFor(term, ignore_nid)
+    elif url.startswith("dctDebug"):
+        (cmd, msg) = url.split(":", 1)
+        
     else:
         return _old(self, url)
 
@@ -89,7 +92,7 @@ def onReviewerHotkey():
 
 
 def setupShortcuts():
-    QShortcut(QKeySequence(CONFIG["generalHotkey"]),
+    QShortcut(QKeySequence(config["local"]["generalHotkey"]),
               mw, activated=onReviewerHotkey)
 
 

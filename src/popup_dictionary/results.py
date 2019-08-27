@@ -38,7 +38,9 @@ import re
 from aqt import mw
 from aqt.utils import askUser
 
-from .config import CONFIG
+from .libaddon.debug import logger
+
+from .config import config
 
 # UI messages
 
@@ -75,17 +77,18 @@ cloze_re = re.compile(cloze_re_str)
 def getContentFor(term, ignore_nid):
     """Compose tooltip content for search term.
     Returns HTML string."""
+    conf = config["local"]
 
     dict_entry = None
     note_content = None
     content = []
 
-    if CONFIG["dictionaryEnabled"]:
+    if conf["dictionaryEnabled"]:
         dict_entry = searchDefinitionFor(term)
         if dict_entry:
             content.append(dict_entry)
 
-    if CONFIG["snippetsEnabled"]:
+    if conf["snippetsEnabled"]:
         note_content = getNoteSnippetsFor(term, ignore_nid)
 
         if note_content:
@@ -96,14 +99,17 @@ def getContentFor(term, ignore_nid):
     elif note_content is False:
         return ""
     elif note_content is None:
-        return "No other results found." if CONFIG["generalConfirmEmpty"] else ""
+        return ("No other results found."
+                if conf["generalConfirmEmpty"] else "")
 
 
 def getNoteSnippetsFor(term, ignore_nid):
     """Find relevant note snippets for search term.
     Returns list of HTML strings."""
+    
+    conf = config["local"]
 
-    print("getNoteSnippetsFor called")
+    logger.debug("getNoteSnippetsFor called")
     # exclude current note
     current_nid = mw.reviewer.card.note().id
     exclusion_tokens = ["-nid:{}".format(current_nid)]
@@ -111,7 +117,7 @@ def getNoteSnippetsFor(term, ignore_nid):
     if ignore_nid:
         exclusion_tokens.append("-nid:{}".format(ignore_nid))
 
-    if CONFIG["snippetsLimitToCurrentDeck"]:
+    if conf["snippetsLimitToCurrentDeck"]:
         exclusion_tokens.append("deck:current")
 
     # construct query string
@@ -119,20 +125,20 @@ def getNoteSnippetsFor(term, ignore_nid):
 
     # NOTE: performing the SQL query directly might be faster
     res = sorted(mw.col.findNotes(query))
-    print("getNoteSnippetsFor query finished.")
+    logger.debug("getNoteSnippetsFor query finished.")
 
     if not res:
         return None
 
     # Prevent slowdowns when search term is too common
     res_len = len(res)
-    warn_limit = CONFIG["snippetsResultsWarnLimit"]
+    warn_limit = conf["snippetsResultsWarnLimit"]
     if warn_limit > 0 and res_len > warn_limit:
         if not askUser(WRN_RESCOUNT.format(res_len), title="Popup Dictionary"):
             return False
 
     note_content = []
-    excluded_flds = CONFIG["snippetsExcludedFields"]
+    excluded_flds = conf["snippetsExcludedFields"]
     for nid in res:
         note = mw.col.getNote(nid)
         valid_flds = [html_field.format(
@@ -148,15 +154,16 @@ def getNoteSnippetsFor(term, ignore_nid):
 def searchDefinitionFor(term):
     """Look up search term in dictionary deck.
     Returns HTML string."""
-    query = u"""note:"{}" {}:"{}" """.format(CONFIG["dictionaryNoteTypeName"],
-                                             CONFIG["dictionaryTermFieldName"],
+    conf = config["local"]
+    query = u"""note:"{}" {}:"{}" """.format(conf["dictionaryNoteTypeName"],
+                                             conf["dictionaryTermFieldName"],
                                              term)
     res = mw.col.findNotes(query)
     if res:
         nid = res[0]
         note = mw.col.getNote(nid)
         try:
-            result = note[CONFIG["dictionaryDefinitionFieldName"]]
+            result = note[conf["dictionaryDefinitionFieldName"]]
         except KeyError:
             return None
         return html_res_dict.format(nid, result)
