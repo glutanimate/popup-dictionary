@@ -12,6 +12,11 @@ If you enjoy Pop-up Dictionary, please consider supporting my work on Patreon, o
 
 ## [Unreleased]
 
+### Changed
+
+- Dropped 2.0.x support
+- Refactored major parts of the add-on
+
 ## [0.5.0-beta.1] - 2019-02-28
 
 ### Changed
