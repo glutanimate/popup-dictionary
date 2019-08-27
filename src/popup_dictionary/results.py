@@ -30,24 +30,15 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Initializes add-on components.
+Parses collection for pertinent notes and generates result list
 """
 
 import re
 
-import aqt
-from aqt.qt import *
 from aqt import mw
-from aqt.reviewer import Reviewer
 from aqt.utils import askUser
-from anki.hooks import wrap, addHook
-from anki.utils import json
 
-from .web import html, initializeWeb
-from .consts import *
 from .config import CONFIG
-from .template import addModel
-
 
 # UI messages
 
@@ -56,24 +47,21 @@ WRN_RESCOUNT = ("<b>{}</b> relevant notes found.<br>"
                 "temporarily slow down Anki.<br><br>"
                 "<b>Are you sure you want to proceed?</b>")
 
-
 # HTML format strings for results
-
-pycmd = "pycmd"
 
 html_reslist = """<div class="tt-reslist">{}</div>"""
 
 html_res_normal = """\
-<div class="tt-res" data-nid={{}}>{{}}<div title="Browse..." class="tt-brws"
-onclick='{}("dctBrws:" + this.parentNode.dataset.nid)'>&rarr;</div></div>\
-""".format(pycmd)
+<div class="tt-res" data-nid={}>{}<div title="Browse..." class="tt-brws"
+onclick='pycmd("dctBrws:" + this.parentNode.dataset.nid)'>&rarr;</div></div>\
+"""
 
 html_res_dict = """\
-<div class="tt-res tt-dict" data-nid={{}}>
+<div class="tt-res tt-dict" data-nid={}>
     <div class="tt-dict-title">Definition:</div>
-    {{}}
-    <div title="Browse..." class="tt-brws" onclick='{}("dctBrws:" + this.parentNode.dataset.nid)'>&rarr;</div>
-</div>""".format(pycmd)
+    {}
+    <div title="Browse..." class="tt-brws" onclick='pycmd("dctBrws:" + this.parentNode.dataset.nid)'>&rarr;</div>
+</div>"""
 
 html_field = """<div class="tt-fld">{}</div>"""
 
@@ -174,61 +162,3 @@ def searchDefinitionFor(term):
         return html_res_dict.format(nid, result)
 
     return None
-
-
-def onReviewerHotkey():
-    if mw.state != "review":
-        return
-    mw.reviewer.web.eval("invokeTooltipAtSelectedElm();")
-
-
-def linkHandler(self, url, _old):
-    """JS <-> Py bridge"""
-    if url.startswith("dctBrws"):
-        (cmd, arg) = url.split(":", 1)
-        if not arg:
-            return
-        browseToNid(arg)
-    elif url.startswith("dctLookup"):
-        (cmd, payload) = url.split(":", 1)
-        term, ignore_nid = json.loads(payload)
-        term = term.strip()
-        return getContentFor(term, ignore_nid)
-    else:
-        return _old(self, url)
-
-
-def browseToNid(nid):
-    """Open browser and find cards by nid"""
-    browser = aqt.dialogs.open("Browser", mw)
-    browser.form.searchEdit.lineEdit().setText("nid:'{}'".format(nid))
-    browser.onSearchActivated()
-
-def onRevHtml(self, _old):
-    return _old(self) + html
-
-
-def onProfileLoaded():
-    """Delayed setup on profile init: Reviewer mods and model creation"""
-    
-    # Wrap here to try to counteract bad practices in other add-ons
-    # (overwriting revHtml in its entirety)
-    Reviewer.revHtml = wrap(Reviewer.revHtml, onRevHtml, "around")
-    Reviewer._linkHandler = wrap(Reviewer._linkHandler, linkHandler, "around")
-
-    if CONFIG["dictionaryEnabled"]:
-        mid = mw.col.models.byName(CONFIG["dictionaryNoteTypeName"])
-        if not mid:
-            addModel(mw.col)
-            mw.reset()
-
-
-def initializeAddon():
-    initializeWeb()
-    
-    # Menus and hotkeys
-    QShortcut(QKeySequence(CONFIG["generalHotkey"]),
-              mw, activated=onReviewerHotkey)
-
-    # Hooks
-    addHook("profileLoaded", onProfileLoaded)

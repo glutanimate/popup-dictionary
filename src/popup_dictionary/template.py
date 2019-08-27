@@ -33,6 +33,9 @@
 Note type and card templates.
 """
 
+from aqt import mw
+from anki.hooks import addHook
+
 from .config import CONFIG
 
 
@@ -64,8 +67,11 @@ background-color: white;
 }
 """
 
-
-def addModel(col):
+def addModel():
+    col = mw.col
+    if col is None:
+        print("Collection not ready")
+        return False
     models = col.models
     def_model = models.new(CONFIG["dictionaryNoteTypeName"])
     # Add fields:
@@ -80,3 +86,14 @@ def addModel(col):
     models.addTemplate(def_model, template)
     models.add(def_model)
     return def_model
+
+def maybeCreateTemplate():
+    if not CONFIG["dictionaryEnabled"]:
+        return
+    mid = mw.col.models.byName(CONFIG["dictionaryNoteTypeName"])
+    if not mid:
+        addModel(mw.col)
+        mw.reset()
+
+def initializeTemplate():
+    addHook("profileLoaded", maybeCreateTemplate)

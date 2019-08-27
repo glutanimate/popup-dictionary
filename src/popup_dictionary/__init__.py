@@ -30,11 +30,15 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Module-level entry point for the add-on into Anki 2.0/2.1
+Initializes add-on
 """
 
-from ._version import __version__  # noqa
+from ._version import __version__  # noqa: F401
 
-from .main import initializeAddon
+from .reviewer import initializeReviewer
+from .template import initializeTemplate
+from .web import initializeWeb
 
-initializeAddon()
+initializeTemplate()
+initializeWeb()
+initializeReviewer()

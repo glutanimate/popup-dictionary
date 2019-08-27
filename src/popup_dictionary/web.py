@@ -37,6 +37,7 @@ from aqt import mw
 
 from .consts import ADDON_VERSION, MODULE_ADDON
 
+
 tooltip_footer_css = """
 .qtip::after {
     content: "Popup Dictionary v%(version)s by Glutanimate";
