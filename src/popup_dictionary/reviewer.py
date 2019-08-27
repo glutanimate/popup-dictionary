@@ -43,7 +43,7 @@ from aqt.reviewer import Reviewer
 from anki.hooks import wrap, addHook
 
 from .results import getContentFor
-from .web import html
+from .web import popup_integrator
 from .config import CONFIG
 
 
@@ -71,7 +71,7 @@ def browseToNid(nid):
 
 
 def onRevHtml(self, _old):
-    return _old(self) + html
+    return _old(self) + popup_integrator
 
 
 def onProfileLoaded():

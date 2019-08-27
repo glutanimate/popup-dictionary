@@ -35,7 +35,7 @@ JS libs
 
 from aqt import mw
 
-from .consts import ADDON_VERSION, MODULE_ADDON
+from .consts import ADDON
 
 
 tooltip_footer_css = """
@@ -46,16 +46,19 @@ tooltip_footer_css = """
     font-size: 0.8em;
     margin-right: 0.5em;
     margin-left: 0.5em;
-}""" % dict(version=ADDON_VERSION)
+}""" % dict(version=ADDON.VERSION)
 
-html = f"""
-<link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/jquery.qtip.css">
-<link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/popup.css">
+module = ADDON.MODULE
+
+popup_integrator = f"""
+<link rel="stylesheet" href="/_addons/{module}/web/jquery.qtip.css">
+<link rel="stylesheet" href="/_addons/{module}/web/popup.css">
 <style>{tooltip_footer_css}</style>
-<script src="/_addons/{MODULE_ADDON}/web/jquery.qtip.min.js"></script>
-<script src="/_addons/{MODULE_ADDON}/web/jquery.highlight.min.js"></script>
-<script src="/_addons/{MODULE_ADDON}/web/popup.js"></script>
+<script src="/_addons/{module}/web/jquery.qtip.min.js"></script>
+<script src="/_addons/{module}/web/jquery.highlight.min.js"></script>
+<script src="/_addons/{module}/web/popup.js"></script>
 """
+
 
 def initializeWeb():
     mw.addonManager.setWebExports(__name__, r"web/.*")
