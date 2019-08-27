@@ -36,6 +36,10 @@ Addon-wide constants
 import os
 from ._version import __version__
 
-addon_path = os.path.dirname(__file__)
+ADDON_PATH = os.path.dirname(__file__)
+
+name_components = __name__.split(".")
+
+MODULE_ADDON = name_components[0]
 
 ADDON_VERSION = __version__

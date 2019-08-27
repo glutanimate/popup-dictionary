@@ -45,7 +45,7 @@ from aqt.utils import askUser
 from anki.hooks import wrap, addHook
 from anki.utils import json
 
-from .web import html
+from .web import html, initializeWeb
 from .consts import *
 from .config import CONFIG
 from .template import addModel
@@ -248,6 +248,8 @@ def onRevHtml21(self, _old):
 
 def setupAddon():
     """Setup hooks, prepare note type and deck"""
+    initializeWeb()
+    
     # JS Booster support:
     if not JSBOOSTER:
         Reviewer.revHtml = wrap(Reviewer.revHtml, onRevHtml21, "around")
