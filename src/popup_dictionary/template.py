@@ -93,7 +93,7 @@ def maybeCreateTemplate():
         return
     mid = mw.col.models.byName(config["local"]["dictionaryNoteTypeName"])
     if not mid:
-        addModel(mw.col)
+        addModel()
         mw.reset()
 
 
