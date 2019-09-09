@@ -36,6 +36,7 @@ JS libs
 from aqt import mw
 
 from .consts import ADDON
+from .libaddon.platform import MODULE_ADDON
 
 
 tooltip_footer_css = """
@@ -48,17 +49,16 @@ tooltip_footer_css = """
     margin-left: 0.5em;
 }""" % dict(version=ADDON.VERSION)
 
-module = ADDON.MODULE
-
 popup_integrator = f"""
-<link rel="stylesheet" href="/_addons/{module}/web/jquery.qtip.css">
-<link rel="stylesheet" href="/_addons/{module}/web/popup.css">
+<link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/jquery.qtip.css">
+<link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/popup.css">
 <style>{tooltip_footer_css}</style>
-<script src="/_addons/{module}/web/jquery.qtip.min.js"></script>
-<script src="/_addons/{module}/web/jquery.highlight.min.js"></script>
-<script src="/_addons/{module}/web/popup.js"></script>
+<script src="/_addons/{MODULE_ADDON}/web/jquery.qtip.min.js"></script>
+<script src="/_addons/{MODULE_ADDON}/web/jquery.highlight.min.js"></script>
+<script src="/_addons/{MODULE_ADDON}/web/popup.js"></script>
 """
 
 
 def initializeWeb():
-    mw.addonManager.setWebExports(__name__, r"web/.*")
+    # TODO: either fix on Anki#s end or use re.escape(os.path.sep)
+    mw.addonManager.setWebExports(__name__, r"web.*")
