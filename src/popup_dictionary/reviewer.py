@@ -83,9 +83,11 @@ def IgnoreMinLength():
     ign = config["local"]["ignoreMinLength"]
     mw.reviewer.web.eval("var ignoreLength = {}".format(ign))
 
+
 def onNextCard(self, _old):
     _old(self)
     IgnoreMinLength()
+
 
 def onProfileLoaded():
     """Monkey-patch Reviewer delayed in order to counteract bad practices

@@ -110,7 +110,6 @@ $(document).ready(function()
         term = selection.toString().trim();
 
         // Return if selection empty or too short
-        
         if(term.length < 3){
             if(window.ignoreLength){
                 var ignRe = new RegExp(ignoreLength);
