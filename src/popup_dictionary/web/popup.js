@@ -110,7 +110,17 @@ $(document).ready(function()
         term = selection.toString().trim();
 
         // Return if selection empty or too short
-        if(term.length < 3){ return; }
+        
+        if(term.length < 3){
+            if(window.ignoreLength){
+                var ignRe = new RegExp(ignoreLength);
+                if(!term.match(ignRe)){
+                    return;
+                }
+            }else{
+                return; 
+            }
+        }
 
         // Exclude NID of clicked-on result entry
         if (element.id != "#qa"){

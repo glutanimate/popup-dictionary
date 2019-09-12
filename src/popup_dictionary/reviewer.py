@@ -47,6 +47,8 @@ from .web import popup_integrator
 from .config import config
 
 
+ignore_length_re = config["local"]["ignoreMinLength"]
+
 def linkHandler(self, url, _old):
     """JS <-> Py bridge"""
     if url.startswith("dctBrws"):
@@ -77,12 +79,21 @@ def onRevHtml(self, _old):
     return _old(self) + popup_integrator
 
 
+def IgnoreMinLength():
+    ign = config["local"]["ignoreMinLength"]
+    mw.reviewer.web.eval("var ignoreLength = {}".format(ign))
+
+def onNextCard(self, _old):
+    _old(self)
+    IgnoreMinLength()
+
 def onProfileLoaded():
     """Monkey-patch Reviewer delayed in order to counteract bad practices
     in other add-ons that overwrite revHtml and _linkHandler in their
     entirety"""
     Reviewer.revHtml = wrap(Reviewer.revHtml, onRevHtml, "around")
     Reviewer._linkHandler = wrap(Reviewer._linkHandler, linkHandler, "around")
+    Reviewer.nextCard = wrap(Reviewer.nextCard, onNextCard, "around")
 
 
 def onReviewerHotkey():
