@@ -77,14 +77,11 @@ def onRevHtml(self, _old):
     return _old(self) + popup_integrator
 
 
-def IgnoreMinLength():
-    ign = config["local"]["ignoreMinLength"]
-    mw.reviewer.web.eval("var ignoreLength = {}".format(ign))
-
-
 def onNextCard(self, _old):
+    """Make ignoreMinLength config data accessible to web"""
     _old(self)
-    IgnoreMinLength()
+    ign = config["local"]["ignoreMinLength"]
+    self.web.eval("var ignoreLength = \"{}\"".format(ign))
 
 
 def onProfileLoaded():
