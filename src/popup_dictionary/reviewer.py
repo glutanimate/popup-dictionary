@@ -47,8 +47,6 @@ from .web import popup_integrator
 from .config import config
 
 
-ignore_length_re = config["local"]["ignoreMinLength"]
-
 def linkHandler(self, url, _old):
     """JS <-> Py bridge"""
     if url.startswith("dctBrws"):
