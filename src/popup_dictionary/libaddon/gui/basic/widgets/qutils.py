@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Popup Dictionary Add-on for Anki
+# Libaddon for Anki
 #
-# Copyright (C) 2018-2019  Aristotelis P. <https://glutanimate.com/>
+# Copyright (C) 2018-2019  Aristotelis P. <https//glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -30,7 +30,20 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Version information
+Miscellaneous Qt utilities
 """
 
-__version__ = "1.0.0-dev.1"
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+
+from .qt import QMessageBox
+
+def showInfo(message, parent=None, mode="info", title="Anki"):
+    if mode == "info":
+        icon = QMessageBox.Information
+    elif mode == "warning":
+        icon = QMessageBox.Warning
+    elif mode == "critical":
+        icon = QMessageBox.Critical
+
+    return QMessageBox(icon, title, message, parent=parent)

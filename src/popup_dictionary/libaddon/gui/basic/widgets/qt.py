@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Popup Dictionary Add-on for Anki
+# Libaddon for Anki
 #
-# Copyright (C) 2018-2019  Aristotelis P. <https://glutanimate.com/>
+# Copyright (C) 2018        Aristotelis P. <https//glutanimate.com/>
+# Copyright (C) 2013-2018   Damien Elmes <anki@ichi2.net>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -30,7 +31,25 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Version information
+Qt imports
 """
 
-__version__ = "1.0.0-dev.1"
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+
+# extracted from aqt.qt:
+import sip
+
+try:
+    from PyQt5.Qt import *  # noqa: F401
+except ImportError:
+    sip.setapi('QString', 2)
+    sip.setapi('QVariant', 2)
+    sip.setapi('QUrl', 2)
+    try:
+        sip.setdestroyonexit(False)
+    except:  # noqa: E722
+        # missing in older versions
+        pass
+    from PyQt4.QtCore import *  # noqa: F401
+    from PyQt4.QtGui import *  # noqa: F401

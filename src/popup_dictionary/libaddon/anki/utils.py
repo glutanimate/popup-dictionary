@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Popup Dictionary Add-on for Anki
+# Libaddon for Anki
 #
-# Copyright (C) 2018-2019  Aristotelis P. <https://glutanimate.com/>
+# Copyright (C) 2018-2019  Aristotelis P. <https//glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -30,7 +30,37 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Version information
+Utility functions for interacting with Anki
 """
 
-__version__ = "1.0.0-dev.1"
+import os
+
+from aqt import mw
+
+from ..platform import ANKI20, PATH_ADDONS
+from ..consts import ADDON
+
+
+def debugInfo():
+    """Return verbose info on add-ons and Anki installation"""
+    info = ["{name} version {version}".format(name=ADDON.NAME,
+                                              version=ADDON.VERSION)]
+    if ANKI20:
+        from aqt.qt import QT_VERSION_STR, PYQT_VERSION_STR
+        from aqt import appVersion
+        from anki.utils import platDesc
+        info.append("Anki {version} (Qt {qt} PyQt {pyqt})".format(
+            version=appVersion, qt=QT_VERSION_STR, pyqt=PYQT_VERSION_STR))
+        info.append(platDesc())
+        files = [f for f in os.listdir(PATH_ADDONS)
+                 if f.endswith(".py")]
+        info.append("Add-ons:\n\n" + repr(files))
+    else:
+        from aqt.utils import supportText
+        info.append(supportText())
+
+        addmgr = mw.addonManager
+        info.append("Add-ons:\n\n" + "\n".join(
+            addmgr.annotatedName(d) for d in addmgr.allAddons()))
+
+    return "\n\n".join(info)

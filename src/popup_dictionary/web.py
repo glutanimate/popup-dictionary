@@ -33,8 +33,9 @@
 JS libs
 """
 
-from __future__ import unicode_literals
+from aqt import mw
 
+<<<<<<< HEAD
 from .consts import anki21, ADDON_VERSION
 from .config import CONFIG
 
@@ -338,6 +339,10 @@ tooltip_css = r"""
     color: black
 }
 """
+=======
+from .consts import ADDON
+
+>>>>>>> b7a31112f6d35cb544ce40eb62aea409e6ab9879
 
 tooltip_footer_css = """
 .qtip::after {
@@ -347,17 +352,19 @@ tooltip_footer_css = """
     font-size: 0.8em;
     margin-right: 0.5em;
     margin-left: 0.5em;
-}""" % dict(version=ADDON_VERSION)
+}""" % dict(version=ADDON.VERSION)
 
-html = r"""
-<style>
-{}
-{}
-</style>
-<script>{}</script>
-<script>{}</script>
-<script>{}</script>
-<script>{}</script>
-""".format(qtip_css, tooltip_css + tooltip_footer_css,
-           jquery_js if not anki21 else "",
-           qtip_js, highlight_js, tooltip_script_js)
+module = ADDON.MODULE
+
+popup_integrator = f"""
+<link rel="stylesheet" href="/_addons/{module}/web/jquery.qtip.css">
+<link rel="stylesheet" href="/_addons/{module}/web/popup.css">
+<style>{tooltip_footer_css}</style>
+<script src="/_addons/{module}/web/jquery.qtip.min.js"></script>
+<script src="/_addons/{module}/web/jquery.highlight.min.js"></script>
+<script src="/_addons/{module}/web/popup.js"></script>
+"""
+
+
+def initializeWeb():
+    mw.addonManager.setWebExports(__name__, r"web/.*")

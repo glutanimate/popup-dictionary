@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 
 # Popup Dictionary Add-on for Anki
@@ -33,17 +34,53 @@
 Addon-wide constants
 """
 
-import sys
-import os
-from anki import version
 from ._version import __version__
 
-anki21 = version.startswith("2.1.")
-sys_encoding = sys.getfilesystemencoding()
+try:
+    from .data.patrons import MEMBERS_CREDITED, MEMBERS_TOP
+except ImportError:
+    MEMBERS_CREDITED = MEMBERS_TOP = ()
 
-if anki21:
-    addon_path = os.path.dirname(__file__)
-else:
-    addon_path = os.path.dirname(__file__).decode(sys_encoding)
+__all__ = [
+    "ADDON"
+]
 
-ADDON_VERSION = __version__
+# PROPERTIES DESCRIBING ADDON
+
+
+class ADDON(object):
+    """Class storing general add-on properties
+    Property names need to be all-uppercase with no leading underscores
+    """
+    NAME = "Pop-up Dictionary"
+    MODULE = "popup_dictionary"
+    ID = "153625306"
+    VERSION = __version__
+    LICENSE = "GNU AGPLv3"
+    AUTHORS = (
+        {"name": "Aristotelis P. (Glutanimate)", "years": "2018-2019",
+         "contact": "https://glutanimate.com"},
+    )
+    AUTHOR_MAIL = "ankiglutanimate@gmail.com"
+    LIBRARIES = (
+        {"name": "qTip2", "version": "v2.1.1",
+         "author": "Craig Michael Thompson", "license": "MIT license",
+         "url": "http://qtip2.com/"},
+        {"name": "jQuery.highlight", "version": "5",
+         "author": "Johann Burkard", "license": "MIT license",
+         "url": "https://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html"},
+    )
+    CONTRIBUTORS = ()
+    SPONSORS = ()
+    MEMBERS_CREDITED = MEMBERS_CREDITED
+    MEMBERS_TOP = MEMBERS_TOP
+    LINKS = {
+        "patreon": "https://www.patreon.com/glutanimate",
+        "bepatron": "https://www.patreon.com/bePatron?u=7522179",
+        "coffee": "http://ko-fi.com/glutanimate",
+        "description": "https://ankiweb.net/shared/info/{}".format(ID),
+        "rate": "https://ankiweb.net/shared/review/{}".format(ID),
+        "twitter": "https://twitter.com/glutanimate",
+        "youtube": "https://www.youtube.com/c/glutanimate",
+        "help": ""
+    }

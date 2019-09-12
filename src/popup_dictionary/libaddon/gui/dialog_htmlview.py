@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Popup Dictionary Add-on for Anki
+# Libaddon for Anki
 #
-# Copyright (C) 2018-2019  Aristotelis P. <https://glutanimate.com/>
+# Copyright (C) 2018-2019  Aristotelis P. <https//glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -30,7 +30,39 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Version information
+Simple dialog for viewing HTML
 """
 
-__version__ = "1.0.0-dev.1"
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+
+from aqt.qt import *
+
+from ..platform import PLATFORM
+
+from .basic.dialog_basic import BasicDialog
+
+
+class HTMLViewer(BasicDialog):
+
+    def __init__(self, html, title=None, parent=None):
+        super(HTMLViewer, self).__init__(parent=parent)
+        if PLATFORM == "win":
+            self.setMinimumWidth(400)
+            self.setMinimumHeight(500)
+        else:
+            self.setMinimumWidth(500)
+            self.setMinimumHeight(600)
+        if title:
+            self.setWindowTitle(title)
+        self.setHtml(html)
+
+    def _setupUI(self):
+        layout = QVBoxLayout(self)
+        self.setLayout(layout)
+        self._browser = QTextBrowser(self)
+        self._browser.setOpenExternalLinks(True)
+        layout.addWidget(self._browser)
+        
+    def setHtml(self, html):
+        self._browser.setHtml(html)

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Popup Dictionary Add-on for Anki
+# Libaddon for Anki
 #
-# Copyright (C)  2018-2019 Aristotelis P. <https://glutanimate.com/>
+# Copyright (C) 2018-2019  Aristotelis P. <https//glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -30,10 +30,20 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Entry point for the add-on into Anki 2.0
-
-In case you opened this file from Anki: Please do not modify anything
-if you are not sure what you are doing.
+Vendorized third-party packages
 """
 
-import popup_dictionary.main  # noqa: F401
+from ..packaging import VersionSpecificImporter
+
+# New vendored packages should be appended here:
+names = [
+    "packaging",
+    "markdown2",
+    "logging"
+]
+
+# NOTE: VersionSpecificImporter does not resolve absolute imports within
+# vendored packages. These will still need to be updated manually if
+# necessary
+
+VersionSpecificImporter(__name__, managed_imports=names).install()

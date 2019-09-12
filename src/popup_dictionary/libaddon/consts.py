@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Popup Dictionary Add-on for Anki
+# Libaddon for Anki
 #
-# Copyright (C) 2018-2019  Aristotelis P. <https://glutanimate.com/>
+# Copyright (C) 2018-2019  Aristotelis P. <https//glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -30,7 +30,42 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Version information
+Package-wide constants
 """
 
-__version__ = "1.0.0-dev.1"
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+
+
+def setAddonProperties(addon):
+    """Update ADDON class properties from another ADDON class
+    
+    Arguments:
+        addon {object} -- an ADDON class with properties stored as class
+                          attributes
+    """
+    for key, value in addon.__dict__.items():
+        if key.startswith("__") and key.endswith("__"):
+            # ignore special attributes
+            continue
+        setattr(ADDON, key, value)
+
+class ADDON(object):
+    """Class storing general add-on properties
+    Property names need to be all-uppercase with no leading underscores.
+    Should be updated by add-on on initialization.
+    """
+    NAME = ""
+    MODULE = ""
+    REPO = ""
+    ID = ""
+    VERSION = ""
+    LICENSE = ""
+    AUTHORS = ()
+    AUTHOR_MAIL = ""
+    LIBRARIES = ()
+    CONTRIBUTORS = ()
+    SPONSORS = ()
+    MEMBERS_CREDITED = ()
+    MEMBERS_TOP = ()
+    LINKS = {}

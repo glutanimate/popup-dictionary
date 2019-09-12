@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Popup Dictionary Add-on for Anki
+# Libaddon for Anki
 #
-# Copyright (C) 2018-2019  Aristotelis P. <https://glutanimate.com/>
+# Copyright (C) 2018-2019  Aristotelis P. <https//glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -30,7 +30,6 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Version information
+Package that bundles together commonly used modules that mediate interaction
+between add-ons and Anki
 """
-
-__version__ = "1.0.0-dev.1"
