@@ -184,6 +184,33 @@ class ConfigManager(object):
         """
         return self._config.__str__()
 
+    # Attribute interface
+    ######################################################################
+    
+    @property
+    def local(self):
+        return self.__getitem__("local")
+    
+    @local.setter
+    def local(self, value):
+        return self.__setitem__("local", value)
+    
+    @property
+    def synced(self):
+        return self.__getitem__("synced")
+
+    @synced.setter
+    def synced(self, value):
+        return self.__setitem__("synced", value)
+    
+    @property
+    def profile(self):
+        return self.__getitem__("profile")
+
+    @profile.setter
+    def profile(self, value):
+        return self.__setitem__("profile", value)
+
     # Regular interface
     ######################################################################
 
@@ -351,13 +378,20 @@ class ConfigManager(object):
             action {function} -- Function to call
         """
         self.conf_action = action
-        if not ANKI20:
+        if not ANKI20 and action:
             self.mw.addonManager.setConfigAction(
                 MODULE_ADDON, action)
 
     def setConfigUpdatedAction(self, action):
+        """
+        Set function/method to call after config dialog is
+        closed in Anki 2.1's add-on manager.
+
+        Arguments:
+            action {function} -- Function to call
+        """
         self.conf_updated_action = action
-        if not ANKI20:
+        if not ANKI20 and action:
             self.mw.addonManager.setConfigUpdatedAction(
                 MODULE_ADDON, action)
 
@@ -410,6 +444,10 @@ class ConfigManager(object):
     def _setupAnkiHooks(self, conf_action):
         if "local" in self._storages:
             self.setConfigUpdatedAction(self.onLocalConfigUpdated)
+            # TODO: setConfigAction to save local config before invoking
+            # Anki's native config editor. Currently not feasible with
+            # the existing config action implementation. NOTE: Make sure
+            # to save local config when updating outside of config editor
         self.setConfigAction(conf_action)
         if ANKI20:
             self._setupAddonMenus20()
