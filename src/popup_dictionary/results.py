@@ -120,6 +120,9 @@ def getNoteSnippetsFor(term, ignore_nid):
     if conf["snippetsLimitToCurrentDeck"]:
         exclusion_tokens.append("deck:current")
 
+    if conf["snippetsExcludeNewNotes"]:
+        exclusion_tokens.append("-is:new")
+
     # construct query string
     query = u'''"{}" {}'''.format(term, " ".join(exclusion_tokens))
 
