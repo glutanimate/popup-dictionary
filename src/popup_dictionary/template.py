@@ -34,7 +34,6 @@ Note type and card templates.
 """
 
 from aqt import mw
-from anki.hooks import addHook
 
 from .config import config
 
@@ -98,4 +97,9 @@ def maybeCreateTemplate():
 
 
 def initializeTemplate():
-    addHook("profileLoaded", maybeCreateTemplate)
+    try:
+        from aqt.gui_hooks import profile_did_open
+        profile_did_open.append(maybeCreateTemplate)
+    except (ImportError, ModuleNotFoundError):
+        from anki.hooks import addHook
+        addHook("profileLoaded", maybeCreateTemplate)

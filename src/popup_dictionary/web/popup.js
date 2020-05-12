@@ -126,7 +126,7 @@ $(document).ready(function()
 
         // Set tooltip contents through pyrun bridge. Need to use a callback
         // due to async execution of JS and Python in Anki 2.1
-        pycmd("dctLookup:" + JSON.stringify([term, selNID]), function(text){
+        pycmd("popupDictionaryLookup:" + JSON.stringify([term, selNID]), function(text){
             return onCallback(text);
         });
 

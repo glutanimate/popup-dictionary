@@ -34,55 +34,21 @@ Modifications to Anki's Reviewer
 """
 
 import json
+from typing import TYPE_CHECKING, Any, Optional, Tuple, Union
 
-import aqt
-from aqt.qt import *
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QShortcut
+
 from aqt import mw
 from aqt.reviewer import Reviewer
 
-from anki.hooks import wrap, addHook
-
-from .results import getContentFor
-from .web import popup_integrator
+from .browser import browse_to_nid
 from .config import config
+from .results import PYCMD_IDENTIFIER, getContentFor
+from .web import popup_integrator
 
-
-def linkHandler(self, url, _old):
-    """JS <-> Py bridge"""
-    if url.startswith("dctBrws"):
-        (cmd, arg) = url.split(":", 1)
-        if not arg:
-            return
-        browseToNid(arg)
-    elif url.startswith("dctLookup"):
-        (cmd, payload) = url.split(":", 1)
-        term, ignore_nid = json.loads(payload)
-        term = term.strip()
-        return getContentFor(term, ignore_nid)
-    elif url.startswith("dctDebug"):
-        (cmd, msg) = url.split(":", 1)
-        
-    else:
-        return _old(self, url)
-
-
-def browseToNid(nid):
-    """Open browser and find cards by nid"""
-    browser = aqt.dialogs.open("Browser", mw)
-    browser.form.searchEdit.lineEdit().setText("nid:{}".format(nid))
-    browser.onSearchActivated()
-
-
-def onRevHtml(self, _old):
-    return _old(self) + popup_integrator
-
-
-def onProfileLoaded():
-    """Monkey-patch Reviewer delayed in order to counteract bad practices
-    in other add-ons that overwrite revHtml and _linkHandler in their
-    entirety"""
-    Reviewer.revHtml = wrap(Reviewer.revHtml, onRevHtml, "around")
-    Reviewer._linkHandler = wrap(Reviewer._linkHandler, linkHandler, "around")
+if TYPE_CHECKING:  # 2.1.22+
+    from aqt.webview import WebContent
 
 
 def onReviewerHotkey():
@@ -91,11 +57,115 @@ def onReviewerHotkey():
     mw.reviewer.web.eval("invokeTooltipAtSelectedElm();")
 
 
-def setupShortcuts():
-    QShortcut(QKeySequence(config["local"]["generalHotkey"]),
-              mw, activated=onReviewerHotkey)
+# Legacy
 
 
-def initializeReviewer():
-    setupShortcuts()
-    addHook("profileLoaded", onProfileLoaded)
+def link_handler(self: Reviewer, url: str, _old) -> Optional[str]:
+    """JS <-> Py bridge"""
+
+    if not url.startswith(PYCMD_IDENTIFIER):
+        return _old(self, url)
+
+    return webview_message_handler(url)
+
+
+def on_rev_html(self, _old) -> str:
+    return _old(self) + popup_integrator
+
+
+# New
+
+
+def webview_message_handler(message: str) -> Optional[str]:
+    cmd, arg = message.split(":", 1)
+    subcmd = cmd.replace(PYCMD_IDENTIFIER, "")
+
+    if subcmd == "Browse":
+        (cmd, arg) = message.split(":", 1)
+        if not arg:
+            return None
+        browse_to_nid(arg)
+    elif subcmd == "Lookup":
+        (cmd, payload) = message.split(":", 1)
+        term, ignore_nid = json.loads(payload)
+        term = term.strip()
+        return getContentFor(term, ignore_nid)
+    else:
+        print(f"Unrecognized pop-up dictionary pycmd identifier {subcmd}")
+
+    return None
+
+
+def on_webview_will_set_content(
+    web_content: "WebContent", context: Union[Reviewer, Any]
+):
+    if not isinstance(context, Reviewer):
+        return
+
+    # Appending to body rather than using header. Not best practice, but let's stay
+    # on the safe side
+    web_content.body += popup_integrator
+
+
+def on_webview_did_receive_js_message(
+    handled: Tuple[bool, Any], message: str, context: Union[Reviewer, Any]
+):
+    if not isinstance(context, Reviewer):
+        return handled
+
+    if not message.startswith(PYCMD_IDENTIFIER):
+        return handled
+
+    callback_value = webview_message_handler(message)
+
+    return (True, callback_value)
+
+
+# ensure that we only patch once on first profile load
+_reviewer_patched: bool = False
+
+
+def patch_reviewer():
+    global _reviewer_patched
+
+    if _reviewer_patched:
+        return
+
+    try:  # 2.1.22+
+        from aqt.gui_hooks import (
+            webview_will_set_content,
+            webview_did_receive_js_message,
+        )
+
+        webview_will_set_content.append(on_webview_will_set_content)
+        webview_did_receive_js_message.append(on_webview_did_receive_js_message)
+
+    except (ImportError, ModuleNotFoundError):
+        from anki.hooks import wrap
+
+        Reviewer.revHtml = wrap(Reviewer.revHtml, on_rev_html, "around")
+        Reviewer._linkHandler = wrap(Reviewer._linkHandler, link_handler, "around")
+
+    _reviewer_patched = True
+
+
+def setup_shortcuts():
+    QShortcut(  # type: ignore
+        QKeySequence(config["local"]["generalHotkey"]), mw, activated=onReviewerHotkey
+    )
+
+
+def initialize_reviewer():
+    """Delay patching reviewer to counteract bad practices in other add-ons that
+    overwrite revHtml and _linkHandler in their entirety"""
+
+    try:  # 2.1.20+
+        from aqt.gui_hooks import profile_did_open
+
+        profile_did_open.append(patch_reviewer)
+    except (ImportError, ModuleNotFoundError):
+        from anki.hooks import addHook
+
+        addHook("profileLoaded", patch_reviewer)
+
+    setup_shortcuts()

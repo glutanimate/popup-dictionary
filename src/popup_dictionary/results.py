@@ -42,6 +42,8 @@ from .libaddon.debug import logger
 
 from .config import config
 
+PYCMD_IDENTIFIER: str = "popupDictionary"
+
 # UI messages
 
 WRN_RESCOUNT = ("<b>{}</b> relevant notes found.<br>"
@@ -53,16 +55,16 @@ WRN_RESCOUNT = ("<b>{}</b> relevant notes found.<br>"
 
 html_reslist = """<div class="tt-reslist">{}</div>"""
 
-html_res_normal = """\
-<div class="tt-res" data-nid={}>{}<div title="Browse..." class="tt-brws"
-onclick='pycmd("dctBrws:" + this.parentNode.dataset.nid)'>&rarr;</div></div>\
+html_res_normal = f"""\
+<div class="tt-res" data-nid={{}}>{{}}<div title="Browse..." class="tt-brws"
+onclick='pycmd("{PYCMD_IDENTIFIER}Browse:" + this.parentNode.dataset.nid)'>&rarr;</div></div>\
 """
 
-html_res_dict = """\
-<div class="tt-res tt-dict" data-nid={}>
+html_res_dict = f"""\
+<div class="tt-res tt-dict" data-nid={{}}>
     <div class="tt-dict-title">Definition:</div>
-    {}
-    <div title="Browse..." class="tt-brws" onclick='pycmd("dctBrws:" + this.parentNode.dataset.nid)'>&rarr;</div>
+    {{}}
+    <div title="Browse..." class="tt-brws" onclick='pycmd("{PYCMD_IDENTIFIER}Browse:" + this.parentNode.dataset.nid)'>&rarr;</div>
 </div>"""
 
 html_field = """<div class="tt-fld">{}</div>"""
