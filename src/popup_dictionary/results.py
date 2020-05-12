@@ -34,6 +34,7 @@ Parses collection for pertinent notes and generates result list
 """
 
 import re
+from typing import List, Optional, Union
 
 from aqt import mw
 from aqt.utils import askUser
@@ -46,28 +47,30 @@ PYCMD_IDENTIFIER: str = "popupDictionary"
 
 # UI messages
 
-WRN_RESCOUNT = ("<b>{}</b> relevant notes found.<br>"
-                "The tooltip could take a lot of time to render and <br>"
-                "temporarily slow down Anki.<br><br>"
-                "<b>Are you sure you want to proceed?</b>")
+WRN_RESCOUNT: str = (
+    "<b>{}</b> relevant notes found.<br>"
+    "The tooltip could take a lot of time to render and <br>"
+    "temporarily slow down Anki.<br><br>"
+    "<b>Are you sure you want to proceed?</b>"
+)
 
 # HTML format strings for results
 
-html_reslist = """<div class="tt-reslist">{}</div>"""
+html_reslist: str = """<div class="tt-reslist">{}</div>"""
 
-html_res_normal = f"""\
+html_res_normal: str = f"""\
 <div class="tt-res" data-nid={{}}>{{}}<div title="Browse..." class="tt-brws"
 onclick='pycmd("{PYCMD_IDENTIFIER}Browse:" + this.parentNode.dataset.nid)'>&rarr;</div></div>\
 """
 
-html_res_dict = f"""\
+html_res_dict: str = f"""\
 <div class="tt-res tt-dict" data-nid={{}}>
     <div class="tt-dict-title">Definition:</div>
     {{}}
     <div title="Browse..." class="tt-brws" onclick='pycmd("{PYCMD_IDENTIFIER}Browse:" + this.parentNode.dataset.nid)'>&rarr;</div>
 </div>"""
 
-html_field = """<div class="tt-fld">{}</div>"""
+html_field: str = """<div class="tt-fld">{}</div>"""
 
 # RegExes for cloze marker removal
 
@@ -76,7 +79,8 @@ cloze_re = re.compile(cloze_re_str)
 
 # Functions that compose tooltip content
 
-def getContentFor(term, ignore_nid):
+
+def get_content_for(term: str, ignore_nid: str) -> str:
     """Compose tooltip content for search term.
     Returns HTML string."""
     conf = config["local"]
@@ -86,29 +90,30 @@ def getContentFor(term, ignore_nid):
     content = []
 
     if conf["dictionaryEnabled"]:
-        dict_entry = searchDefinitionFor(term)
+        dict_entry = search_definition_for(term)
         if dict_entry:
             content.append(dict_entry)
 
     if conf["snippetsEnabled"]:
-        note_content = getNoteSnippetsFor(term, ignore_nid)
+        note_content = get_note_snippets_for(term, ignore_nid)
 
         if note_content:
-            content.extend(note_content)
+            content.extend(note_content)  # type: ignore
 
     if content:
         return html_reslist.format("".join(content))
     elif note_content is False:
         return ""
-    elif note_content is None:
-        return ("No other results found."
-                if conf["generalConfirmEmpty"] else "")
+    elif note_content is None and conf["generalConfirmEmpty"]:
+        return "No other results found."
+    
+    return ""
 
 
-def getNoteSnippetsFor(term, ignore_nid):
+def get_note_snippets_for(term: str, ignore_nid: str) -> Union[List[str], bool, None]:
     """Find relevant note snippets for search term.
     Returns list of HTML strings."""
-    
+
     conf = config["local"]
 
     logger.debug("getNoteSnippetsFor called")
@@ -123,7 +128,7 @@ def getNoteSnippetsFor(term, ignore_nid):
         exclusion_tokens.append("deck:current")
 
     # construct query string
-    query = u'''"{}" {}'''.format(term, " ".join(exclusion_tokens))
+    query = """"{}" {}""".format(term, " ".join(exclusion_tokens))
 
     # NOTE: performing the SQL query directly might be faster
     res = sorted(mw.col.findNotes(query))
@@ -139,12 +144,14 @@ def getNoteSnippetsFor(term, ignore_nid):
         if not askUser(WRN_RESCOUNT.format(res_len), title="Popup Dictionary"):
             return False
 
-    note_content = []
+    note_content: List[str] = []
     excluded_flds = conf["snippetsExcludedFields"]
+    
     for nid in res:
         note = mw.col.getNote(nid)
-        valid_flds = [html_field.format(
-            i[1]) for i in note.items() if i[0] not in excluded_flds]
+        valid_flds = [
+            html_field.format(i[1]) for i in note.items() if i[0] not in excluded_flds
+        ]
         joined_flds = "".join(valid_flds)
         # remove cloze markers
         filtered_flds = cloze_re.sub(r"\2", joined_flds)
@@ -153,13 +160,13 @@ def getNoteSnippetsFor(term, ignore_nid):
     return note_content
 
 
-def searchDefinitionFor(term):
+def search_definition_for(term: str) -> Optional[str]:
     """Look up search term in dictionary deck.
     Returns HTML string."""
     conf = config["local"]
-    query = u"""note:"{}" {}:"{}" """.format(conf["dictionaryNoteTypeName"],
-                                             conf["dictionaryTermFieldName"],
-                                             term)
+    query = """note:"{}" {}:"{}" """.format(
+        conf["dictionaryNoteTypeName"], conf["dictionaryTermFieldName"], term
+    )
     res = mw.col.findNotes(query)
     if res:
         nid = res[0]

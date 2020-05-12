@@ -44,14 +44,14 @@ from aqt.reviewer import Reviewer
 
 from .browser import browse_to_nid
 from .config import config
-from .results import PYCMD_IDENTIFIER, getContentFor
+from .results import PYCMD_IDENTIFIER, get_content_for
 from .web import popup_integrator
 
 if TYPE_CHECKING:  # 2.1.22+
     from aqt.webview import WebContent
 
 
-def onReviewerHotkey():
+def on_reviewer_hotkey():
     if mw.state != "review":
         return
     mw.reviewer.web.eval("invokeTooltipAtSelectedElm();")
@@ -89,7 +89,7 @@ def webview_message_handler(message: str) -> Optional[str]:
         (cmd, payload) = message.split(":", 1)
         term, ignore_nid = json.loads(payload)
         term = term.strip()
-        return getContentFor(term, ignore_nid)
+        return get_content_for(term, ignore_nid)
     else:
         print(f"Unrecognized pop-up dictionary pycmd identifier {subcmd}")
 
@@ -151,7 +151,7 @@ def patch_reviewer():
 
 def setup_shortcuts():
     QShortcut(  # type: ignore
-        QKeySequence(config["local"]["generalHotkey"]), mw, activated=onReviewerHotkey
+        QKeySequence(config["local"]["generalHotkey"]), mw, activated=on_reviewer_hotkey
     )
 
 
