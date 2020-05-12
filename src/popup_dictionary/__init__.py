@@ -61,11 +61,11 @@ def initialize_addon():
     maybeStartDebugging()
 
     from .reviewer import initialize_reviewer
-    from .template import initializeTemplate
-    from .web import initializeWeb
+    from .template import initialize_template
+    from .web import initialize_web
 
-    initializeTemplate()
-    initializeWeb()
+    initialize_template()
+    initialize_web()
     initialize_reviewer()
 
 

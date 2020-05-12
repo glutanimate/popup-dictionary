@@ -59,6 +59,6 @@ popup_integrator = f"""
 """
 
 
-def initializeWeb():
+def initialize_web():
     # TODO: either fix on Anki#s end or use re.escape(os.path.sep)
     mw.addonManager.setWebExports(__name__, r"web.*")

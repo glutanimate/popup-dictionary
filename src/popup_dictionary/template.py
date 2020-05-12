@@ -33,73 +33,109 @@
 Note type and card templates.
 """
 
+from typing import NamedTuple, Tuple
+
 from aqt import mw
+from aqt.main import AnkiQt
 
 from .config import config
 
-fields = (
-    config["local"]["dictionaryTermFieldName"],
-    config["local"]["dictionaryDefinitionFieldName"]
-)
 
-# Default card template
-card_front = """
+class CardTemplate(NamedTuple):
+    name: str
+    qfmt: str
+    afmt: str
+
+
+class NoteType(NamedTuple):
+    name: str
+    fields: Tuple[str, ...]
+    templates: Tuple[CardTemplate, ...]
+    css: str
+
+
+_dictionary_card_template: CardTemplate = CardTemplate(
+    name="Definition",
+    qfmt="""\
 <b>Define</b>: {{%s}}
-""" % config["local"]["dictionaryTermFieldName"]
-
-card_back = """
+"""
+    % config["local"]["dictionaryTermFieldName"],
+    afmt="""\
 {{FrontSide}}
 
 <hr id=answer>
 
 {{%s}}
-""" % config["local"]["dictionaryDefinitionFieldName"]
-
-css = """
-.card {
-font-family: arial;
-font-size: 20px;
-text-align: center;
-color: black;
-background-color: white;
-}
 """
+    % config["local"]["dictionaryDefinitionFieldName"],
+)
+
+_dictionary_note_type = NoteType(
+    name=config["local"]["dictionaryNoteTypeName"],
+    fields=(
+        config["local"]["dictionaryTermFieldName"],
+        config["local"]["dictionaryDefinitionFieldName"],
+    ),
+    templates=(_dictionary_card_template,),
+    css="""\
+.card {
+    font-family: arial;
+    font-size: 20px;
+    text-align: center;
+    color: black;
+    background-color: white;
+}
+""",
+)
 
 
-def addModel():
-    col = mw.col
-    if col is None:
+def add_note_type(mw: AnkiQt, note_type: NoteType) -> bool:
+    if mw is None or mw.col is None:
         print("Collection not ready")
         return False
-    models = col.models
-    def_model = models.new(config["local"]["dictionaryNoteTypeName"])
+
+    model_manager = mw.col.models
+
+    anki_model = model_manager.new(note_type.name)
+
     # Add fields:
-    for fname in fields:
-        fld = models.newField(fname)
-        models.addField(def_model, fld)
-    # Add template
-    template = models.newTemplate("Definition")
-    template['qfmt'] = card_front
-    template['afmt'] = card_back
-    def_model['css'] = css
-    models.addTemplate(def_model, template)
-    models.add(def_model)
-    return def_model
+    for field_name in note_type.fields:
+        field = model_manager.newField(field_name)
+        model_manager.addField(anki_model, field)
+
+    # Add card templates:
+    for card_template in note_type.templates:
+        template = model_manager.newTemplate(card_template.name)
+        template["qfmt"] = card_template.qfmt
+        template["afmt"] = card_template.afmt
+        model_manager.addTemplate(anki_model, template)
+
+    anki_model["css"] = note_type.css
+
+    model_manager.add(anki_model)
+
+    return True
 
 
-def maybeCreateTemplate():
+def maybe_create_template():
     if not config["local"]["dictionaryEnabled"]:
         return
-    mid = mw.col.models.byName(config["local"]["dictionaryNoteTypeName"])
-    if not mid:
-        addModel()
-        mw.reset()
+
+    mid = mw.col.models.byName(_dictionary_note_type.name)
+    if mid:
+        return
+
+    add_note_type(mw, _dictionary_note_type)
+
+    mw.reset()
 
 
-def initializeTemplate():
+def initialize_template():
     try:
         from aqt.gui_hooks import profile_did_open
-        profile_did_open.append(maybeCreateTemplate)
+
+        profile_did_open.append(maybe_create_template)
     except (ImportError, ModuleNotFoundError):
         from anki.hooks import addHook
-        addHook("profileLoaded", maybeCreateTemplate)
+
+        addHook("profileLoaded", maybe_create_template)
