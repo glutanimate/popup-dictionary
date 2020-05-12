@@ -2,7 +2,7 @@
 
 # Libaddon for Anki
 #
-# Copyright (C) 2018-2019  Aristotelis P. <https//glutanimate.com/>
+# Copyright (C) 2018-2020  Aristotelis P. <https//glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -30,5 +30,5 @@
 # Any modifications to this file must keep this entire header intact.
 
 """
-Packages common to both Anki 2.0 and 2.1
+Utility modules not specific to Anki
 """
