@@ -69,7 +69,7 @@ def linkHandler(self, url, _old):
 def browseToNid(nid):
     """Open browser and find cards by nid"""
     browser = aqt.dialogs.open("Browser", mw)
-    browser.form.searchEdit.lineEdit().setText("nid:'{}'".format(nid))
+    browser.form.searchEdit.lineEdit().setText("nid:{}".format(nid))
     browser.onSearchActivated()
 
 
