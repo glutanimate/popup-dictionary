@@ -77,12 +77,20 @@ def onRevHtml(self, _old):
     return _old(self) + popup_integrator
 
 
+def onNextCard(self, _old):
+    """Make ignoreMinLength config data accessible to web"""
+    _old(self)
+    ign = config["local"]["ignoreMinLength"]
+    self.web.eval("var ignoreLength = \"{}\"".format(ign))
+
+
 def onProfileLoaded():
     """Monkey-patch Reviewer delayed in order to counteract bad practices
     in other add-ons that overwrite revHtml and _linkHandler in their
     entirety"""
     Reviewer.revHtml = wrap(Reviewer.revHtml, onRevHtml, "around")
     Reviewer._linkHandler = wrap(Reviewer._linkHandler, linkHandler, "around")
+    Reviewer.nextCard = wrap(Reviewer.nextCard, onNextCard, "around")
 
 
 def onReviewerHotkey():
