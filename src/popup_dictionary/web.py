@@ -49,10 +49,14 @@ tooltip_footer_css = """
     margin-left: 0.5em;
 }""" % dict(version=ADDON.VERSION)
 
+# jQuery-migrate is required on 2.1.40+ to fix compatibility conflcits between
+# qtip2 and jQuery 3.x
+# cf. https://github.com/qTip2/qTip2/issues/797
 popup_integrator = f"""
 <link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/jquery.qtip.css">
 <link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/popup.css">
 <style>{tooltip_footer_css}</style>
+<script src="/_addons/{MODULE_ADDON}/web/jquery-migrate-3.0.0.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/jquery.qtip.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/jquery.highlight.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/popup.js"></script>
