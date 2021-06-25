@@ -127,6 +127,9 @@ def get_note_snippets_for(term: str, ignore_nid: str) -> Union[List[str], bool, 
     if conf["snippetsLimitToCurrentDeck"]:
         exclusion_tokens.append("deck:current")
 
+    if conf["snippetsExcludeNewNotes"]:
+        exclusion_tokens.append("-is:new")
+
     # construct query string
     query = """"{}" {}""".format(term, " ".join(exclusion_tokens))
 
