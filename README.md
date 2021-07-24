@@ -44,7 +44,7 @@ Please click on the entry corresponding to your Anki version:
     
 (using this method, you are installing a development version of the popup-dictionary addon - not a released version. Follow this instruction at your own risk)
 
-1. download this repository `git clone [url]` in terminal or code -> download .zip on github
+1. download this repository `git clone [url]` in terminal OR download and extract .zip from github
 2. open anki, go to addons, click "install from file"
 3. locate `/path/to/popup-dictionary/src`
 4. import the popup-dictionary folder contained inside `/path/to/popup-dictionary/src`
