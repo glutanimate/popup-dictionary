@@ -39,6 +39,19 @@ The easiest way to install Pop-up Dictionary is through [AnkiWeb](https://ankiwe
 Please click on the entry corresponding to your Anki version:
 
 <details>
+    
+<summary><i>Anki 2.14+</i></summary>
+    
+(using this method, you are installing a development version of the popup-dictionary addon - not a released version. Follow this instruction at your own risk)
+
+1. download this repository `git clone [url]` in terminal or code -> download .zip on github
+2. open anki, go to addons, click "install from file"
+3. locate `/path/to/popup-dictionary/src`
+4. import the popup-dictionary folder contained inside `/path/to/popup-dictionary/src`
+ 
+</details>
+
+<details>
 
 <summary><i>Anki 2.1</i></summary>
 
