@@ -53,6 +53,7 @@ popup_integrator = f"""
 <link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/jquery.qtip.css">
 <link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/popup.css">
 <style>{tooltip_footer_css}</style>
+<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/jquery.qtip.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/jquery.highlight.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/popup.js"></script>
