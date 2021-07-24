@@ -63,9 +63,12 @@ class ADDON(object):
     )
     AUTHOR_MAIL = "ankiglutanimate@gmail.com"
     LIBRARIES = (
-        {"name": "qTip2", "version": "v2.1.1",
+        {"name": "qTip2", "version": "v3.0.3",
          "author": "Craig Michael Thompson", "license": "MIT license",
          "url": "http://qtip2.com/"},
+        {"name": "jquery-migrate", "version": "3.0.0",
+         "author": "jquery", "license": "MIT license",
+         "url": "https://github.com/jquery/jquery-migrate"},
         {"name": "jQuery.highlight", "version": "5",
          "author": "Johann Burkard", "license": "MIT license",
          "url": "https://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html"},
