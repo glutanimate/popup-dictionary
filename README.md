@@ -45,9 +45,9 @@ Please click on the entry corresponding to your Anki version:
 (using this method, you are installing a development version of the popup-dictionary addon - not a released version. Follow this instruction at your own risk)
 
 1. download this repository `git clone [url]` in terminal OR download and extract .zip from github
-2. open anki, go to addons, click "install from file"
-3. locate `/path/to/popup-dictionary/src`
-4. import the popup-dictionary folder contained inside `/path/to/popup-dictionary/src`
+2. open anki21's addon folder. On a mac it's located at /Users/[user]/Library/Application\ Support/Anki2/addons21. You can also go to addons, choose one, click view files, and then go up one level to find it on your machine.
+3. go to `/path/to/popup-dictionary/src`
+4. drag or copy the popup-dictionary folder contained inside `src` to Anki's `addons21` folder
  
 </details>
 
