@@ -13,6 +13,17 @@
     color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
+.night_mode .qtip-content::-webkit-scrollbar {
+    background-color: #141414;
+}
+.night_mode .qtip-content::-webkit-scrollbar-corner {
+    background-color:#141414;
+}
+.night_mode .qtip-content::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #515151;
+    min-height: 50px;
+}
 .night_mode > .qtip img {
     background: white;
 }
