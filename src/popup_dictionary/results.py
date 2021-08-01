@@ -34,14 +34,17 @@ Parses collection for pertinent notes and generates result list
 """
 
 import re
-from typing import List, Optional, Union
+from typing import TYPE_CHECKING, List, Optional, Sequence, Union
 
 from aqt import mw
 from aqt.utils import askUser
 
+from .config import config
 from .libaddon.debug import logger
 
-from .config import config
+if TYPE_CHECKING:
+    from anki.collection import Collection
+    from anki.notes import Note, NoteId
 
 PYCMD_IDENTIFIER: str = "popupDictionary"
 
@@ -77,6 +80,23 @@ html_field: str = """<div class="tt-fld">{}</div>"""
 cloze_re_str = r"\{\{c(\d+)::(.*?)(::(.*?))?\}\}"
 cloze_re = re.compile(cloze_re_str)
 
+# Anki API shims
+
+
+def get_note(collection: "Collection", note_id: "NoteId") -> "Note":
+    try:
+        return collection.get_note(note_id)
+    except AttributeError:
+        return collection.getNote(note_id)
+
+
+def find_notes(collection: "Collection", query: str, **kwargs) -> Sequence["NoteId"]:
+    try:
+        return collection.find_notes(query, **kwargs)
+    except AttributeError:
+        return collection.findNotes(query, **kwargs)  # type:ignore[attr-defined]
+
+
 # Functions that compose tooltip content
 
 
@@ -106,7 +126,7 @@ def get_content_for(term: str, ignore_nid: str) -> str:
         return ""
     elif note_content is None and conf["generalConfirmEmpty"]:
         return "No other results found."
-    
+
     return ""
 
 
@@ -134,7 +154,7 @@ def get_note_snippets_for(term: str, ignore_nid: str) -> Union[List[str], bool, 
     query = """"{}" {}""".format(term, " ".join(exclusion_tokens))
 
     # NOTE: performing the SQL query directly might be faster
-    res = sorted(mw.col.findNotes(query))
+    res = sorted(find_notes(collection=mw.col, query=query))
     logger.debug("getNoteSnippetsFor query finished.")
 
     if not res:
@@ -149,9 +169,9 @@ def get_note_snippets_for(term: str, ignore_nid: str) -> Union[List[str], bool, 
 
     note_content: List[str] = []
     excluded_flds = conf["snippetsExcludedFields"]
-    
+
     for nid in res:
-        note = mw.col.getNote(nid)
+        note = get_note(collection=mw.col, note_id=nid)
         valid_flds = [
             html_field.format(i[1]) for i in note.items() if i[0] not in excluded_flds
         ]
@@ -170,10 +190,10 @@ def search_definition_for(term: str) -> Optional[str]:
     query = """note:"{}" {}:"{}" """.format(
         conf["dictionaryNoteTypeName"], conf["dictionaryTermFieldName"], term
     )
-    res = mw.col.findNotes(query)
+    res = find_notes(collection=mw.col, query=query)
     if res:
         nid = res[0]
-        note = mw.col.getNote(nid)
+        note = get_note(collection=mw.col, note_id=nid)
         try:
             result = note[conf["dictionaryDefinitionFieldName"]]
         except KeyError:

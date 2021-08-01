@@ -29,7 +29,19 @@
 #
 # Any modifications to this file must keep this entire header intact.
 
-import os
+from ._version import __version__  # noqa: F401
 
-if not os.environ.get("ADDON_TEST_ENV"):
-    from ._addon import *  # noqa: F401, F403
+from .consts import ADDON
+from .libaddon.consts import setAddonProperties
+
+setAddonProperties(ADDON)
+
+from .migrate import migrate_addon
+from .reviewer import initialize_reviewer
+from .template import initialize_template
+from .web import initialize_web
+
+migrate_addon()
+initialize_template()
+initialize_web()
+initialize_reviewer()
