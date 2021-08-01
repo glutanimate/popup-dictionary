@@ -2,7 +2,7 @@
 
 # Pop-up Dictionary Add-on for Anki
 #
-# Copyright (C) 2018-2021  Aristotelis P. <https://glutanimate.com/>
+# Copyright (C)  2018-2021 Aristotelis P. <https://glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -29,46 +29,48 @@
 #
 # Any modifications to this file must keep this entire header intact.
 
+import copy
+from typing import Any, Dict, List
 
-from ._version import __version__  # noqa: F401
+from .config import config
+from .libaddon.anki.configmanager import ConfigManager
+from .libaddon.platform import checkAnkiVersion
 
-from .libaddon import maybeVendorTyping
-
-maybeVendorTyping()
-
-
-def initialize_addon():
-    """Initializes add-on after performing a few checks
-    
-    Allows more fine-grained control over add-on execution, which can
-    be helpful when implementing workarounds for Anki bugs (e.g. the module
-    import bug present in all Anki 2.1 versions up to 2.1.14)
-    """
-
-    from .libaddon import checkFor2114ImportError
-    from .consts import ADDON
-
-    if not checkFor2114ImportError(ADDON.NAME):
-        return False
-
-    from .consts import ADDON
-    from .libaddon.consts import setAddonProperties
-
-    setAddonProperties(ADDON)
-
-    from .libaddon.debug import maybeStartDebugging
-
-    maybeStartDebugging()
-
-    from .migrate import migrate_addon
-    from .reviewer import initialize_reviewer
-    from .template import initialize_template
-    from .web import initialize_web
-
-    migrate_addon()
-    initialize_template()
-    initialize_web()
-    initialize_reviewer()
+_KEY_GENERAL_HOTKEY = "generalHotkey"
 
 
-initialize_addon()
+def reset_config_defaults(
+    config_dict: Dict[str, Any],
+    default_config_dict: Dict[str, Any],
+    keys_to_reset: List[str],
+) -> Dict[str, Any]:
+    for key in keys_to_reset:
+        config_dict[key] = default_config_dict[key]
+    return config_dict
+
+
+def migrate_config(config_manager: ConfigManager):
+    local_config = copy.deepcopy(config_manager["local"])
+    default_config = config_manager.defaults["local"]
+    keys_to_reset = []
+
+    if (
+        checkAnkiVersion("2.1.41")
+        and local_config[_KEY_GENERAL_HOTKEY] == "Ctrl+Shift+D"
+    ):
+        # Anki 2.1.41 and up conflict with the old default key binding
+        keys_to_reset.append(_KEY_GENERAL_HOTKEY)
+
+    if not keys_to_reset:
+        return
+
+    config_manager["local"] = reset_config_defaults(
+        config_dict=local_config,
+        default_config_dict=default_config,
+        keys_to_reset=keys_to_reset,
+    )
+    config_manager.save(storage_name="local")
+
+
+def migrate_addon():
+    migrate_config(config_manager=config)
