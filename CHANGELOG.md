@@ -54,7 +54,7 @@ If you enjoy Pop-up Dictionary, please consider supporting my work on Patreon, o
 
 ### Changed
 
-- Changed: Renamed add-on to Popup Dictionary
+- Changed: Renamed add-on to Pop-up Dictionary
 - Changed: New default values for excluded fields
 
 ### Fixed

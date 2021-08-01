@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Popup Dictionary Add-on for Anki
+# Pop-up Dictionary Add-on for Anki
 #
-# Copyright (C)  2018-2019 Aristotelis P. <https://glutanimate.com/>
+# Copyright (C)  2018-2021 Aristotelis P. <https://glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -41,7 +41,7 @@ from .libaddon.platform import MODULE_ADDON
 
 tooltip_footer_css = """
 .qtip::after {
-    content: "Popup Dictionary v%(version)s by Glutanimate";
+    content: "Pop-up Dictionary v%(version)s by Glutanimate";
     float: right;
     color: grey;
     font-size: 0.8em;
