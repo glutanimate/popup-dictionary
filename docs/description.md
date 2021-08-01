@@ -13,14 +13,14 @@ Pop-up Dictionary allows you to quickly draw up related facts from your card col
 Before doing so, there are some known issues in the current beta release that you need to be aware of:
 
 - Incompatibilities with other add-ons: At the moment there appear to be some issues with other add-ons that also modify the Reviewer in some significant fashion or another. The most important to mention is an incompatibility with Night Mode on Anki 2.1. As a temporary workaround, you can **disable Night Mode's Reviewer** styling by heading to View → Night Mode → Choose what to Style, and unchecking Reviewer Cards.
-- Pop-up not always appearing: There appear to be some issues with the pop-up not always appearing when double clicking on a word or phrase. In those instances you might want to use the hotkey instead (Ctrl+Shift+D).
+- Pop-up not always appearing: There appear to be some issues with the pop-up not always appearing when double clicking on a word or phrase. In those instances you might want to use the hotkey instead (Alt+Shift+D / ⌥+⇧+D).
 - Hotkey not working: On some systems the hotkey might conflict with global key assignments. In those instances feel free to customize the hotkey by using Anki 2.1's add-on config screen.
 
 <!-- CHANGELOG -->
 
 ### USAGE
 
-Simply **double-click a word or phrase** on your card to draw up a pop-up of related information. Alternatively you can also highlight a phrase and then use the **Ctrl/Cmd+Shift+D hotkey** to invoke the pop-up. To look up multiple words, either use the hotkey, or double click on one word and then drag your mouse until the rest of the phrase is highlighted. You can look up terms within pop-ups as well, and go as deep as you want with that (pop-up-ception :) ).
+Simply **double-click a word or phrase** on your card to draw up a pop-up of related information. Alternatively you can also highlight a phrase and then use the **Alt+Shift+D / ⌥+⇧+D hotkey** to invoke the pop-up. To look up multiple words, either use the hotkey, or double click on one word and then drag your mouse until the rest of the phrase is highlighted. You can look up terms within pop-ups as well, and go as deep as you want with that (pop-up-ception :) ).
 
 ### CONFIGURATION
 
