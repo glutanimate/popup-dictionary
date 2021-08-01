@@ -33,12 +33,15 @@
 Note type and card templates.
 """
 
-from typing import NamedTuple, Tuple
+from typing import TYPE_CHECKING, NamedTuple, Optional, Tuple
 
 from aqt import mw
 from aqt.main import AnkiQt
 
 from .config import config
+
+if TYPE_CHECKING:
+    from anki.models import FieldDict, ModelManager, NotetypeDict, TemplateDict
 
 
 class CardTemplate(NamedTuple):
@@ -88,24 +91,58 @@ _dictionary_note_type = NoteType(
 """,
 )
 
+# Anki API shims
 
-def add_note_type(mw: AnkiQt, note_type: NoteType) -> bool:
-    if mw is None or mw.col is None:
+
+def models_new_field(model_manager: "ModelManager", name: str) -> "FieldDict":
+    try:
+        return model_manager.new_field(name)
+    except AttributeError:
+        return model_manager.newField(name)  # type:ignore[attr-defined]
+
+
+def models_new_template(model_manager: "ModelManager", name: str) -> "TemplateDict":
+    try:
+        return model_manager.new_template(name)
+    except AttributeError:
+        return model_manager.newTemplate(name)  # type:ignore[attr-defined]
+
+
+def models_by_name(
+    model_manager: "ModelManager", name: str
+) -> Optional["NotetypeDict"]:
+    try:
+        return model_manager.by_name(name)
+    except AttributeError:
+        return model_manager.byName(name)  # type:ignore[attr-defined]
+
+
+# Note type creation
+
+
+def maybe_add_note_type(mw: AnkiQt, note_type: NoteType) -> bool:
+    if mw.col is None:
         print("Collection not ready")
         return False
 
     model_manager = mw.col.models
 
+    if models_by_name(model_manager=model_manager, name=note_type.name):
+        # note type already exists (by name)
+        return False
+
     anki_model = model_manager.new(note_type.name)
 
     # Add fields:
     for field_name in note_type.fields:
-        field = model_manager.newField(field_name)
+        field = models_new_field(model_manager=model_manager, name=field_name)
         model_manager.addField(anki_model, field)
 
     # Add card templates:
     for card_template in note_type.templates:
-        template = model_manager.newTemplate(card_template.name)
+        template = models_new_template(
+            model_manager=model_manager, name=card_template.name
+        )
         template["qfmt"] = card_template.qfmt
         template["afmt"] = card_template.afmt
         model_manager.addTemplate(anki_model, template)
@@ -118,16 +155,14 @@ def add_note_type(mw: AnkiQt, note_type: NoteType) -> bool:
 
 
 def maybe_create_template():
+    if mw is None:
+        return
+
     if not config["local"]["dictionaryEnabled"]:
         return
 
-    mid = mw.col.models.byName(_dictionary_note_type.name)
-    if mid:
-        return
-
-    add_note_type(mw, _dictionary_note_type)
-
-    mw.reset()
+    if maybe_add_note_type(mw, _dictionary_note_type):
+        mw.reset()
 
 
 def initialize_template():
