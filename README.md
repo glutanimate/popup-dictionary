@@ -99,6 +99,7 @@ Ships with the following javascript libraries:
 - jQuery (v1.12.4), (c) jQuery Foundation, licensed under the MIT license
 - qTip2 (v2.1.1), (c) 2011-2018 Craig Michael Thompson, licensed under the MIT license
 - jQuery.highlight, (c) 2007-2014 Johann Burkard, licensed under the MIT license
+- jQuery Migrate, (c) OpenJS Foundation and other contributors, https://openjsf.org/, licensed under the MIT license
 
 Pop-up Dictionary is free and open-source software. The add-on code that runs within Anki is released under the GNU AGPLv3 license, extended by a number of additional terms. For more information please see the [LICENSE](https://github.com/glutanimate/popup-dictionary/blob/master/LICENSE) file that accompanied this program.
 

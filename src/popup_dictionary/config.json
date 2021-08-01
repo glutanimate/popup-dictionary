@@ -1,6 +1,6 @@
 {
     "generalConfirmEmpty": true,
-    "generalHotkey": "Ctrl+Shift+D",
+    "generalHotkey": "Alt+Shift+D",
     "dictionaryEnabled": true,
     "dictionaryNoteTypeName": "Dictionary Entry",
     "dictionaryTermFieldName": "Term",

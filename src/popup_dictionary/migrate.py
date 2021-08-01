@@ -28,15 +28,49 @@
 # listed here: <https://glutanimate.com/contact/>.
 #
 # Any modifications to this file must keep this entire header intact.
-#
 
-import aqt
-from aqt import mw
-from aqt.browser import Browser
+import copy
+from typing import Any, Dict, List
+
+from .config import config
+from .libaddon.anki.configmanager import ConfigManager
+from .libaddon.platform import checkAnkiVersion
+
+_KEY_GENERAL_HOTKEY = "generalHotkey"
 
 
-def browse_to_nid(nid: str):
-    """Open browser and find cards by nid"""
-    browser: Browser = aqt.dialogs.open("Browser", mw)
-    browser.form.searchEdit.lineEdit().setText("nid:{}".format(nid))
-    browser.onSearchActivated()
+def reset_config_defaults(
+    config_dict: Dict[str, Any],
+    default_config_dict: Dict[str, Any],
+    keys_to_reset: List[str],
+) -> Dict[str, Any]:
+    for key in keys_to_reset:
+        config_dict[key] = default_config_dict[key]
+    return config_dict
+
+
+def migrate_config(config_manager: ConfigManager):
+    local_config = copy.deepcopy(config_manager["local"])
+    default_config = config_manager.defaults["local"]
+    keys_to_reset = []
+
+    if (
+        checkAnkiVersion("2.1.41")
+        and local_config[_KEY_GENERAL_HOTKEY] == "Ctrl+Shift+D"
+    ):
+        # Anki 2.1.41 and up conflict with the old default key binding
+        keys_to_reset.append(_KEY_GENERAL_HOTKEY)
+
+    if not keys_to_reset:
+        return
+
+    config_manager["local"] = reset_config_defaults(
+        config_dict=local_config,
+        default_config_dict=default_config,
+        keys_to_reset=keys_to_reset,
+    )
+    config_manager.save(storage_name="local")
+
+
+def migrate_addon():
+    migrate_config(config_manager=config)

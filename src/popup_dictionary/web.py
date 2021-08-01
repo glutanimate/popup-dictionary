@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Popup Dictionary Add-on for Anki
+# Pop-up Dictionary Add-on for Anki
 #
-# Copyright (C)  2018-2019 Aristotelis P. <https://glutanimate.com/>
+# Copyright (C)  2018-2021 Aristotelis P. <https://glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -41,7 +41,7 @@ from .libaddon.platform import MODULE_ADDON
 
 tooltip_footer_css = """
 .qtip::after {
-    content: "Popup Dictionary v%(version)s by Glutanimate";
+    content: "Pop-up Dictionary v%(version)s by Glutanimate";
     float: right;
     color: grey;
     font-size: 0.8em;
@@ -49,10 +49,14 @@ tooltip_footer_css = """
     margin-left: 0.5em;
 }""" % dict(version=ADDON.VERSION)
 
+# jQuery-migrate is required on 2.1.40+ to fix compatibility conflcits between
+# qtip2 and jQuery 3.x
+# cf. https://github.com/qTip2/qTip2/issues/797
 popup_integrator = f"""
 <link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/jquery.qtip.css">
 <link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/popup.css">
 <style>{tooltip_footer_css}</style>
+<script src="/_addons/{MODULE_ADDON}/web/jquery-migrate-3.0.0.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/jquery.qtip.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/jquery.highlight.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/popup.js"></script>

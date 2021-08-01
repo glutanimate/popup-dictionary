@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Popup Dictionary Add-on for Anki
+# Pop-up Dictionary Add-on for Anki
 #
-# Copyright (C) 2018-2019  Aristotelis P. <https://glutanimate.com/>
+# Copyright (C) 2018-2021  Aristotelis P. <https://glutanimate.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -60,10 +60,12 @@ def initialize_addon():
 
     maybeStartDebugging()
 
+    from .migrate import migrate_addon
     from .reviewer import initialize_reviewer
     from .template import initialize_template
     from .web import initialize_web
 
+    migrate_addon()
     initialize_template()
     initialize_web()
     initialize_reviewer()
