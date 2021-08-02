@@ -97,7 +97,7 @@ My work on the initial version of this add-on was partially funded by two fellow
 Ships with the following javascript libraries:
 
 - jQuery (v1.12.4), (c) jQuery Foundation, licensed under the MIT license
-- qTip2 (v2.1.1), (c) 2011-2018 Craig Michael Thompson, licensed under the MIT license
+- qTip2 (v3.0.3), (c) 2011-2018 Craig Michael Thompson, licensed under the MIT license
 - jQuery.highlight, (c) 2007-2014 Johann Burkard, licensed under the MIT license
 - jQuery Migrate, (c) OpenJS Foundation and other contributors, https://openjsf.org/, licensed under the MIT license
 
