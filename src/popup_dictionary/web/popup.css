@@ -1,13 +1,25 @@
 .qtip {
     max-width: 440px;
     max-height: 440px;
+    padding: 4px;
     font-family: "arial", sans-serif;
     color: #141414;
     background-color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
+.qtip-content::-webkit-scrollbar {
+    background-color: white;
+}
+.qtip-content::-webkit-scrollbar-corner {
+    background-color:white;
+}
+.qtip-content::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #c1c1c1;
+    min-height: 50px;
+}
+
 .night_mode > .qtip {
-    padding: 4px;
     background-color: #121212;
     border-color: #656565;
     border-width: 1px;
@@ -73,9 +85,10 @@
     text-align: center;
 }
 .tt-brws {
+    font-size: 1.2em;
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 5px;
+    right: 2px;
     line-height: 5px;
     vertical-align: bottom;
     color: #A0A0A0;
