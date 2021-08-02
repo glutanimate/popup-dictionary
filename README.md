@@ -1,4 +1,4 @@
-<p align="center"><img src="screenshots/screencast.gif" width=610 height=338></p>
+<p align="center"><img src="screenshots/screencast.gif" width=610></p>
 
 <h2 align="center">Pop-up Dictionary for Anki</h2>
 
