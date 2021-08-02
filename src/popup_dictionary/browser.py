@@ -30,13 +30,29 @@
 # Any modifications to this file must keep this entire header intact.
 #
 
+from typing import TYPE_CHECKING, Union
+
 import aqt
 from aqt import mw
 from aqt.browser import Browser
 
+if TYPE_CHECKING:
+    from anki.notes import NoteId
 
-def browse_to_nid(nid: str):
+try:  # 2.1.41+
+    from anki.collection import SearchNode
+
+    NEW_SEARCH_SUPPORT = True
+except (ImportError, ModuleNotFoundError):
+    NEW_SEARCH_SUPPORT = False
+
+
+def browse_to_nid(note_id: Union["NoteId", int]):
     """Open browser and find cards by nid"""
-    browser: Browser = aqt.dialogs.open("Browser", mw)
-    browser.form.searchEdit.lineEdit().setText("nid:{}".format(nid))
-    browser.onSearchActivated()
+
+    if NEW_SEARCH_SUPPORT:
+        aqt.dialogs.open("Browser", mw, search=(SearchNode(nid=note_id),))
+    else:
+        browser: Browser = aqt.dialogs.open("Browser", mw)
+        browser.form.searchEdit.lineEdit().setText(f"nid:{note_id}")
+        browser.onSearchActivated()

@@ -57,25 +57,6 @@ def on_reviewer_hotkey():
     mw.reviewer.web.eval("invokeTooltipAtSelectedElm();")
 
 
-# Legacy
-
-
-def link_handler(self: Reviewer, url: str, _old) -> Optional[str]:
-    """JS <-> Py bridge"""
-
-    if not url.startswith(PYCMD_IDENTIFIER):
-        return _old(self, url)
-
-    return webview_message_handler(url)
-
-
-def on_rev_html(self, _old) -> str:
-    return _old(self) + popup_integrator
-
-
-# New
-
-
 def webview_message_handler(message: str) -> Optional[str]:
     cmd, arg = message.split(":", 1)
     subcmd = cmd.replace(PYCMD_IDENTIFIER, "")
@@ -84,7 +65,7 @@ def webview_message_handler(message: str) -> Optional[str]:
         (cmd, arg) = message.split(":", 1)
         if not arg:
             return None
-        browse_to_nid(arg)
+        browse_to_nid(int(arg))
     elif subcmd == "Lookup":
         (cmd, payload) = message.split(":", 1)
         term, ignore_nid = json.loads(payload)
@@ -131,20 +112,13 @@ def patch_reviewer():
     if _reviewer_patched:
         return
 
-    try:  # 2.1.22+
-        from aqt.gui_hooks import (
-            webview_will_set_content,
-            webview_did_receive_js_message,
-        )
+    from aqt.gui_hooks import (
+        webview_will_set_content,
+        webview_did_receive_js_message,
+    )
 
-        webview_will_set_content.append(on_webview_will_set_content)
-        webview_did_receive_js_message.append(on_webview_did_receive_js_message)
-
-    except (ImportError, ModuleNotFoundError):
-        from anki.hooks import wrap
-
-        Reviewer.revHtml = wrap(Reviewer.revHtml, on_rev_html, "around")
-        Reviewer._linkHandler = wrap(Reviewer._linkHandler, link_handler, "around")
+    webview_will_set_content.append(on_webview_will_set_content)
+    webview_did_receive_js_message.append(on_webview_did_receive_js_message)
 
     _reviewer_patched = True
 
@@ -159,13 +133,8 @@ def initialize_reviewer():
     """Delay patching reviewer to counteract bad practices in other add-ons that
     overwrite revHtml and _linkHandler in their entirety"""
 
-    try:  # 2.1.20+
-        from aqt.gui_hooks import profile_did_open
+    from aqt.gui_hooks import profile_did_open
 
-        profile_did_open.append(patch_reviewer)
-    except (ImportError, ModuleNotFoundError):
-        from anki.hooks import addHook
-
-        addHook("profileLoaded", patch_reviewer)
+    profile_did_open.append(patch_reviewer)
 
     setup_shortcuts()
