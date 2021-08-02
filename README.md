@@ -36,33 +36,16 @@ The easiest way to install Pop-up Dictionary is through [AnkiWeb](https://ankiwe
 
 #### Manual installation <!-- omit in toc -->
 
-Please click on the entry corresponding to your Anki version:
 
 <details>
 
-<summary><i>Anki 2.1</i></summary>
+<summary>Click here to see the instructions</summary>
 
-1. Make sure you have the [latest version](https://apps.ankiweb.net/#download) of Anki 2.1 installed. Earlier releases (e.g. found in various Linux distros) do not support `.ankiaddon` packages.
+1. Make sure you have the [latest version](https://apps.ankiweb.net/#download) of Anki 2.1 installed.
 2. Download the latest `.ankiaddon` package from the [releases tab](https://github.com/glutanimate/popup-dictionary/releases) (you might need to click on *Assets* below the description to reveal the download links)
 3. From Anki's main window, head to *Tools* → *Add-ons*
 4. Drag-and-drop the `.ankiaddon` package onto the add-ons list
 5. Restart Anki
-
-</details>
-
-<details>
-
-<summary><i>Anki 2.0</i></summary>
-
-1. Go to *Tools* → *Add-ons* → *Open add-ons folder*
-2. Find and delete the `Pop-up Dictionary.py` file if it already exists.
-3. See if you can find a `popup_dictionary` folder. If so:
-    1. If the folder contains a `meta.json` file, copy the file to a safe location. This will allow you to preserve your current settings.
-    2. Proceed to delete the `popup_dictionary` folder
-4. Download and extract the latest Anki 2.0 add-on release from the [releases tab](https://github.com/glutanimate/popup-dictionary/releases) (you might need to click on *Assets* below the description to reveal the download links)
-5. Move the extracted `Pop-up Dictionary.py` and `popup_dictionary` into the add-ons folder
-6. Optional: Place the `meta.json` file back into the directory if you created a copy beforehand.
-7. Restart Anki
 
 </details>
 
@@ -90,7 +73,7 @@ Contributions are welcome! Please review the [contribution guidelines](./CONTRIB
 
 ### License and Credits
 
-*Pop-up Dictionary* is *Copyright © 2018-2019 [Aristotelis P.](https://glutanimate.com/) (Glutanimate)*
+*Pop-up Dictionary* is *Copyright © 2018-2021 [Aristotelis P.](https://glutanimate.com/) (Glutanimate)*
 
 My work on the initial version of this add-on was partially funded by two fellow Anki users. I would like to thank both of them for their help.
 
