@@ -65,7 +65,7 @@ def webview_message_handler(message: str) -> Optional[str]:
         (cmd, arg) = message.split(":", 1)
         if not arg:
             return None
-        browse_to_nid(arg)
+        browse_to_nid(int(arg))
     elif subcmd == "Lookup":
         (cmd, payload) = message.split(":", 1)
         term, ignore_nid = json.loads(payload)
