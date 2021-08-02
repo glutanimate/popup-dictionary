@@ -166,11 +166,6 @@ def maybe_create_template():
 
 
 def initialize_template():
-    try:
-        from aqt.gui_hooks import profile_did_open
+    from aqt.gui_hooks import profile_did_open
 
-        profile_did_open.append(maybe_create_template)
-    except (ImportError, ModuleNotFoundError):
-        from anki.hooks import addHook
-
-        addHook("profileLoaded", maybe_create_template)
+    profile_did_open.append(maybe_create_template)
