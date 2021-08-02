@@ -9,6 +9,7 @@
 }
 .qtip-content::-webkit-scrollbar {
     background-color: white;
+    width: 10px;
 }
 .qtip-content::-webkit-scrollbar-corner {
     background-color:white;
@@ -33,9 +34,7 @@
     background-color:#121212;
 }
 .night_mode .qtip-content::-webkit-scrollbar-thumb {
-    border-radius: 8px;
     background-color: #656565;
-    min-height: 50px;
 }
 .night_mode > .qtip img {
     background: white;
