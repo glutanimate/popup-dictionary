@@ -7,21 +7,22 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 .night_mode > .qtip {
-    background-color: #141414;
-    border-color: #515151;
+    padding: 4px;
+    background-color: #121212;
+    border-color: #656565;
     border-width: 1px;
     color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 .night_mode .qtip-content::-webkit-scrollbar {
-    background-color: #141414;
+    background-color: #121212;
 }
 .night_mode .qtip-content::-webkit-scrollbar-corner {
-    background-color:#141414;
+    background-color:#121212;
 }
 .night_mode .qtip-content::-webkit-scrollbar-thumb {
     border-radius: 8px;
-    background-color: #515151;
+    background-color: #656565;
     min-height: 50px;
 }
 .night_mode > .qtip img {
