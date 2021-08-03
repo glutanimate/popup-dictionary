@@ -10,6 +10,14 @@
   border-style: none;
   border-radius: 8px;
 }
+
+.night_mode .qtip {
+  background-color: #121212;
+  border-color: #121212;
+  color: #FFFAFA;
+  box-shadow: 0 0 20px rgba(10, 10, 10, 0.4);
+}
+
 .qtip-content::-webkit-scrollbar {
   background-color: white;
   width: 10px;
@@ -23,13 +31,6 @@
   min-height: 50px;
 }
 
-.night_mode > .qtip {
-  background-color: #121212;
-  border-color: #656565;
-  border-width: 1px;
-  color: white;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-}
 .night_mode .qtip-content::-webkit-scrollbar {
   background-color: #121212;
 }
@@ -42,6 +43,7 @@
 .night_mode > .qtip img {
   background: white;
 }
+
 .qtip-bootstrap .qtip-content {
   padding-left: 10px;
   padding-right: 10px;
@@ -58,6 +60,7 @@
   overflow-y: auto;
 }
 .tt-res {
+  border-color: #c1c1c1;
   position: relative;
   margin-top: 0em;
   margin-bottom: 1em;
@@ -67,8 +70,11 @@
   padding-right: 0.5em;
   border-style: solid;
   border-width: 1px;
-  border-color: #c1c1c1;
   border-radius: 4px;
+}
+
+.night_mode .tt-res {
+  border-color: #2f2f31;
 }
 
 .tt-disabled {
