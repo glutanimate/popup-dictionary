@@ -61,7 +61,6 @@ $(document).ready(function () {
     })
 
     $(qtipElm).click( function () {
-      console.log("click")
       qtipElm.classList.remove("tt-disabled");
     });
 
