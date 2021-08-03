@@ -43,6 +43,13 @@ $(document).ready(function()
             }
         }).qtip('api');
 
+        const qtipElm = tooltip.tooltip[0];
+        const footerElm = document.createElement("div")
+        footerElm.innerHTML = `Pop-up Dictionary v${_pDictVersion} by <a href='${_pDictLink}'>Glutanimate</a>`;
+        footerElm.classList.add("tt-footer")
+        qtipElm.appendChild(footerElm)
+
+
         // Custom double click event handler that works across
         // element boundaries → support for dblclick-holding and
         // then releasing over different DOM element (e.g. boldened text)

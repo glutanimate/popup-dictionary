@@ -93,6 +93,13 @@
     color: #A0A0A0;
     cursor: pointer;
 }
+.tt-footer {
+    float: right;
+    color: grey;
+    font-size: 0.8em;
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+}
 .highlight {
     background-color: #FFFFA5;
 }

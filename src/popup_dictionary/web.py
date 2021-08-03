@@ -39,23 +39,16 @@ from .consts import ADDON
 from .libaddon.platform import MODULE_ADDON
 
 
-tooltip_footer_css = """
-.qtip::after {
-    content: "Pop-up Dictionary v%(version)s by Glutanimate";
-    float: right;
-    color: grey;
-    font-size: 0.8em;
-    margin-right: 0.5em;
-    margin-left: 0.5em;
-}""" % dict(version=ADDON.VERSION)
-
 # jQuery-migrate is required on 2.1.40+ to fix compatibility conflcits between
 # qtip2 and jQuery 3.x
 # cf. https://github.com/qTip2/qTip2/issues/797
 popup_integrator = f"""
 <link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/jquery.qtip.css">
 <link rel="stylesheet" href="/_addons/{MODULE_ADDON}/web/popup.css">
-<style>{tooltip_footer_css}</style>
+<script>
+    const _pDictVersion = "{ADDON.VERSION}";
+    const _pDictLink = "{ADDON.LINKS['bepatron']}";
+</script>
 <script src="/_addons/{MODULE_ADDON}/web/jquery-migrate-3.0.0.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/jquery.qtip.min.js"></script>
 <script src="/_addons/{MODULE_ADDON}/web/jquery.highlight.min.js"></script>
