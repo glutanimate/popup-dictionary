@@ -129,11 +129,7 @@
 .night_mode > .qtip .highlight {
   color: black;
 }
-.qtip img {
-  max-width: 100% !important;
-  max-height: 100% !important;
-}
-.qtip iframe {
+.qtip img, .qtip iframe {
   max-width: 100% !important;
   max-height: 100% !important;
 }
