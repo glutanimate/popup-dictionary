@@ -5,7 +5,10 @@
   font-family: "arial", sans-serif;
   color: #141414;
   background-color: white;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+  border-color: white;
+  border-style: none;
+  border-radius: 8px;
 }
 .qtip-content::-webkit-scrollbar {
   background-color: white;
@@ -57,16 +60,17 @@
 .tt-res {
   position: relative;
   margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
   padding-left: 0.5em;
   padding-right: 0.5em;
   border-style: solid;
-  border-width: 0.1em;
-  border-color: #7e7680;
-  border-radius: 0.1em;
+  border-width: 1px;
+  border-color: #c1c1c1;
+  border-radius: 4px;
 }
+
 .tt-dict {
   background-color: #f2f2f2;
 }
