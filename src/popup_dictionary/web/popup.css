@@ -59,7 +59,7 @@
 }
 .tt-res {
   position: relative;
-  margin-top: 0.5em;
+  margin-top: 0em;
   margin-bottom: 1em;
   padding-top: 0.5em;
   padding-bottom: 0.5em;
@@ -69,6 +69,11 @@
   border-width: 1px;
   border-color: #c1c1c1;
   border-radius: 4px;
+}
+
+.tt-disabled {
+  filter: contrast(80%);
+  /* filter: grayscale(100%); */
 }
 
 .tt-dict {

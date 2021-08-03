@@ -2,6 +2,14 @@
 console.log("tooltip.js loaded");
 // Create the tooltips only when document ready
 $(document).ready(function () {
+  function focusTooltip(focusedElement) {
+    document.querySelectorAll(".qtip").forEach((otherQtipElm) => {
+      otherQtipElm.classList.add("tt-disabled");
+    });
+    focusedElement.classList.remove("tt-disabled");
+  }
+
+
   function createTooltip(element) {
     // Creates tooltip on specified DOM element, sets up mouse click events
     // and child tooltips, returns tooltip API object
@@ -47,6 +55,10 @@ $(document).ready(function () {
     footerElm.innerHTML = `Pop-up Dictionary v${_pDictVersion} by <a class='tt-footer-link' href='${_pDictLink}'>Glutanimate</a>`;
     footerElm.classList.add("tt-footer");
     qtipElm.appendChild(footerElm);
+
+    $(qtipElm).mouseenter(function() {
+        focusTooltip(qtipElm);
+    })
 
     // Custom double click event handler that works across
     // element boundaries → support for dblclick-holding and
@@ -160,6 +172,7 @@ $(document).ready(function () {
       // Set tooltip content and show it
       tooltip.set("content.text", text);
       console.log("Set text");
+      focusTooltip(tooltip.tooltip[0]);
       tooltip.show();
       console.log("Showed tooltip");
       // Need to scroll to top if tooltip has been drawn before
