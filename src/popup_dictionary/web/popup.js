@@ -44,7 +44,7 @@ $(document).ready(function () {
 
     const qtipElm = tooltip.tooltip[0];
     const footerElm = document.createElement("div");
-    footerElm.innerHTML = `Pop-up Dictionary v${_pDictVersion} by <a href='${_pDictLink}'>Glutanimate</a>`;
+    footerElm.innerHTML = `Pop-up Dictionary v${_pDictVersion} by <a class='tt-footer-link' href='${_pDictLink}'>Glutanimate</a>`;
     footerElm.classList.add("tt-footer");
     qtipElm.appendChild(footerElm);
 

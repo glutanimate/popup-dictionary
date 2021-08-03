@@ -90,8 +90,11 @@
   right: 2px;
   line-height: 5px;
   vertical-align: bottom;
-  color: #a0a0a0;
+  color: #00a8a8;
   cursor: pointer;
+}
+.night_mode .tt-brws {
+  color: #ffde59;
 }
 .tt-footer {
   float: right;
@@ -99,6 +102,12 @@
   font-size: 0.8em;
   margin-right: 0.5em;
   margin-left: 0.5em;
+}
+.tt-footer-link {
+  color: #008080;
+}
+.night_mode .tt-footer-link {
+  color: #ffde59;
 }
 .highlight {
   background-color: #ffffa5;
