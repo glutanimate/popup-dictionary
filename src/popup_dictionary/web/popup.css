@@ -1,112 +1,112 @@
 .qtip {
-    max-width: 440px;
-    max-height: 440px;
-    padding: 4px;
-    font-family: "arial", sans-serif;
-    color: #141414;
-    background-color: white;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  max-width: 440px;
+  max-height: 440px;
+  padding: 4px;
+  font-family: "arial", sans-serif;
+  color: #141414;
+  background-color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 .qtip-content::-webkit-scrollbar {
-    background-color: white;
-    width: 10px;
+  background-color: white;
+  width: 10px;
 }
 .qtip-content::-webkit-scrollbar-corner {
-    background-color:white;
+  background-color: white;
 }
 .qtip-content::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    background-color: #c1c1c1;
-    min-height: 50px;
+  border-radius: 8px;
+  background-color: #c1c1c1;
+  min-height: 50px;
 }
 
 .night_mode > .qtip {
-    background-color: #121212;
-    border-color: #656565;
-    border-width: 1px;
-    color: white;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  background-color: #121212;
+  border-color: #656565;
+  border-width: 1px;
+  color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 .night_mode .qtip-content::-webkit-scrollbar {
-    background-color: #121212;
+  background-color: #121212;
 }
 .night_mode .qtip-content::-webkit-scrollbar-corner {
-    background-color:#121212;
+  background-color: #121212;
 }
 .night_mode .qtip-content::-webkit-scrollbar-thumb {
-    background-color: #656565;
+  background-color: #656565;
 }
 .night_mode > .qtip img {
-    background: white;
+  background: white;
 }
 .qtip-bootstrap .qtip-content {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .qtip-content {
-    margin-top: 5px;
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 5px;
-    max-width: 400px;
-    max-height: 400px;
-    overflow-y: auto;
+  margin-top: 5px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 5px;
+  max-width: 400px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 .tt-res {
-    position:relative;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    border-style: solid;
-    border-width: 0.1em;
-    border-color: #7E7680;
-    border-radius: 0.1em;
+  position: relative;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  border-style: solid;
+  border-width: 0.1em;
+  border-color: #7e7680;
+  border-radius: 0.1em;
 }
 .tt-dict {
-    background-color: #F2F2F2;
+  background-color: #f2f2f2;
 }
 .night_mode > .qtip .tt-dict {
-    background-color: #0D0D0D;
+  background-color: #0d0d0d;
 }
 .tt-dict-title {
-    font-weight: bold;
-    text-align: center;
+  font-weight: bold;
+  text-align: center;
 }
 .tt-fld {
-    margin-top: 0.5em;
+  margin-top: 0.5em;
 }
 .tt-reslist {
-    text-align: center;
+  text-align: center;
 }
 .tt-brws {
-    font-size: 1.2em;
-    position: absolute;
-    bottom: 5px;
-    right: 2px;
-    line-height: 5px;
-    vertical-align: bottom;
-    color: #A0A0A0;
-    cursor: pointer;
+  font-size: 1.2em;
+  position: absolute;
+  bottom: 5px;
+  right: 2px;
+  line-height: 5px;
+  vertical-align: bottom;
+  color: #a0a0a0;
+  cursor: pointer;
 }
 .tt-footer {
-    float: right;
-    color: grey;
-    font-size: 0.8em;
-    margin-right: 0.5em;
-    margin-left: 0.5em;
+  float: right;
+  color: grey;
+  font-size: 0.8em;
+  margin-right: 0.5em;
+  margin-left: 0.5em;
 }
 .highlight {
-    background-color: #FFFFA5;
+  background-color: #ffffa5;
 }
 .night_mode > .qtip .highlight {
-    color: black
+  color: black;
 }
 .qtip img {
-   max-width: 100% !important;
-   max-height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
 }
