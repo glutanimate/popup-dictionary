@@ -133,3 +133,7 @@
   max-width: 100% !important;
   max-height: 100% !important;
 }
+.qtip iframe {
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
