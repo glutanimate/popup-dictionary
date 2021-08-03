@@ -72,8 +72,7 @@
 }
 
 .tt-disabled {
-  filter: contrast(80%);
-  /* filter: grayscale(100%); */
+  filter: blur(1px);
 }
 
 .tt-dict {
