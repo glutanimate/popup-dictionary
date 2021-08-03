@@ -60,6 +60,11 @@ $(document).ready(function () {
         focusTooltip(qtipElm);
     })
 
+    $(qtipElm).click( function () {
+      console.log("click")
+      qtipElm.classList.remove("tt-disabled");
+    });
+
     // Custom double click event handler that works across
     // element boundaries → support for dblclick-holding and
     // then releasing over different DOM element (e.g. boldened text)
