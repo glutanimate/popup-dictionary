@@ -52,7 +52,9 @@ $(document).ready(function () {
 
     const qtipElm = tooltip.tooltip[0];
     const footerElm = document.createElement("div");
-    footerElm.innerHTML = `Pop-up Dictionary v${_pDictVersion} by <a class='tt-footer-link' href='${_pDictLink}'>Glutanimate</a>`;
+    const leftFooterHTML = `Pop-up Dictionary v${_pDictVersion} by Glutanimate`;
+    const rightFooterHTML = `<a class='tt-footer-link' href='${_pDictLink}'>♥ Support my work</a>`;
+    footerElm.innerHTML = `<div class='tt-footer-left'>${leftFooterHTML}</div><div class='tt-footer-right'>${rightFooterHTML}</div>`;
     footerElm.classList.add("tt-footer");
     qtipElm.appendChild(footerElm);
 
