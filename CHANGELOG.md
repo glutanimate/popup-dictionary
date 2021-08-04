@@ -25,6 +25,7 @@ If you enjoy Pop-up Dictionary, please consider supporting my work on Patreon, o
 - Fixed an issue that would cause an error when opening cards in the browser (thanks to @Nanco300 for the report!)
 - Fixed an issue that would cause images within the pop-ups to not be sized correctly (thanks to @padenw24 for the report!)
 - Made the add-on more resilient against conflicts with user-made deck styling
+- Made the add-on more resilient against conflicts with other add-ons (tested against the top 200 most popular add-ons)
 
 ### Changed
 
