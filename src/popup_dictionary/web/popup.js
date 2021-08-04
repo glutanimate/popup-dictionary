@@ -33,7 +33,7 @@ $(document).ready(function () {
         },
         // apply predefined style
         style: {
-          classes: "qtip-bootstrap",
+          classes: "qtip-bootstrap pdict-popup",
         },
         // don't set up any hide event triggers, do it manually instead
         hide: false,
