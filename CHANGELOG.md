@@ -12,6 +12,10 @@ If you enjoy Pop-up Dictionary, please consider supporting my work on Patreon, o
 
 ## [Unreleased]
 
+## [1.0.0-beta.1] - 2021-08-04
+
+### [Download](https://github.com/glutanimate/popup-dictionary/releases/tag/v1.0.0-beta.1)
+
 ### Added
 
 - Added suport for modern Anki versions (tested up to Anki 2.1.46)
