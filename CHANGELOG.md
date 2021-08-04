@@ -14,19 +14,22 @@ If you enjoy Pop-up Dictionary, please consider supporting my work on Patreon, o
 
 ### Added
 
-- Added support for Anki 2.1.40 and up (tested up to Anki 2.1.45)
+- Added suport for modern Anki versions (tested up to Anki 2.1.46)
+- The add-on now sports a sleek new pop-up design and effects, optimized both for light mode and dark mode
+- Searches can now also be triggered by selecting a phrase and right-clicking
 - Added an option to exclude new notes from snippet results (thanks to @zjosua!)
 
 ### Fixed
 
-- Changed the default add-on hotkey to "Alt+Shift+D" (⌥+⇧+D on macOS) to avert a conflict with default key bindings on Anki 2.1.41 and up
+- Changed the default add-on hotkey to "Alt+Shift+D" (⌥+⇧+D on macOS) to avoid a conflict with default key bindings on Anki 2.1.41 and up
 - Fixed an issue that would cause an error when opening cards in the browser (thanks to @Nanco300 for the report!)
 - Fixed an issue that would cause images within the pop-ups to not be sized correctly (thanks to @padenw24 for the report!)
+- Made the add-on more resilient against conflicts with user-made deck styling
 
 ### Changed
 
-- Refactored major parts of the add-on
-- Dropped Anki 2.0 support
+- Refactored major parts of the add-on, making it more robust and future-proof
+- Dropped support for older Anki versions. The minimum supported version is now 2.1.23.
 - Upgraded qTip2 to v3.0.3. This should hopefully fix a number of bugs with the pop-ups and make for an overall smoother user experience (thanks to @ansaso!)
 
 ## [1.0.0-dev.1] - 2019-08-27
