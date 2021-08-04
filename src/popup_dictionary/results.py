@@ -59,21 +59,21 @@ WRN_RESCOUNT: str = (
 
 # HTML format strings for results
 
-html_reslist: str = """<div class="tt-reslist">{}</div>"""
+html_reslist: str = """<div class="pdict-reslist">{}</div>"""
 
 html_res_normal: str = f"""\
-<div class="tt-res" data-nid={{}}>{{}}<div title="Browse..." class="tt-brws"
+<div class="pdict-res" data-nid={{}}>{{}}<div title="Browse..." class="pdict-brws"
 onclick='pycmd("{PYCMD_IDENTIFIER}Browse:" + this.parentNode.dataset.nid)'>&rarr;</div></div>\
 """
 
 html_res_dict: str = f"""\
-<div class="tt-res tt-dict" data-nid={{}}>
-    <div class="tt-dict-title">Definition:</div>
+<div class="pdict-res pdict-dict" data-nid={{}}>
+    <div class="pdict-dict-title">Definition:</div>
     {{}}
-    <div title="Browse..." class="tt-brws" onclick='pycmd("{PYCMD_IDENTIFIER}Browse:" + this.parentNode.dataset.nid)'>&rarr;</div>
+    <div title="Browse..." class="pdict-brws" onclick='pycmd("{PYCMD_IDENTIFIER}Browse:" + this.parentNode.dataset.nid)'>&rarr;</div>
 </div>"""
 
-html_field: str = """<div class="tt-fld">{}</div>"""
+html_field: str = """<div class="pdict-fld">{}</div>"""
 
 # RegExes for cloze marker removal
 

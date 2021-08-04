@@ -37,7 +37,7 @@ import json
 from typing import TYPE_CHECKING, Any, Optional, Tuple, Union
 
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QShortcut
+from PyQt5.QtWidgets import QMenu, QShortcut
 
 from aqt import mw
 from aqt.reviewer import Reviewer
@@ -48,13 +48,41 @@ from .results import PYCMD_IDENTIFIER, get_content_for
 from .web import popup_integrator
 
 if TYPE_CHECKING:  # 2.1.22+
-    from aqt.webview import WebContent
+    from aqt.webview import AnkiWebView, WebContent
 
 
-def on_reviewer_hotkey():
+# UI interaction ####
+
+
+def setup_shortcuts():
+    QShortcut(  # type: ignore
+        QKeySequence(config["local"]["generalHotkey"]),
+        mw,
+        activated=on_lookup_triggered,
+    )
+
+
+def on_lookup_triggered(*args):
     if mw.state != "review":
         return
     mw.reviewer.web.eval("invokeTooltipAtSelectedElm();")
+
+
+def on_webview_will_show_context_menu(webview: "AnkiWebView", menu: QMenu):
+    # shaky heuristic to determine which web view we are in
+    if hasattr(webview, "title"):
+        if webview.title != "main webview":
+            return
+
+    if mw.state != "review" or not webview.selectedText():
+        return
+
+    action = menu.addAction("Look up in Pop-up Dictionary...")
+    action.setShortcut(config["local"]["generalHotkey"])
+    action.triggered.connect(on_lookup_triggered)
+
+
+# JS <-> PY communication ####
 
 
 def webview_message_handler(message: str) -> Optional[str]:
@@ -102,6 +130,8 @@ def on_webview_did_receive_js_message(
     return (True, callback_value)
 
 
+# Hook into Anki ####
+
 # ensure that we only patch once on first profile load
 _reviewer_patched: bool = False
 
@@ -123,18 +153,13 @@ def patch_reviewer():
     _reviewer_patched = True
 
 
-def setup_shortcuts():
-    QShortcut(  # type: ignore
-        QKeySequence(config["local"]["generalHotkey"]), mw, activated=on_reviewer_hotkey
-    )
-
-
 def initialize_reviewer():
     """Delay patching reviewer to counteract bad practices in other add-ons that
     overwrite revHtml and _linkHandler in their entirety"""
 
-    from aqt.gui_hooks import profile_did_open
+    from aqt.gui_hooks import profile_did_open, webview_will_show_context_menu
 
     profile_did_open.append(patch_reviewer)
+    webview_will_show_context_menu.append(on_webview_will_show_context_menu)
 
     setup_shortcuts()
