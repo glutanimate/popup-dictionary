@@ -131,10 +131,10 @@
 .night_mode .tt-footer-link {
   color: #ffde59;
 }
-.highlight {
+.pdict-highlight {
   background-color: #ffffa5;
 }
-.night_mode > .qtip .highlight {
+.night_mode > .qtip .pdict-highlight {
   color: black;
 }
 .qtip img, .qtip iframe {
