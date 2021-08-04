@@ -141,3 +141,13 @@
   max-width: 100% !important;
   max-height: 100% !important;
 }
+
+/* Deck workarounds */
+
+/* Some decks like the SALT deck make the entire card content unselectable.
+No clue why, but it does not seem desirable from a user standpoint. */
+
+body, div
+{
+    user-select: initial;
+}
