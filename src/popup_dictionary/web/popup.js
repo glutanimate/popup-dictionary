@@ -4,9 +4,9 @@ console.log("tooltip.js loaded");
 $(document).ready(function () {
   function focusTooltip(focusedElement) {
     document.querySelectorAll(".qtip").forEach((otherQtipElm) => {
-      otherQtipElm.classList.add("tt-disabled");
+      otherQtipElm.classList.add("pdict-disabled");
     });
-    focusedElement.classList.remove("tt-disabled");
+    focusedElement.classList.remove("pdict-disabled");
   }
 
 
@@ -53,9 +53,9 @@ $(document).ready(function () {
     const qtipElm = tooltip.tooltip[0];
     const footerElm = document.createElement("div");
     const leftFooterHTML = `Pop-up Dictionary v${_pDictVersion} by Glutanimate`;
-    const rightFooterHTML = `<a class='tt-footer-link' href='${_pDictLink}'>♥ Support my work</a>`;
-    footerElm.innerHTML = `<div class='tt-footer-left'>${leftFooterHTML}</div><div class='tt-footer-right'>${rightFooterHTML}</div>`;
-    footerElm.classList.add("tt-footer");
+    const rightFooterHTML = `<a class='pdict-footer-link' href='${_pDictLink}'>♥ Support my work</a>`;
+    footerElm.innerHTML = `<div class='pdict-footer-left'>${leftFooterHTML}</div><div class='pdict-footer-right'>${rightFooterHTML}</div>`;
+    footerElm.classList.add("pdict-footer");
     qtipElm.appendChild(footerElm);
 
     $(qtipElm).mouseenter(function() {
@@ -63,7 +63,7 @@ $(document).ready(function () {
     })
 
     $(qtipElm).click( function () {
-      qtipElm.classList.remove("tt-disabled");
+      qtipElm.classList.remove("pdict-disabled");
     });
 
     // Custom double click event handler that works across
@@ -143,7 +143,7 @@ $(document).ready(function () {
     // Exclude NID of clicked-on result entry
     if (element.id != "#qa") {
       var selElm = selection.getRangeAt(0).startContainer.parentNode;
-      var resElm = $(selElm).closest(".tt-res")[0];
+      var resElm = $(selElm).closest(".pdict-res")[0];
       if (resElm && "nid" in resElm.dataset) {
         var selNID = resElm.dataset.nid;
         console.log("Ignore current NID: " + selNID);
@@ -186,7 +186,7 @@ $(document).ready(function () {
 
       // Highlight search term
       $(domID).highlight(term);
-      $(".tt-dict").removeHighlight(); // don't highlight term in dictionary elm
+      $(".pdict-dict").removeHighlight(); // don't highlight term in dictionary elm
 
       // Nested tooltips
       // create child tooltip for content on current tooltip

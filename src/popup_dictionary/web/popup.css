@@ -57,7 +57,7 @@
   max-height: 400px !important;
   overflow-y: auto !important;
 }
-.qtip.pdict-popup .tt-res {
+.qtip.pdict-popup .pdict-res {
   border-color: #c1c1c1 !important;
   position: relative !important;
   margin-top: 0em !important;
@@ -71,32 +71,32 @@
   border-radius: 4px !important;
 }
 
-.night_mode .qtip.pdict-popup .tt-res {
+.night_mode .qtip.pdict-popup .pdict-res {
   border-color: #2f2f31 !important;
 }
 
-.tt-disabled {
+.pdict-disabled {
   filter: blur(1px) !important;
 }
 
-.qtip.pdict-popup .tt-dict {
+.qtip.pdict-popup .pdict-dict {
   background-color: #f2f2f2 !important;
 }
 
-.night_mode .qtip.pdict-popup .tt-dict {
+.night_mode .qtip.pdict-popup .pdict-dict {
   background-color: #0d0d0d !important;
 }
-.qtip.pdict-popup .tt-dict-title {
+.qtip.pdict-popup .pdict-dict-title {
   font-weight: bold !important;
   text-align: center !important;
 }
-.qtip.pdict-popup .tt-fld {
+.qtip.pdict-popup .pdict-fld {
   margin-top: 0.5em !important;
 }
-.qtip.pdict-popup .tt-reslist {
+.qtip.pdict-popup .pdict-reslist {
   text-align: center !important;
 }
-.qtip.pdict-popup .tt-brws {
+.qtip.pdict-popup .pdict-brws {
   font-size: 1.2em !important;
   position: absolute !important;
   bottom: 5px !important;
@@ -106,10 +106,10 @@
   color: #00a8a8 !important;
   cursor: pointer !important;
 }
-.night_mode .qtip.pdict-popup .tt-brws {
+.night_mode .qtip.pdict-popup .pdict-brws {
   color: #ffde59 !important;
 }
-.qtip.pdict-popup .tt-footer {
+.qtip.pdict-popup .pdict-footer {
   display: flex !important;
   justify-content: space-between !important;
   width: 100% !important;
@@ -117,17 +117,17 @@
   margin-right: 1em !important;
   margin-left: 0.5em !important;
 }
-.qtip.pdict-popup .tt-footer-right {
+.qtip.pdict-popup .pdict-footer-right {
   margin-right: 0.8em !important;
 }
-.qtip.pdict-popup .tt-footer-left {
+.qtip.pdict-popup .pdict-footer-left {
   color: grey !important;
 }
-.qtip.pdict-popup .tt-footer-link {
+.qtip.pdict-popup .pdict-footer-link {
   color: #008080 !important;
   text-decoration: none !important;
 }
-.night_mode .qtip.pdict-popup .tt-footer-link {
+.night_mode .qtip.pdict-popup .pdict-footer-link {
   color: #ffde59 !important;
 }
 .qtip.pdict-popup .pdict-highlight {
