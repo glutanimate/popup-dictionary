@@ -80,6 +80,9 @@ html_field: str = """<div class="pdict-fld">{}</div>"""
 cloze_re_str = r"\{\{c(\d+)::(.*?)(::(.*?))?\}\}"
 cloze_re = re.compile(cloze_re_str)
 
+# RegExes for sound file marker removal
+sound_re_str = "\[.*?\.mp3\]"
+
 # Anki API shims
 
 
@@ -178,6 +181,8 @@ def get_note_snippets_for(term: str, ignore_nid: str) -> Union[List[str], bool, 
         joined_flds = "".join(valid_flds)
         # remove cloze markers
         filtered_flds = cloze_re.sub(r"\2", joined_flds)
+        # remove sound file markers
+        filtered_flds = re.sub(sound_re_str, ' ', filtered_flds)
         note_content.append(html_res_normal.format(nid, filtered_flds))
 
     return note_content
