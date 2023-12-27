@@ -59,8 +59,8 @@ class QKeyGrabButton(QPushButton):
 
     def setKey(self, key_string):
         self.key_string = key_string
-        qkeyseq = QKeySequence(key_string, QKeySequence.PortableText)
-        native_key_string = qkeyseq.toString(format=QKeySequence.NativeText)
+        qkeyseq = QKeySequence(key_string, QKeySequence.SequenceFormat.PortableText)
+        native_key_string = qkeyseq.toString(format=QKeySequence.SequenceFormat.NativeText)
         self.setText(native_key_string)
     
     def key(self):
@@ -107,7 +107,7 @@ class QKeyGrab(QDialog):
         mainLayout = QVBoxLayout()
         self.label = QLabel("Please press the key combination\n"
                             "you would like to assign")
-        self.label.setAlignment(Qt.AlignCenter)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         mainLayout.addWidget(self.label)
         self.setLayout(mainLayout)
         self.setWindowTitle("Grab key combination")
@@ -129,13 +129,13 @@ class QKeyGrab(QDialog):
         key = evt.key()
         if key > 0 and key < 127:
             self.extra = chr(key)
-        elif key == Qt.Key_Control:
+        elif key == Qt.Key.Key_Control:
             self.ctrl = True
-        elif key == Qt.Key_Alt:
+        elif key == Qt.Key.Key_Alt:
             self.alt = True
-        elif key == Qt.Key_Shift:
+        elif key == Qt.Key.Key_Shift:
             self.shift = True
-        elif key == Qt.Key_Meta:
+        elif key == Qt.Key.Key_Meta:
             self.meta = True
         else:
             self.extra = QKeySequence(key).toString()

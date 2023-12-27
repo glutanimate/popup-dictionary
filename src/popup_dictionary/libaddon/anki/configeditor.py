@@ -60,8 +60,8 @@ class ConfigEditor(QDialog):
     
     def setupWidgets(self):
         button_box = self.form.buttonBox
-        restore_btn = button_box.addButton(QDialogButtonBox.RestoreDefaults)
-        help_btn = button_box.addButton(QDialogButtonBox.Help)
+        restore_btn = button_box.addButton(QDialogButtonBox.StandardButton.RestoreDefaults)
+        help_btn = button_box.addButton(QDialogButtonBox.StandardButton.Help)
         help_btn.clicked.connect(self.onHelpRequested)
         restore_btn.clicked.connect(self.onRestoreDefaults)
     
