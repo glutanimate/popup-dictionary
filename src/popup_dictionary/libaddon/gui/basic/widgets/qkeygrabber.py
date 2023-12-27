@@ -32,7 +32,7 @@
 """
 Custom hotkey selector
 
-NOTE: obsolete on PyQt5
+NOTE: obsolete on PyQt6
 """
 
 from __future__ import (absolute_import, division,
