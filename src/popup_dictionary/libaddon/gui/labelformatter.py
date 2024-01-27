@@ -48,7 +48,7 @@ format_dict = {
 
 if not ANKI20:
     fmt_find_params = ((QLabel, QPushButton), QRegExp(".*"),
-                       Qt.FindChildrenRecursively)
+                       Qt.FindChildOption.FindChildrenRecursively)
 else:
     # Qt4: recursive by default. No third param.
     fmt_find_params = ((QLabel, QPushButton), QRegExp(".*"))

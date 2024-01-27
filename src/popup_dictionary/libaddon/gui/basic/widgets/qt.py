@@ -41,7 +41,7 @@ from __future__ import (absolute_import, division,
 import sip
 
 try:
-    from PyQt5.Qt import *  # noqa: F401
+    from PyQt6.Qt import *  # noqa: F401
 except ImportError:
     sip.setapi('QString', 2)
     sip.setapi('QVariant', 2)
